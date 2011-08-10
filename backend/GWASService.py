@@ -20,10 +20,10 @@ from variation.src.gwa_records import ProgressFileWriter
 class GWASService:
     base_path = "/net/gmi.oeaw.ac.at/gwasapp/gwas-web/"
     base_path_jbrowse = base_path
-    base_path_jbrowse = "/var/www/jbrowse_1.2.1/"
     base_path_datasets = base_path + "datasets/"
-    base_jbrowse_path = base_path_jbrowse + "jbrowse/"
-    base_jbrowse_path = base_path_jbrowse
+    base_jbrowse_path = base_path_jbrowse + "jbrowse_1.2.1/"
+    track_folder = "TAIR10"
+    
     #tracks/Chr%s/TAIR10/"
     __datasource = None
     _lazyArrayChunks = [{},{},{},{},{}]
@@ -416,7 +416,7 @@ class GWASService:
     def getGenes(self,chromosome,start,end,isFeatures=''):
         try:
             if self.__datasource == None:
-                self.__datasource = JBrowseDataSource(self.base_jbrowse_path,'TAIR10_FINAL7')
+                self.__datasource = JBrowseDataSource(self.base_jbrowse_path,self.track_folder)
             genes = []
             genes = self.__datasource.getGenes(chromosome, int(start), int(end), bool(isFeatures))
             retval = {'status': 'OK','genes':genes}
@@ -429,7 +429,7 @@ class GWASService:
     def getGeneFromName(self,query):
         try:
             if self.__datasource == None:
-                self.__datasource = JBrowseDataSource(self.base_jbrowse_path,'TAIR10_FINAL7')
+                self.__datasource = JBrowseDataSource(self.base_jbrowse_path,self.track_folder)
             genes = []
             gene = self.__datasource.getGeneFromName(query)
             retval = {'status': 'OK','gene':gene}
@@ -442,7 +442,7 @@ class GWASService:
     def getGenesFromQuery(self,query):
         try:
             if self.__datasource == None:
-                self.__datasource = JBrowseDataSource(self.base_jbrowse_path,'TAIR10_FINAL7')
+                self.__datasource = JBrowseDataSource(self.base_jbrowse_path,self.track_folder)
             genes = []
             genes = self.__datasource.getGenesFromQuery(query)
             isMore = False
@@ -460,7 +460,7 @@ class GWASService:
     @cherrypy.tools.json_out()
     def getGeneDescription(self,gene):
         try:
-            retval = {'status': 'OK','description':'TEST DESCRIPTION'}
+            retval = {'status': 'OK','description':'NOT IMPLEMENTED'}
         except Exception,err:
             retval =  {"status":"ERROR","statustext":"%s" %str(err)}
         return retval
