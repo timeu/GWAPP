@@ -1,0 +1,189 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	<ui:style>
+		.container {
+			font-size:1.2em;
+			margin-top:1.5em;
+			margin-left:0;
+			height:100%;
+			width:100%;
+			overflow:auto;
+		}
+		.welcome_container {
+			width:100%;
+			min-width:18.75em;
+			max-width:37.5em;
+		}
+		.quick_container {
+			float:left;
+			width:100%;
+			margin-top:0.5em;
+		}
+		.quick_container h1  {
+			font-size:1.4em;
+			margin: 0.2em 0 0.2em 0;
+			color:#336699;
+		}
+		
+		.step_container {
+			float:left;
+			margin:0.1em;
+			width:470px;
+			height:auto;
+			text-align: center;
+		}
+		
+		.full_size {
+			width:100%;
+		}
+		
+		div {
+			-moz-transition: background 1.2s cubic-bezier(0,0,0,1);
+			-webkit-transition: background 1.2s cubic-bezier(0,0,0,1);
+		}
+		
+		div[id]:target {
+			position:absolute;
+			width:99%;
+			height:99%;
+			background: rgba(0,0,0,0.6);
+			z-index: 999;
+			top:0;
+			left:0;
+		}
+		
+		div[id]:target div {
+			position:absolute;
+			top:0;
+			bottom:0;
+			left:0;
+			right:0;
+			margin:auto;
+			width:970px;
+			height:561px;
+		}
+		
+		.close_link {
+			opacity:0;
+			position:absolute;
+			left: -15px;
+    		position: absolute;
+    		top: -15px;
+    		
+		}
+		div[id]:target a {
+			opacity:1;
+		}
+		
+		div[id]:target img {
+			width:auto;
+			height:auto;
+		}
+		
+		.step_image {
+			background-color:white;
+			border-radius:5px 5px 5px 5px;
+			width:460px;
+			height:245px;
+		}
+		
+		.step_image:target {
+			width:auto;
+			height:auto;
+		}
+		
+		
+	</ui:style>
+	<g:HTMLPanel addStyleNames="{style.container}">
+		<div class="{style.welcome_container}">
+			<div class="{mainRes.style.title}">Welcome to the GWAS-Web-App</div>
+			<p>The GWAS-Web-App enables reseachers working with <a href="http://en.wikipedia.org/wiki/Arabidopsis_thaliana" target="_blank">Arabidopsis Thaliana</a> to do <a href="http://www.gmi.oeaw.ac.at/research-groups/magnus-nordborg/genome-wide-association-mapping-in-a.-thaliana" target="_blank">Genome Wide Association Mapping (GWAS)</a> on their phenotypes.
+			</p> 
+			<p>
+			Check out the Quick Start below to see how to use the GWAS-Web-App. For a more detailed information refer to the <a href="#!helpPage">Help</a> page.
+			</p> 
+		</div>
+		<div class="{mainRes.style.title}">Quick Start</div> (click on figures to view steps in fullscreen)
+		<div class="{style.quick_container} ">
+			<div id ="step1" class="{style.step_container} " >
+			<div class="{mainRes.style.box_shadow} {style.full_size}">
+				<div class="{mainRes.style.box_container} {style.full_size}">
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<h1>Step 1 - Upload Phenotypes</h1>
+					<a href="#step1">
+						<img src="{mainRes.upload_phenotypes.getUrl}" class="{style.step_image}"/>
+					</a>
+				</div>
+			</div>
+			</div>
+			<div id ="step2" class="{style.step_container} " >
+				<div class="{mainRes.style.box_shadow} {style.full_size}">
+					<div class="{mainRes.style.box_container}  {style.full_size}">
+						<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+						<h1>Step 2 -Verify Phenotypes</h1>
+						<a href="#step2">
+						<g:Image url="{mainRes.phenotype_list.getUrl}" addStyleNames="{style.step_image}"/>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div id ="step3" class="{style.step_container} " >
+			<div class="{mainRes.style.box_shadow} {style.full_size}">
+				<div class="{mainRes.style.box_container} {style.full_size}">
+					<a href="#homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<h1>Step 3 - Create Dataset (Optional)</h1>
+					<a href="#step3">
+						<g:Image url="{mainRes.create_subsets.getUrl}" addStyleNames="{style.step_image}"/>
+					</a>
+				</div>
+			</div>
+			</div>
+			<div id ="step4" class="{style.step_container} " >
+			<div class="{mainRes.style.box_shadow} {style.full_size}">
+				<div class="{mainRes.style.box_container} {style.full_size}">
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<h1>Step 4 - Apply Transformations (Optional)</h1>
+					<a href="#step4">
+						<g:Image url="{mainRes.apply_transformations.getUrl}" addStyleNames="{style.step_image}"/>
+					</a>
+				</div>
+			</div>
+			</div>
+			<div id ="step5" class="{style.step_container} " >
+			<div class="{mainRes.style.box_shadow} {style.full_size}">
+				<div class="{mainRes.style.box_container} {style.full_size}">
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<h1>Step 5 - Create Subset (Optional)</h1>
+					<a href="#step5">
+						<g:Image url="{mainRes.run_gwas.getUrl}" addStyleNames="{style.step_image}"/>
+					</a>
+				</div>
+			</div>
+			</div>
+			<div id ="step6" class="{style.step_container} " >
+			<div class="{mainRes.style.box_shadow} {style.full_size}">
+				<div class="{mainRes.style.box_container} {style.full_size}">
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<h1>Step 6 - View Results</h1>
+					<a href="#step6">
+						<g:Image url="{mainRes.view_results.getUrl}" addStyleNames="{style.step_image}"/>
+					</a>
+				</div>
+			</div>
+			</div>
+			<div id ="step7" class="{style.step_container} " >
+			<div class="{mainRes.style.box_shadow} {style.full_size}">
+				<div class="{mainRes.style.box_container} {style.full_size}">
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<h1>Step 7 - Run Step-Wise GWAS (Optional)</h1>
+					<a href="#step7">
+						<g:Image url="{mainRes.run_step_gwas.getUrl}" addStyleNames="{style.step_image}"/>
+					</a>
+				</div>
+			</div>
+		</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

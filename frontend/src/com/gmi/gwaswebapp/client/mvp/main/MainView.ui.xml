@@ -1,0 +1,185 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:gwas="urn:import:com.gmi.gwaswebapp.client.ui">
+	<ui:with type="com.gmi.gwaswebapp.client.NameTokens" field="nameTokens"></ui:with>
+	
+	<ui:image field="logo" src='../../resources/gmi-logo-transp.png'>
+	</ui:image>
+	
+	<!-- http://uricomondelo.com/2011/02/pure-css-horizontal-menu/ -->
+	<ui:style ui:field='style' type='com.gmi.gwaswebapp.client.mvp.main.MainView.MyStyle'>
+		.title {
+   			font-size: 30pt;
+			font-weight: bold;
+			color: #889;
+			text-shadow: 5px 5px 6px #AAA;
+			padding-right: 14px;
+			float:left;
+		}
+		
+		
+		.body {
+			 background-color:#F2F2F2; 
+			 height:100%;
+			 width:100%;
+			/* background-color:#D6D5D4; */
+		}
+		.container {
+			margin-left:5pt;
+			float:left;
+		}
+		
+		@sprite .logo {
+			gwt-image: 'logo';
+			top:0pt;
+			right:10pt;
+			margin: 0px;
+			float:right;
+		}
+   
+   
+		.nav2 {
+		   	width: auto;
+			display: block;
+			clear:both;
+		}
+		   
+		.nav2 .menu {
+			height: auto;
+			background: literal("-moz-linear-gradient(center bottom, #2967d5 0%, #4a82de 100%) !important");
+			background: literal("-webkit-gradient(linear, left bottom, left top, color-stop(0, #2967d5), color-stop(1, #4a82de)) !important");
+			font: normal normal 11pt Arial, Verdana, Helvetica;
+			-webkit-border-radius: 5px;
+			-moz-border-radius: 5px;
+			-moz-box-shadow: 0 1px 0 #a6a6a6;
+			-webkit-box-shadow: 0 1px 0 #a6a6a6;
+			box-shadow: 0 1px 1px #a6a6a6;
+		   	list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		   
+		   
+		.nav2 ul.menu, .nav2 ul {
+		   	list-style: none;
+			margin: 0;
+			padding: 0;
+		}
+		  
+		.nav2 ul.menu li {
+			float: left;
+			position: relative;
+			border-right: 1px solid #6794e2;
+			text-transform: uppercase;
+		}
+		
+		.nav2 ul li a:link, .nav2 ul li a:visited {
+			color: #C0C0C0;
+			text-decoration: none;
+			text-shadow: 0 1px 0 #1756c7;
+			border-right: 1px solid #1756c7;
+			padding: 0 20px;
+			line-height: 22pt;
+			float: left;
+			text-shadow: 0 -1px 1px #000000;
+			 font-size: 17px;
+    		font-weight: 700;
+		}
+		
+		.nav2 ul li a:hover {
+			text-shadow: 0 0 10px #336699;
+    		text-shadow: 0 0 10px rgba(51,102,153,0.8);
+    		-webkit-transition: color 0.1s linear;
+    		-moz-transition: color 0.1s linear;
+		}
+		
+		.nav2 ul li a:hover, .nav2 ul li a.current_page_item{
+			background: literal("-webkit-gradient(linear, left bottom, left top, color-stop(0, #114bb2), color-stop(1, #2d6bd1)) !important");
+			background: literal("-moz-linear-gradient(center bottom, #114bb2 0%, #2d6bd1 100%) !important");
+			color: #ffffff;
+		}
+		
+		.nav2 ul li a.home:hover, .nav2 ul li a.current_page_item {
+			-webkit-border-top-left-radius: 6px;
+			-webkit-border-bottom-left-radius: 6px;
+			border-top-left-radius: 6px;
+			border-bottom-left-radius: 6px;
+			-moz-border-radius-bottomleft: 6px;
+			-moz-border-radius-topleft: 6px;
+		}
+		
+		.nav2 ul li ul {
+			display: none;
+			position: absolute;
+			left: 0;
+			top: 28px;
+			float: left;
+			width: 180px;
+			z-index: 99999;
+			border: 1px dotted red;
+		}
+		.loadingIndicatorContainer {
+			height:32px;
+			width:32px;
+			float:left;
+			margin:0 0 0 0;
+		}
+		
+		.progressBarContainer {
+			position:absolute;
+			bottom:50%;
+			left:50%;
+			margin: 0 0 0 0;
+		}
+		   
+		.clearfix:after {
+		  	content:".";
+			display:block;
+			height:0;
+			clear:both;
+			visibility:hidden;
+		}
+	</ui:style>
+	<g:DockLayoutPanel unit="PT" addStyleNames="{style.body}">
+		<g:north size="69.1">
+			<g:HTMLPanel addStyleNames="{style.container}">
+			<div class="{style.title}">
+				GWAS-Web-App
+			</div>
+			<div class="{style.loadingIndicatorContainer}">
+				<gwas:LoadingIndicator ui:field="loadingIndicator">
+				</gwas:LoadingIndicator>
+			</div>
+			<g:HTMLPanel addStyleNames="{style.progressBarContainer}" ui:field="progressBarContainer">
+				
+			</g:HTMLPanel>
+			<div class="{style.logo} {style.clearfix}">
+			</div>
+			<div class="{style.nav2}">
+				<ul class="{style.menu} {style.clearfix}">
+				<li>
+				 <g:InlineHyperlink ui:field="homeLink" targetHistoryToken="{nameTokens.getHomePage}" addStyleNames="{style.home}">Home</g:InlineHyperlink> 
+				</li>
+				<li >
+					<g:InlineHyperlink ui:field="accessionLink" targetHistoryToken="{nameTokens.getAccessionPage}" >Accessions</g:InlineHyperlink>  
+				</li>
+				<li >
+					<g:InlineHyperlink ui:field="phenotypeLink" targetHistoryToken="{nameTokens.getPhenotypeUploadPage}" >Upload Phenotypes</g:InlineHyperlink>  
+				</li>
+				<li >
+				<g:InlineHyperlink ui:field="analysisLink" targetHistoryToken="{nameTokens.getAnalysisPage}" >Analysis</g:InlineHyperlink> 
+				</li>
+				<li >
+				<g:InlineHyperlink ui:field="helpLink" targetHistoryToken="{nameTokens.getHelpPage}" >Help</g:InlineHyperlink>
+				</li>
+				</ul>
+			</div>
+			</g:HTMLPanel>
+		</g:north>
+		<g:center>
+			<gwas:SlidingPanel ui:field="contentContainer" addStyleNames="{style.container}">
+			</gwas:SlidingPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

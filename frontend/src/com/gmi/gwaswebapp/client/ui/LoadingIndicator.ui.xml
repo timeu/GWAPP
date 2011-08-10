@@ -1,0 +1,16 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	
+	<ui:image field ='loaderImage' src='../resources/loader.gif'>
+	</ui:image>
+	
+	<ui:style>
+		@sprite .loaderImageContainer {
+			gwt-image: 'loaderImage';
+	 		border:none;
+		}
+	</ui:style>
+	<g:HTMLPanel addStyleNames="{style.loaderImageContainer}">
+	</g:HTMLPanel>
+</ui:UiBinder> 

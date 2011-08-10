@@ -1,0 +1,72 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	
+	<div class="{mainRes.style.help_section}" >
+		<h1>Phenotypes</h1>
+		<p>
+		In order to use the GWAS-Web-App the user first has to upload his/her phenotypes.
+		The phenotypes can be uploaded by navigating to the <a href="#!phenotypeUploadPage">Upload Phenotypes</a> page.<br/>
+		The user has to make sure that the phenotypes are avaialble in the correct format (<a href="/public/resources/phenotypes.csv">Download</a> sample phenotype-file). 
+		
+		</p>
+		<h2><a name="uploading_phenotypes" id="phenotypes_upload">Uploading Phenotypes</a></h2>
+		<p>Uploading phenotypes is quite straightforward.<br/>
+		The user navigates to the <a href="#!phenotypeUploadPage">Upload Phenotypes</a> page and can either browse for a phenotype file or paste the contents of a phenotype file into the <b>Content textarea</b>
+		By pressing the upload button the phenotypes will be uploaded to the server and stored under the users credentials.<br/>
+		</p>
+		<div id="upload_phenotype" class="{mainRes.style.help_image_container}">
+			<div>
+			<a href="#!helpPage;section=phenotypes" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#upload_phenotype">
+				<img src="/public/resources/screens/upload_phenotypes.png" class="{mainRes.style.help_image}"></img>
+			</a>
+			<i>Figure: Upload Phenotypes page (click figure for fullscreen)</i>
+			</div>
+		</div>
+		
+		<div class="{mainRes.style.clearfix}"></div>
+		<p>
+		If the uploading was successful the user will be automatically redirected to the <a href="#!helpPage;subsection=phenotypes;section=analysis">Phenotype-View</a>  
+		</p>
+		<h2><a name="phenotype_format" id="phenotypes_format">Phenotype format</a></h2>
+		<p>
+		In order to successfully upload the phenotypes, the phenotypes have to be in the right format.<br/>
+		The phenotype file must have at least two columns. The first column contains the accession-ids/ecotype-ids and the second column contains the phenotype-values.<br/>
+		Multiple phenotypes can be uploaded by adding additional columns at the end of the first phenotype column.<br></br>
+		The general format looks like this:
+		<table border="0" cellpadding="2px">
+		<thead>
+		<tr>
+		<th>ecotype_id</th><th>phenotype1</th><th>phenotype2</th><th>phenotypeN</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+		<td>integer</td><td>float or NA</td><td>float or NA</td><td>float or NA</td></tr>
+		</tbody>
+		</table>
+		
+		There are some important criterias which have to be fulfilled:
+		<ul>
+		<li>There must be a header-line which contains the phenotype names</li>
+		<li>Each phenotype-name must be unique</li>
+		<li>All ecotype-ids must be part of the 1307 accession list</li>
+		<li>The column sperator must be a column ("<b>,</b>")</li>
+		<li>Every row must be returned by a normal carriage return ("<b>\n</b>")</li>
+		<li>Missing phenotype values must be filled with the string "<b>NA</b>"</li>
+		</ul>
+		The following example shows the beginning of a phenotype file which contains 4 phenotypes (LD, FT10, FT16 and FRI):
+		<pre>
+		ecotype_id,LD,FT10,FT16,FRI
+		1,NA,65.8,72.0,NA
+		2,NA,74.0,101.25,NA
+		15,NA,59.0,47.6667,NA
+		23,NA,49.0,67.0,NA
+		66,NA,44.0,36.5,NA
+		78,NA,45.0,33.5,NA
+		</pre>
+		<a href="/public/resources/phenotypes.csv">Download</a> sample phenotype-file with all 1307 accession-ids and one empty phenotype column. 
+		</p>
+	</div>
+</ui:UiBinder>

@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	<ui:style>
+	.container {
+		margin-top:10px;
+		float:left;
+	}
+	</ui:style>
+	<g:HTMLPanel>
+		<div class="{mainRes.style.title}">Transformations</div>
+		<div class="{style.container} {mainRes.style.box_shadow}">
+			<div class="{mainRes.style.box_container}" >
+				<c:CellTable ui:field="transformationTable" />
+			</div>
+		</div>
+		<div class="{mainRes.style.clearfix}"></div>
+		<g:HTMLPanel ui:field="transformation_detail_container" />
+		<g:HTMLPanel ui:field="transformation_preview_container" />
+		<g:HTMLPanel ui:field="results_list_container" />
+	</g:HTMLPanel>
+</ui:UiBinder> 

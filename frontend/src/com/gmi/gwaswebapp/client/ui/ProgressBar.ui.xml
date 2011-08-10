@@ -1,0 +1,174 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style type="com.gmi.gwaswebapp.client.ui.ProgressBar.MyStyle">
+		
+		.progress_bar{
+			-webkit-border-radius: 4px 4px 4px 4px;
+			-moz-border-radius: 4px 4px 4px 4px;
+			border-radius: 4px 4px 4px 4px;
+			float:left;
+			width:100%;
+			height:24px;
+			overflow:hidden;
+			padding:1px;
+			position:relative;
+			background: literal("-webkit-gradient(linear, left top, left bottom, color-stop(0, #D6D5D4), color-stop(1, #E5E5E4)) !important");
+			background: literal("-moz-linear-gradient(#D6D5D4 0%, #E5E5E4 100%) !important");
+			background: literal("-o-linear-gradient(#D6D5D4 0%, #E5E5E4 100%) !important");
+		}
+		
+		.progress_bar_bg {
+			-webkit-border-radius: 4px 4px 4px 4px;
+			-moz-border-radius: 4px 4px 4px 4px;
+			border-radius: 4px 4px 4px 4px;
+			padding-right: 2px;
+			width:100%;
+			height:100%;
+			position: relative;
+			background: #B7B5B3;
+			background: literal("-webkit-gradient(linear, left top, left bottom, color-stop(0, #ABA9A7), color-stop(.3, #B7B5B3), color-stop(1, #B7B5B3)) !important");
+			background: literal("-moz-linear-gradient(#ABA9A7 0%, #B7B5B3 30%, #B7B5B3 100%) !important");
+			background: literal("-o-linear-gradient(#ABA9A7 0%, #B7B5B3 30%, #B7B5B3 100%) !important");
+			-webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px rgba(255, 255, 255, .5);
+			-moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px rgba(255, 255, 255, .5);
+			box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px rgba(255, 255, 255, .5);
+		}
+		
+		.progress_bar_status {
+			transition: width 2s;
+			-moz-transition: width 2s; /* Firefox 4 */
+			-webkit-transition: width 2s; /* Safari and Chrome */
+			-o-transition: width 2s; /* Opera */
+			-webkit-border-radius: 4px 4px 4px 4px;
+			-moz-border-radius: 4px 4px 4px 4px;
+			border-radius: 4px 4px 4px 4px;
+			background: literal("-moz-linear-gradient(#6DA8EF 0%, #3776B4 100%) repeat scroll 0 0 transparent !important");
+    		box-shadow: 1px -1px 0 0 #8A8987;
+    		margin: 1px 0 0 1px;
+    		overflow: hidden;
+    		position: absolute;
+    		top: 1px;
+    		width: 0;
+
+		}
+		
+		.progress_bar_status_complete {
+			color: green;
+			/* background: #E5FDD0; */
+		}
+		
+		.progress_content {
+			border-right:2px solid transparent;
+			position:relative;
+			top: -25px;
+		}
+		
+		.progress_inner {
+			 background: none repeat scroll 0 0 #5993CE;
+    		height: 23px;
+		}
+		
+		.progress_highlight {
+			border-radius: 100% 100% 100% 100%;
+		    box-shadow: 0 12px 16px -4px rgba(255, 255, 255, 0.4), 0 40px 8px -8px rgba(255, 255, 255, 0.4);
+		    height: 32px;
+		    position: absolute;
+		    top: -32px;
+		    width: 100%;
+		}
+		.progress_border_l_r {
+			padding: 1px 0;
+			width: 1px;	
+		}
+		.progress_border {
+			left:0;
+			position:absolute;
+			top:0;
+		}
+		
+		.progress_border_left div, .progress_border_right div {
+			 background: literal("-moz-linear-gradient(#67A5EC 0%, #3776B4 100%) repeat scroll 0 0 transparent !important");
+    		height: 21px;
+		}
+		
+		.progress_border_bg {
+			top:22px;
+			width:100%;
+		}
+		
+		.progress_border_bt {
+			width:100%;
+		}
+		
+		.progress_border_bt div {
+			background: #D8E8F7;
+			background: literal("-webkit-gradient(linear, left top, right top, color-stop(0, #6CA8EF), color-stop(.5, #D8E8F7), color-stop(1, #6CA8EF))!important");
+			background: literal("-moz-linear-gradient(left, #6CA8EF 0%, #D8E8F7 50%, #6CA8EF 100%) !important");
+			background: literal("-o-linear-gradient(left, #6CA8EF 0%, #D8E8F7 50%, #6CA8EF 100%) !important");
+			height: 1px;
+    		margin: 0 1px;
+		}
+		
+		.progress_border_bg div {
+			 background: none repeat scroll 0 0 #3776B4;
+			 height:1px;
+			 margin 0 1px;
+		}
+		
+		.progress_border_right {
+			left:auto;
+			right:0;
+		}
+		.progress_label {
+			text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+			position: absolute;
+			line-height: 23px;
+			top: 2px;
+			left: 50%;
+		}
+		.progress_bar_task {
+			transition: all 2s;
+			-moz-transition: all 2s; /* Firefox 4 */
+			-webkit-transition: all 2s; /* Safari and Chrome */
+			-o-transition: all 2s; /* Opera */
+			text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+			left:50%;
+		}
+		
+		.progress_bar_container {
+			opacity : 0;
+			transition: opacity 1s;
+			-moz-transition: opacity 1s; /* Firefox 4 */
+			-webkit-transition: opacity 1s; /* Safari and Chrome */
+			-o-transition: opacity 1s; /* Opera */
+		}
+		
+		.progress_bar_container_visible {
+			opacity: 1;
+		}
+		
+	</ui:style>
+	<g:HTMLPanel  ui:field="container">
+		<div >
+			<span class="{style.progress_bar_task}" ui:field="progress_task"></span>
+		</div>
+		<div class="{style.progress_bar}">
+		
+			<div class="{style.progress_bar_bg}">
+			</div>
+			<div class="{style.progress_content}">
+				<g:HTMLPanel addStyleNames="{style.progress_bar_status}" ui:field="progress_status" width="0%">
+					<div class="{style.progress_inner}">
+						<div class="{style.progress_highlight}"><div></div></div>
+						<div class="{style.progress_border_left} {style.progress_border_l_r} {style.progress_border}"><div></div></div>	
+						<div class="{style.progress_border_right} {style.progress_border_l_r} {style.progress_border}"><div></div></div>
+						<div class="{style.progress_border_bg} {style.progress_border}"><div></div></div>
+					</div>
+					<div class="{style.progress_border} {style.progress_border_bt}"><div></div></div>
+				</g:HTMLPanel>
+				<span class="{style.progress_label}" ui:field="progress_label">0%</span>
+			</div>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

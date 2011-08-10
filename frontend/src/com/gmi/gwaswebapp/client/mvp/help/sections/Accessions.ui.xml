@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	<ui:style>
+		
+	</ui:style>
+	<div class="{mainRes.style.help_section}" >
+		<h1>Accessions</h1>
+		<p>
+		This page shows information about all the 1307 Arabidopsis Thaliana accessions for which the GWAS-Web-App contains genotype information and can be used for GWAS studies.
+		</p>
+		<p> 
+		The page consists of 4 sections (see figure):
+		</p>
+		<div id="accessions" class="{mainRes.style.help_image_container}">
+			<div>
+			<a href="#!helpPage;section=accessions" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#accessions">
+				<img src="/public/resources/screens/accessions.png" class="{mainRes.style.help_image}"></img>
+			</a>
+			<i>Figure: Accession-View (click for fullscreen)</i>
+			</div>
+		</div>
+		
+		<div class="{mainRes.style.clearfix}"></div>
+		<ul>
+			<li><b>Filter-Box</b>: Filtering the accession list</li>
+			<li><b>Google Map</b>: Location information of each accession</li>
+			<li><b>Geographic Distribution Map</b>: Overview of the geographic distribution of the accessions</li>
+			<li><b>Accession-List</b>: List of the accessions</li>
+		</ul>
+		
+		<p>
+		The Filter-Box allows to filter the <b>Accession-List</b> according to <b>accession-name</b>, <b>country</b> and/or <b>collector</b>.
+		<br /> 
+		By clicking on any accession in the <b>Accession-List</b> its location is shown in the <b>Google Map</b>.
+		<br /> 
+		By clicking on any accession in the google map the accession-name and id is shown in a popup.
+		<br /> 
+		By moving the mouse over the <b>Geographic Distribution Map</b> the number of accessions for each country is shown.  
+		</p>
+	</div>
+</ui:UiBinder>

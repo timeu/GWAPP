@@ -1,0 +1,179 @@
+[16/Nov/2010:11:36:41] ENGINE Listening for SIGHUP.
+[16/Nov/2010:11:36:41] ENGINE Listening for SIGTERM.
+[16/Nov/2010:11:36:41] ENGINE Listening for SIGUSR1.
+[16/Nov/2010:11:36:41] ENGINE Bus STARTING
+[16/Nov/2010:11:36:41] ENGINE Started monitor thread '_TimeoutMonitor'.
+[16/Nov/2010:11:36:41] ENGINE Started monitor thread 'Autoreloader'.
+[16/Nov/2010:11:36:42] ENGINE Serving on 127.0.0.1:8080
+[16/Nov/2010:11:36:42] ENGINE Bus STARTED
+[16/Nov/2010:11:47:23] ENGINE Restarting because /home/GMI/uemit.seren/eclipse_workspaces/arabidopsis_active/GWASWebInterface/GWASAloneWebServer/src/GWASAloneWebServer.py changed.
+[16/Nov/2010:11:47:23] ENGINE Stopped thread 'Autoreloader'.
+[16/Nov/2010:11:47:23] ENGINE Bus STOPPING
+[16/Nov/2010:11:47:23] ENGINE HTTP Server cherrypy._cpwsgi_server.CPWSGIServer(('127.0.0.1', 8080)) shut down
+[16/Nov/2010:11:47:23] ENGINE Stopped thread '_TimeoutMonitor'.
+[16/Nov/2010:11:47:23] ENGINE Bus STOPPED
+[16/Nov/2010:11:47:23] ENGINE Bus EXITING
+[16/Nov/2010:11:47:23] ENGINE Bus EXITED
+[16/Nov/2010:11:47:23] ENGINE Waiting for child threads to terminate...
+[16/Nov/2010:11:47:23] ENGINE Re-spawning /home/GMI/uemit.seren/eclipse_workspaces/arabidopsis_active/GWASWebInterface/GWASAloneWebServer/src/GWASAloneWebServer.py
+[16/Nov/2010:11:51:25] ENGINE Listening for SIGHUP.
+[16/Nov/2010:11:51:25] ENGINE Listening for SIGTERM.
+[16/Nov/2010:11:51:25] ENGINE Listening for SIGUSR1.
+[16/Nov/2010:11:51:25] ENGINE Bus STARTING
+[16/Nov/2010:11:51:25] ENGINE Started monitor thread '_TimeoutMonitor'.
+[16/Nov/2010:11:51:25] ENGINE Started monitor thread 'Autoreloader'.
+[16/Nov/2010:11:51:25] ENGINE Serving on 127.0.0.1:8080
+[16/Nov/2010:11:51:25] ENGINE Bus STARTED
+[16/Nov/2010:11:51:41]  Traceback (most recent call last):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 98, in run
+    hook()
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 58, in __call__
+    return self.callback(**self.kwargs)
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cptools.py", line 158, in _wrapper
+    if self.callable(**kwargs):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/lib/static.py", line 233, in staticfile
+    raise ValueError(msg)
+ValueError: Static tool requires an absolute filename (got 'GWASClient.html').
+
+[16/Nov/2010:11:51:41] HTTP 
+Request Headers:
+  COOKIE: GWAS_USER_ID=e7c7a2c6-d15c-11df-835d-001f29065338
+  HOST: localhost:8080
+  ACCEPT: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+  ACCEPT-CHARSET: ISO-8859-1,utf-8;q=0.7,*;q=0.3
+  USER-AGENT: Mozilla/5.0 (X11; U; Linux x86_64; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.41 Safari/534.7
+  CONNECTION: keep-alive
+  Remote-Addr: 127.0.0.1
+  ACCEPT-LANGUAGE: en-US,en;q=0.8
+  ACCEPT-ENCODING: gzip,deflate,sdch
+[16/Nov/2010:11:51:41] HTTP Traceback (most recent call last):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 603, in respond
+    self.hooks.run('before_handler')
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 98, in run
+    hook()
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 58, in __call__
+    return self.callback(**self.kwargs)
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cptools.py", line 158, in _wrapper
+    if self.callable(**kwargs):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/lib/static.py", line 233, in staticfile
+    raise ValueError(msg)
+ValueError: Static tool requires an absolute filename (got 'GWASClient.html').
+
+[16/Nov/2010:11:54:24] ENGINE Restarting because /home/GMI/uemit.seren/eclipse_workspaces/arabidopsis_active/GWASWebInterface/GWASAloneWebServer/development.ini changed.
+[16/Nov/2010:11:54:24] ENGINE Stopped thread 'Autoreloader'.
+[16/Nov/2010:11:54:24] ENGINE Bus STOPPING
+[16/Nov/2010:11:54:24] ENGINE HTTP Server cherrypy._cpwsgi_server.CPWSGIServer(('127.0.0.1', 8080)) shut down
+[16/Nov/2010:11:54:24] ENGINE Stopped thread '_TimeoutMonitor'.
+[16/Nov/2010:11:54:24] ENGINE Bus STOPPED
+[16/Nov/2010:11:54:24] ENGINE Bus EXITING
+[16/Nov/2010:11:54:24] ENGINE Bus EXITED
+[16/Nov/2010:11:54:24] ENGINE Waiting for child threads to terminate...
+[16/Nov/2010:11:54:24] ENGINE Re-spawning /home/GMI/uemit.seren/eclipse_workspaces/arabidopsis_active/GWASWebInterface/GWASAloneWebServer/GWASAloneWebServer.py
+[16/Nov/2010:11:54:24] ENGINE Listening for SIGHUP.
+[16/Nov/2010:11:54:24] ENGINE Listening for SIGTERM.
+[16/Nov/2010:11:54:24] ENGINE Listening for SIGUSR1.
+[16/Nov/2010:11:54:24] ENGINE Bus STARTING
+[16/Nov/2010:11:54:24] ENGINE Started monitor thread '_TimeoutMonitor'.
+[16/Nov/2010:11:54:24] ENGINE Started monitor thread 'Autoreloader'.
+[16/Nov/2010:11:54:24] ENGINE Serving on 127.0.0.1:8080
+[16/Nov/2010:11:54:24] ENGINE Bus STARTED
+[16/Nov/2010:11:54:29]  Traceback (most recent call last):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 98, in run
+    hook()
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 58, in __call__
+    return self.callback(**self.kwargs)
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cptools.py", line 158, in _wrapper
+    if self.callable(**kwargs):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/lib/static.py", line 233, in staticfile
+    raise ValueError(msg)
+ValueError: Static tool requires an absolute filename (got 'static/GWASClient.html').
+
+[16/Nov/2010:11:54:29] HTTP 
+Request Headers:
+  COOKIE: GWAS_USER_ID=e7c7a2c6-d15c-11df-835d-001f29065338
+  HOST: localhost:8080
+  CACHE-CONTROL: max-age=0
+  ACCEPT: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+  ACCEPT-CHARSET: ISO-8859-1,utf-8;q=0.7,*;q=0.3
+  USER-AGENT: Mozilla/5.0 (X11; U; Linux x86_64; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.41 Safari/534.7
+  CONNECTION: keep-alive
+  Remote-Addr: 127.0.0.1
+  ACCEPT-LANGUAGE: en-US,en;q=0.8
+  ACCEPT-ENCODING: gzip,deflate,sdch
+[16/Nov/2010:11:54:29] HTTP Traceback (most recent call last):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 603, in respond
+    self.hooks.run('before_handler')
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 98, in run
+    hook()
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 58, in __call__
+    return self.callback(**self.kwargs)
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cptools.py", line 158, in _wrapper
+    if self.callable(**kwargs):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/lib/static.py", line 233, in staticfile
+    raise ValueError(msg)
+ValueError: Static tool requires an absolute filename (got 'static/GWASClient.html').
+
+[16/Nov/2010:11:55:24] ENGINE Restarting because /home/GMI/uemit.seren/eclipse_workspaces/arabidopsis_active/GWASWebInterface/GWASAloneWebServer/development.ini changed.
+[16/Nov/2010:11:55:24] ENGINE Stopped thread 'Autoreloader'.
+[16/Nov/2010:11:55:24] ENGINE Bus STOPPING
+[16/Nov/2010:11:55:24] ENGINE HTTP Server cherrypy._cpwsgi_server.CPWSGIServer(('127.0.0.1', 8080)) shut down
+[16/Nov/2010:11:55:24] ENGINE Stopped thread '_TimeoutMonitor'.
+[16/Nov/2010:11:55:24] ENGINE Bus STOPPED
+[16/Nov/2010:11:55:24] ENGINE Bus EXITING
+[16/Nov/2010:11:55:24] ENGINE Bus EXITED
+[16/Nov/2010:11:55:24] ENGINE Waiting for child threads to terminate...
+[16/Nov/2010:11:55:24] ENGINE Re-spawning /home/GMI/uemit.seren/eclipse_workspaces/arabidopsis_active/GWASWebInterface/GWASAloneWebServer/GWASAloneWebServer.py
+[16/Nov/2010:11:55:24] ENGINE Listening for SIGHUP.
+[16/Nov/2010:11:55:24] ENGINE Listening for SIGTERM.
+[16/Nov/2010:11:55:24] ENGINE Listening for SIGUSR1.
+[16/Nov/2010:11:55:24] ENGINE Bus STARTING
+[16/Nov/2010:11:55:24] ENGINE Started monitor thread '_TimeoutMonitor'.
+[16/Nov/2010:11:55:24] ENGINE Started monitor thread 'Autoreloader'.
+[16/Nov/2010:11:55:24] ENGINE Serving on 127.0.0.1:8080
+[16/Nov/2010:11:55:24] ENGINE Bus STARTED
+[16/Nov/2010:11:55:28]  Traceback (most recent call last):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 98, in run
+    hook()
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 58, in __call__
+    return self.callback(**self.kwargs)
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cptools.py", line 158, in _wrapper
+    if self.callable(**kwargs):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/lib/static.py", line 233, in staticfile
+    raise ValueError(msg)
+ValueError: Static tool requires an absolute filename (got 'static/GWASClient.html').
+
+[16/Nov/2010:11:55:28] HTTP 
+Request Headers:
+  COOKIE: GWAS_USER_ID=e7c7a2c6-d15c-11df-835d-001f29065338
+  HOST: localhost:8080
+  CACHE-CONTROL: max-age=0
+  ACCEPT: application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+  ACCEPT-CHARSET: ISO-8859-1,utf-8;q=0.7,*;q=0.3
+  USER-AGENT: Mozilla/5.0 (X11; U; Linux x86_64; en-US) AppleWebKit/534.7 (KHTML, like Gecko) Chrome/7.0.517.41 Safari/534.7
+  CONNECTION: keep-alive
+  Remote-Addr: 127.0.0.1
+  ACCEPT-LANGUAGE: en-US,en;q=0.8
+  ACCEPT-ENCODING: gzip,deflate,sdch
+[16/Nov/2010:11:55:28] HTTP Traceback (most recent call last):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 603, in respond
+    self.hooks.run('before_handler')
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 98, in run
+    hook()
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cprequest.py", line 58, in __call__
+    return self.callback(**self.kwargs)
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/_cptools.py", line 158, in _wrapper
+    if self.callable(**kwargs):
+  File "/home/GMI/uemit.seren/python_environments/arabidopsis_new/lib/python2.6/site-packages/CherryPy-3.1.2-py2.6.egg/cherrypy/lib/static.py", line 233, in staticfile
+    raise ValueError(msg)
+ValueError: Static tool requires an absolute filename (got 'static/GWASClient.html').
+
+[16/Nov/2010:11:59:23] ENGINE Restarting because /home/GMI/uemit.seren/eclipse_workspaces/arabidopsis_active/GWASWebInterface/GWASAloneWebServer/development.ini changed.
+[16/Nov/2010:11:59:23] ENGINE Stopped thread 'Autoreloader'.
+[16/Nov/2010:11:59:23] ENGINE Bus STOPPING
+[16/Nov/2010:11:59:23] ENGINE HTTP Server cherrypy._cpwsgi_server.CPWSGIServer(('127.0.0.1', 8080)) shut down
+[16/Nov/2010:11:59:23] ENGINE Stopped thread '_TimeoutMonitor'.
+[16/Nov/2010:11:59:23] ENGINE Bus STOPPED
+[16/Nov/2010:11:59:23] ENGINE Bus EXITING
+[16/Nov/2010:11:59:23] ENGINE Bus EXITED
+[16/Nov/2010:11:59:23] ENGINE Waiting for child threads to terminate...
+[16/Nov/2010:11:59:23] ENGINE Re-spawning /home/GMI/uemit.seren/eclipse_workspaces/arabidopsis_active/GWASWebInterface/GWASAloneWebServer/GWASAloneWebServer.py

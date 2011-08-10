@@ -1,0 +1,10 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	xmlns:gwas="urn:import:com.gmi.gwaswebapp.client.ui">
+	
+
+	<gwas:ProgressBar ui:field="progressBar">
+	</gwas:ProgressBar>
+</ui:UiBinder>

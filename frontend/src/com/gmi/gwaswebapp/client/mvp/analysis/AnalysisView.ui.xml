@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:p1="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:gui="urn:import:com.gmi.gwaswebapp.client.ui">
+	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	
+	<ui:style>
+		
+	</ui:style>
+	<g:DockLayoutPanel height="100%" width="100%">
+		<g:west size="160.0">
+			<g:HTMLPanel addStyleNames="{mainRes.style.tree_container}">
+				<div class="{mainRes.style.tree_header}"><span>Navigation</span>
+				</div>
+				<p1:CellTree ui:field="resultsTree"/>
+			</g:HTMLPanel>
+		</g:west>
+		<g:center>
+			<gui:SlidingPanel ui:field="contentContainer" addStyleNames="{mainRes.style.content_container}" >
+			    <g:HTMLPanel></g:HTMLPanel>
+			 </gui:SlidingPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder> 

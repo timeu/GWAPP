@@ -1,0 +1,37 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:gviz="urn:import:com.google.gwt.visualization.client.visualizations">
+	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	<ui:style ui:field='style' type="com.gmi.gwaswebapp.client.mvp.phenotype.list.PhenotypeListView.MyStyle">
+	.container {
+		margin-left:5px;
+		margin-top:10px;
+	}
+	
+	.chart_container {
+		width:50%;
+		float:left;
+	}
+	
+	
+	</ui:style>
+	<g:ScrollPanel height="100%">
+		<g:HTMLPanel addStyleNames="{style.container}">
+			<div class="{mainRes.style.title}">Phenotypes</div>
+			<div class="{mainRes.style.box_shadow}">
+				<div class="{mainRes.style.box_container}">
+					<c:CellTable ui:field="phenotypeTable" addStyleNames="{mainRes.style.cellTable}" width="100%" />
+				</div>
+			</div>
+			<div class="{mainRes.style.title}">Statistics</div>
+			<div class="{mainRes.style.box_shadow} {style.chart_container}">
+				<g:HTMLPanel ui:field="statistics_left_container" width="100%" addStyleNames="{mainRes.style.box_container}"/>
+			</div>
+				<div class="{mainRes.style.box_shadow} {style.chart_container}">
+					<g:HTMLPanel ui:field="statistics_right_container" width="100%" addStyleNames="{mainRes.style.box_container}"/>
+				</div>
+		</g:HTMLPanel>
+	</g:ScrollPanel>
+</ui:UiBinder> 

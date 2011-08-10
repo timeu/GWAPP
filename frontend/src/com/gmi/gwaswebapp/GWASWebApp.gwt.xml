@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.3.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.3.0/distro-source/core/src/gwt-module.dtd">
+<module rename-to='gwaswebapp'>
+	<inherits name="com.google.gwt.user.User" />
+	<inherits name="name.pehl.piriti.json.JSON" />
+	<inherits name="name.pehl.piriti.xml.XML" />
+	<inherits name="com.google.gwt.uibinder.UiBinder" />
+	<inherits name="com.google.gwt.inject.Inject" />
+	<inherits name="com.google.gwt.logging.Logging"/>
+	<inherits name='com.gwtplatform.mvp.Mvp' />
+	<inherits name='com.gwtplatform.dispatch.Dispatch' />
+	<inherits name="at.gmi.nordborglab.widgets.gwasgeneviewer.GWASGeneViewer" />
+	<inherits name="com.google.gwt.resources.Resources" />
+	<inherits name='com.google.gwt.visualization.Visualization'/>
+	<inherits name='com.google.gwt.maps.GoogleMaps' />
+	
+
+	<source path="client" />
+
+	<define-configuration-property name="gin.ginjector"
+		is-multi-valued="false" />
+	<set-configuration-property name="gin.ginjector"
+		value="com.gmi.gwaswebapp.client.gin.ClientGinjector" />
+	<script src="http://www.google.com/jsapi?key=ABQIAAAAHExtiY5_qKaTj9xWKMjl4xTtEpWa7kqih2tSZ3rpmArayZxetBS7MKdCA3ZN4ypVkrPZAbUr8J2cZw"/>
+	<entry-point class="com.gmi.gwaswebapp.client.GWASWebApp"></entry-point>
+	
+</module>

@@ -1,0 +1,37 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	<ui:style>
+		.uploadContainer {
+			margin:0 auto;
+			width:600px;
+			padding:14px;
+			float:left;
+			position:relative;
+		}
+	</ui:style>
+	<g:HTMLPanel>
+	   <div class="{style.uploadContainer} {mainRes.style.formbox}">
+	   <g:FormPanel ui:field="phenotype_upload_form" >
+	   	<g:HTMLPanel addStyleNames="{mainRes.style.clearfix}" >
+	   	<fieldset>
+		   	<h1>Upload phenotypes form</h1>
+		   	<p>With this form it is possible to upload one or multiple phenotypes. For more information refer to the the <a href="#!helpPage;subsection=upload;section=phenotypes">Help section</a></p>
+		   	<label for="phenotype_file" >File
+		   	<span class="{mainRes.style.small}">File containing the phenotypes</span>
+		   	</label>
+		   	<g:FileUpload ui:field="phenotype_file"  name="phenotype_file"></g:FileUpload>
+		   	<label for="phenotype_content">Content
+		   	<span class="{mainRes.style.small}">
+		   	Alternatively paste the contents of the phenotype file into this textfield
+		   	</span>
+		   	</label>
+			<g:TextArea ui:field="phenotype_content"  name="phenotype_content"  ></g:TextArea>
+			<g:Button ui:field="form_submit_btn" text="Upload"></g:Button>
+		</fieldset>
+		</g:HTMLPanel >
+	   </g:FormPanel>
+	   </div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

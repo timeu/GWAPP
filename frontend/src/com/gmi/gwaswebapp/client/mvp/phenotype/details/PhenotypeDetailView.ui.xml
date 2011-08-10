@@ -1,0 +1,78 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:gui="urn:import:com.gmi.gwaswebapp.client.ui"
+	xmlns:gwas="urn:import:com.gmi.gwaswebapp.client.ui">
+	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	
+	<ui:style>
+		.container {
+			height:100%;
+			width:100%;
+		}
+		
+		.phenotype_container {
+			
+		}
+		
+		.detail_container {
+			height:100%;
+			margin-left:5px;
+		}
+		
+		.transformation_container {
+			margin-top: 2em;
+		}
+		
+		
+		.phenotype_name {
+			font-size: 2em;
+		}
+		
+		.phenotype_values  {
+			display:inline;
+			float: left;
+			margin-top: 0;
+			list-style: none outside none;
+		}
+		
+		.phenotype_values li {
+			display:inline;
+			float: left;
+			font-soze:0.875em;
+			padding: 0.188em 0;
+			width: 13em;
+		}
+		
+		.container h4 {
+			display:inline;
+			font-weight: bold;
+			padding-right: 0.4em;
+		}
+		
+		
+	</ui:style>
+	
+		<g:ScrollPanel addStyleNames="{style.container}">
+			<g:HTMLPanel height="100%">
+			<div class="{style.phenotype_container}  {mainRes.style.clearfix}">
+				<div class="{style.phenotype_name} {mainRes.style.clearfix}">
+					<g:InlineLabel ui:field="label_phenotype_name"></g:InlineLabel>
+				</div>
+				<ul class="{style.phenotype_values}">
+					<li><h4>Values:</h4><g:InlineLabel ui:field="label_num_values"></g:InlineLabel></li>
+					<li><h4>Std-Dev:</h4><g:InlineLabel ui:field="label_stddev"></g:InlineLabel></li>
+					<li><h4>Condition:</h4><g:InlineLabel ui:field="label_condition"></g:InlineLabel></li>
+					<li><h4>Scoring:</h4><g:InlineLabel ui:field="label_scoring"></g:InlineLabel></li>
+					<li><h4>Method:</h4><g:InlineLabel ui:field="label_method"></g:InlineLabel></li>
+					<li><h4>Scale:</h4><g:InlineLabel ui:field="label_scale"></g:InlineLabel></li>
+				</ul>
+			</div>
+			<g:HTMLPanel width="100%" height="100%">
+				<g:HTMLPanel ui:field="detailContent" addStyleNames="{style.detail_container}"></g:HTMLPanel>
+			</g:HTMLPanel>
+			</g:HTMLPanel>
+			
+		</g:ScrollPanel>
+	
+</ui:UiBinder> 

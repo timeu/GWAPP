@@ -1,0 +1,38 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	<ui:style>
+	</ui:style>
+	<div class="{mainRes.style.help_section}" >
+		<h1>Tutorial</h1>
+		<p>This tutorial shows the typical steps in doing a Genome Wide Association Mapping analysis.
+		Following steps are going to be described in detail:
+		<ol>
+			<li>Upload phenotypes</li>
+			<li>Create datasets</li>
+			<li>Create transformations</li>
+			<li>Run GWAS</li>
+			<li>View the results</li>
+			<li>Run Step-Wise GWAS</li>
+		</ol>
+		</p> 
+		<h2>Uploading Phenotypes</h2>
+		<p>
+		First the user has to navigate to the phenotype-upload page via the main navigation bar. 
+		In this tutorial we are going to upload a phenotype file which contains 4 different phenotypes.
+		For a detailed description of the phenotype file format refer to <a href="#!helpPage;section=phenotypes;subsection=format">Phenotype Format section</a>.
+		Just click on "Browse" in the upload-form and select your phenotype. <img></img>
+		As soon as the phenotypes were successfully uploaded the app will switch to the Analysis page which displays the list of all phenotypes and some statistics.
+		<img></img>
+		</p>
+		<h2> 
+			Creating a subset
+		</h2>
+		<p>
+			By clicking on a specific phenotype additional information about the selected phenotype are displayed. On this page also all subsets/datasets for the phenotype are displayed.
+			Initially after uploading a phenotype a dataset called fullset whichc contains phenotype values for all accessions is created. 
+			It is now possible to create subsets for specific accessions. For example if the users wants to run GWAS on a swedish subset it is possible to   
+			
+		</p>
+	</div>
+</ui:UiBinder>
