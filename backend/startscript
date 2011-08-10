@@ -1,20 +1,22 @@
 #!/bin/sh
-project="/srv/GWASWebServer"
-python_env="/srv/python_virtualenv/current"
-cd $project
+base_path=/srv/gwas-app
+app_path=$base_path/gwas-web-app
+backend=$app_path/backend
+
+python_env="/srv/py-venvs/current"
+cd $backend
 sh $python_env/bin/activate
-export PYTHONPATH=/srv/GWASModules
+export PYTHONPATH=$base_path/GWASModules/:$app_path/:$base_path/GWASModules/variation/src/
 
 case "$1" in
 start)
-echo "START DAEMON" >> /tmp/test.log
-$python_env/bin/paster serve --daemon --pid-file=paster.pid --log-file=application.log  production.ini start
+$python_env/bin/python __init__.py
 ;;
 stop)
-$python_env/bin/paster serve --daemon --pid-file=paster.pid --log-file=application.log  production.ini stop
+echo "not implemented"
 ;;
 restart)
-$python_env/bin/paster serve  --daemon --pid-file=paster.pid --log-file=application.log production.ini restart
+echo "not implemented"
 ;;
 *)
 echo $"Usage: $0 {start|stop|restart}"
