@@ -15,11 +15,16 @@
 		float:left;
 	}
 	
+	.download_link {
+		float:right;
+	}
+	
 	
 	</ui:style>
 	<g:ScrollPanel height="100%">
 		<g:HTMLPanel addStyleNames="{style.container}">
-			<div class="{mainRes.style.title}">Phenotypes</div>
+			<div class="{style.download_link}"><a href="/gwas/downloadHDF5File" target="_blank">Download HDF5 Dataset</a></div>
+			<div class="{mainRes.style.title}">Phenotypes</div> 
 			<div class="{mainRes.style.box_shadow}">
 				<div class="{mainRes.style.box_container}">
 					<c:CellTable ui:field="phenotypeTable" addStyleNames="{mainRes.style.cellTable}" width="100%" />

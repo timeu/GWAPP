@@ -25,7 +25,8 @@
 	line-height:28px;
 	/*color:#1E2229;*/
 	color:#369;
-	padding: 7px 0 8px;
+	padding: 7px 0 0px;
+	margin-bottom:8px;
 	border-color:#C0C2C3;
 	border-width:1px;
 	border-style: none none solid none;

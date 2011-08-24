@@ -46,13 +46,11 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 		void drawAssociationCharts(List<DataTable> dataTables,List<Cofactor> cofactors,
 				List<Integer> chrLengths, double maxScore,
 				double bonferroniThreshold);
-
 		void clearAssociationCharts();
-
 		void drawStatisticPlots(DataView view);
-
 		void showSNPPopup(int chromosome, int position, int x, int y);
 		
+		void setDownloadURL(String url);
 	}
 	
 	private Analysis analysis;
@@ -75,6 +73,8 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 	public void loadData(final Analysis analysis)  {
 		this.analysis = analysis;
 		this.initStatistics();
+		String download_url = "/gwas/downloadAssociationData?phenotype="+analysis.getPhenotype()+"&dataset="+analysis.getDataset()+"&transformation="+analysis.getTransformation()+"&analysis="+analysis.getName()+"&result_name="+analysis.getResultName();
+		getView().setDownloadURL(download_url);
 		dispatch.execute(new GetAssociationDataAction(analysis.getPhenotype(),analysis.getDataset(),analysis.getTransformation(),analysis.getType().toString(),analysis.getResultName()), new GWASCallback<GetAssociationDataActionResult>(getEventBus()) {
 
 			@Override

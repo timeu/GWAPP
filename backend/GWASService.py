@@ -8,6 +8,7 @@ import gviz_api,os
 from variation.src import gwa_records
 from cherrypy import tools
 import cherrypy
+from cherrypy.lib.static import serve_file
 import simplejson
 from JBrowseDataSource import DataSource as JBrowseDataSource 
 from cherrypy.lib import http
@@ -539,6 +540,27 @@ class GWASService:
         except Exception, err:
             result ={"status":"ERROR","statustext":"%s"%str(err)}
         return result
+
+    @cherrypy.expose
+    @cherrypy.tools.response_headers(headers=[('Content-Type','application/csv'),('Content-disposition','attachment;filename=results.csv')])
+    def downloadAssociationData(self,phenotype,dataset,transformation,analysis,result_name):
+        import StringIO,csv
+        path = self._getUserPath()
+        gwa_record = gwa_records.GWASRecord(path)
+        gwa_record.open("r+")
+        results = gwa_record.get_results_for_csv(phenotype, dataset,transformation,analysis,result_name)
+        content = ''
+        tempfile = StringIO.StringIO()
+        writer = csv.writer(tempfile,delimiter=',')
+        writer.writerows(results)
+        content = tempfile.getvalue()
+        tempfile.close()
+        return content;
+    
+    @cherrypy.expose
+    def downloadHDF5File(self):
+        path = self._getUserPath()
+        return serve_file(path, "application/x-download", "attachment",'analysis.hdf5')
     
     @cherrypy.expose
     @cherrypy.tools.json_out()

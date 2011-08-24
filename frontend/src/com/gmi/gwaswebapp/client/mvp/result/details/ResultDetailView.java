@@ -15,6 +15,7 @@ import com.gmi.gwaswebapp.client.dto.Cofactor;
 import com.gmi.gwaswebapp.client.mvp.result.details.ResultDetailPresenter.MyView;
 import com.gmi.gwaswebapp.client.resources.CellTableResources;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -32,6 +33,8 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.InlineHyperlink;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -67,6 +70,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	@UiField(provided = true) CellTable<Cofactor> cofactorTable;
 	@UiField(provided = true) LineChart statistic_chart;
 	@UiField ListBox statistic_type;
+	@UiField AnchorElement download_link;
 	protected List<GWASGeneViewer> gwasGeneViewers = new ArrayList<GWASGeneViewer>();
 	private String[] colors = {"blue", "green", "red", "cyan", "purple"};
 	private String[] gene_mark_colors = {"red", "red", "blue", "red", "green"};
@@ -289,6 +293,11 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 		snpPopup.setDataPoint(chromosome, position);
 		snpPopup.setPosition(x, y);
 		snpPopup.show();
+	}
+
+	@Override
+	public void setDownloadURL(String url) {
+		download_link.setHref(url);
 	}
 
 
