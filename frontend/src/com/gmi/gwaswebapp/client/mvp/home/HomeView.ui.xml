@@ -155,7 +155,7 @@
 			<div class="{mainRes.style.box_shadow} {style.full_size}">
 				<div class="{mainRes.style.box_container} {style.full_size}">
 					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
-					<h1>Step 5 - Create Subset (Optional)</h1>
+					<h1>Step 5 - Run GWAS</h1>
 					<a href="#step5">
 						<g:Image url="{mainRes.run_gwas.getUrl}" addStyleNames="{style.step_image}"/>
 					</a>
