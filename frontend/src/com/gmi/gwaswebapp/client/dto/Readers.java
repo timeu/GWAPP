@@ -15,6 +15,8 @@ public interface Readers {
 	public interface TransformationWriter extends JsonWriter<Transformation> {}
 	
 	public interface AnalysisReader extends JsonReader<Analysis> {}
+	
+	public interface AnalysisWriter extends JsonWriter<Analysis> {}
 
 	public interface CofactorReader extends JsonReader<Cofactor> {}
 	
@@ -33,5 +35,6 @@ public interface Readers {
 	public interface DatasetReader extends JsonReader<Dataset> {}
 	
 	public interface DatasetWriter extends JsonWriter<Dataset> {}
+	
 	
 }

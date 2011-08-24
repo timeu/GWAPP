@@ -8,6 +8,7 @@ import com.gmi.gwaswebapp.client.NameTokens;
 import com.gmi.gwaswebapp.client.dto.Readers.AccessionReader;
 import com.gmi.gwaswebapp.client.dto.Readers.AccessionsReader;
 import com.gmi.gwaswebapp.client.dto.Readers.AnalysisReader;
+import com.gmi.gwaswebapp.client.dto.Readers.AnalysisWriter;
 import com.gmi.gwaswebapp.client.dto.Readers.BackendResultReader;
 import com.gmi.gwaswebapp.client.dto.Readers.CofactorReader;
 import com.gmi.gwaswebapp.client.dto.Readers.DatasetWriter;
@@ -98,6 +99,7 @@ public class ClientModule extends AbstractPresenterModule {
 	    bind(DatasetReader.class).asEagerSingleton();
 	    bind(DatasetWriter.class).asEagerSingleton();
 	    bind(TransformationWriter.class).asEagerSingleton();
+	    bind(AnalysisWriter.class).asEagerSingleton();
 	    
 	   
 	    
