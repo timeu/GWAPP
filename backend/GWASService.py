@@ -16,6 +16,7 @@ import tables
 import time
 from datetime import datetime
 from variation.src.gwa_records import ProgressFileWriter
+import cPickle
  
 
 class GWASService:
@@ -29,10 +30,14 @@ class GWASService:
     __datasource = None
     _lazyArrayChunks = [{},{},{},{},{}]
     hdf5_filename = base_path + "data.hdf5"
+    gene_annot_file = base_path + "genome_annotation.pickled"
     
     def __init__(self):
         self.data_file = tables.openFile(self.hdf5_filename, "r")
         self.accession_ids = None
+        gene_annot_file = open(self.gene_annot_file, 'rb')
+        self.gene_annotation = cPickle.load(gene_annot_file)
+        gene_annot_file.close()
         
     def _getUserId(self):
         request = cherrypy.request
@@ -457,11 +462,15 @@ class GWASService:
             retval =  {"status":"ERROR","statustext":"%s" %str(err)}
         return retval
     
+    
+    
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def getGeneDescription(self,gene):
         try:
-            retval = {'status': 'OK','description':'NOT IMPLEMENTED'}
+            gene_parts = gene.split('.')
+            description = self.gene_annotation[gene_parts[0]][gene]['functional_description']['computational_description']
+            retval = {'status': 'OK','description':description}
         except Exception,err:
             retval =  {"status":"ERROR","statustext":"%s" %str(err)}
         return retval
