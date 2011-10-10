@@ -46,8 +46,10 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.gwtplatform.dispatch.client.actionhandler.caching.Cache;
 import com.gwtplatform.dispatch.client.actionhandler.caching.DefaultCacheImpl;
+import com.gwtplatform.mvp.client.annotations.GaAccount;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
+import com.gwtplatform.mvp.client.googleanalytics.GoogleAnalyticsNavigationTracker;
 import com.gmi.gwaswebapp.client.mvp.progress.ProgressPresenter;
 import com.gmi.gwaswebapp.client.mvp.progress.ProgressView;
 import com.gmi.gwaswebapp.client.mvp.accession.AccessionCellTableColumns.SearchCell;
@@ -77,6 +79,8 @@ public class ClientModule extends AbstractPresenterModule {
 	    
 	    bind(Cache.class).to(DefaultCacheImpl.class).in(Singleton.class);
 	    
+	    bindConstant().annotatedWith(GaAccount.class).to("UA-26150757-1");
+	    bind(GoogleAnalyticsNavigationTracker.class).asEagerSingleton();
 	    
 	    bindConstant().annotatedWith(UserIDCookie.class).to(NameTokens.useridCookie);
 	    

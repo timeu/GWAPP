@@ -25,6 +25,7 @@ import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyCodeSplit;
+import com.gwtplatform.mvp.client.googleanalytics.GoogleAnalytics;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
@@ -51,14 +52,17 @@ public class PhenotypeUploadPresenter extends Presenter<PhenotypeUploadPresenter
 	protected final PlaceManager placeManager;
 	protected final ResultReader resultReader;
 	protected final CurrentUser currentUser;
+	private final GoogleAnalytics googleAnalytics;
 	
 	@Inject
 	public PhenotypeUploadPresenter(EventBus eventBus, MyView view,
-			MyProxy proxy,final PlaceManager placeManager, final ResultReader resultReader, final CurrentUser currentUser) {
+			MyProxy proxy,final PlaceManager placeManager, final ResultReader resultReader, final CurrentUser currentUser,
+			final GoogleAnalytics googleAnalytics) {
 		super(eventBus, view, proxy);
 		this.placeManager = placeManager;
 		this.currentUser = currentUser;
 		this.resultReader = resultReader;
+		this.googleAnalytics = googleAnalytics;
 		getView().setUiHandlers(this);
 		getView().setFormAction("/gwas/uploadPhenotype");
 	}
@@ -114,6 +118,7 @@ public class PhenotypeUploadPresenter extends Presenter<PhenotypeUploadPresenter
 				
 				if (result != null && result.getStatus() == BackendResult.STATUS.OK)
 				{
+					googleAnalytics.trackEvent("Phenotype-Upload", "successful");
 					//cache.clear();
 					currentUser.refresh(new Runnable() {
 						
@@ -128,10 +133,12 @@ public class PhenotypeUploadPresenter extends Presenter<PhenotypeUploadPresenter
 				else if (result != null)
 				{
 					//cache.clear();
+					googleAnalytics.trackEvent("Phenotype-Upload", "Failed");
 					DisplayNotificationEvent.fireError(PhenotypeUploadPresenter.this,"Upload failed",result.getStatustext());
 					//DisplayShortMessageEvent.fireError(PhenotypeUploadPresenter.this,"Error during upload:" + result.getStatusText());
 				}
 				else {
+					googleAnalytics.trackEvent("Phenotype-Upload", "Failed");
 					DisplayNotificationEvent.fireError(PhenotypeUploadPresenter.this,"Upload failed","Unknown Errro");
 				}
 					//DisplayShortMessageEvent.fireError(PhenotypeUploadPresenter.this,"General Error");

@@ -39,6 +39,7 @@ import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;
+import com.gwtplatform.mvp.client.googleanalytics.GoogleAnalytics;
 import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 
@@ -65,6 +66,7 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 	protected final BackendResultReader backendResultReader;
 	protected final GWASResultReader gwasResultReader;
 	private final ProgressPresenter progressPresenter;
+	private final GoogleAnalytics googleAnalytics;
 	
 	//
 	@Inject
@@ -74,7 +76,8 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 			final BackendResultReader backendResultReader,
 			final GWASResultReader gwasResultReader,
 			final ResultListPresenter resultListPresenter,
-			final  ProgressPresenter progressPresenter
+			final ProgressPresenter progressPresenter, 
+			final GoogleAnalytics googleAnalytics
 			) {
 		super(eventBus, view);
 		this.transformationDetailPresenter = transformationDetailPresenter;
@@ -83,6 +86,7 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 		this.gwasResultReader = gwasResultReader;
 		this.resultListPresenter = resultListPresenter;
 		this.progressPresenter = progressPresenter;
+		this.googleAnalytics = googleAnalytics;
 		getView().setUiHandlers(this);
 		transformationDataProvider.addDataDisplay(getView().getDisplay());
 	}
@@ -186,9 +190,11 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 			@Override
 			public void onSuccess(RunGWASActionResult result) {
 				if (result.result.getStatus() ==  BackendResult.STATUS.OK) {
+					googleAnalytics.trackEvent("GWAS", "successful");
 					RunGWASFinishedEvent.fire(TransformationListPresenter.this, result.Chromosome, result.Position, result.Phenotypes, result.Phenotype, result.Dataset,result.Transformation, result.ResultName);
 				}
 				else {
+					googleAnalytics.trackEvent("GWAS", "failed");
 					ProgressBarEvent.fire(getEventBus(),gwasAction.getUrl(),true);
 					DisplayNotificationEvent.fireError(TransformationListPresenter.this, "Backend-Error", result.result.getStatustext());
 				}
