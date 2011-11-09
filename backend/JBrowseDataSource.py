@@ -18,11 +18,24 @@ class ChromosomeData(object):
         self.__sublistIndex = trackData['sublistIndex']
         self.__lazyIndex = trackData['lazyIndex']
         self.__lazyFeatureFile = self.__data_folder + '/' + re.sub('{chunk}','%s',trackData['lazyfeatureUrlTemplate'])
+        self.__histogramFile = self.__data_folder + '/' + re.sub('{chunk}','%s',trackData['histogramMeta'][0]['arrayParams']['urlTemplate'])
+        self._initHistogramData()
 
+
+    def _initHistogramData(self):
+        self.histogramData = []
+        fp = open((self.__histogramFile % 0),'r')
+        self.histogramData = simplejson.load(fp)
+        fp.close()
+        
     def getGenes(self,start,end,getFeatures=True):
         genes = []
         genes = self._getGenesFromNCList(self.__featureNCList,start, end,getFeatures,genes)
         return genes
+    
+    
+    def getGeneHistogram(self):
+        return self.histogramData
     
     def _getGenesFromNCList(self,nclist,start,end,getFeatures = True,genes = []):
         length = len(nclist)
@@ -81,7 +94,7 @@ class DataSource(object):
         self.__genenametree = GeneNameTree(jbrowse_tracks_folder)
         dirList=os.listdir(self.__jbrowse_tracks_folder+"/data/tracks/")
         for fname in dirList:
-            self.__initChromocomeSources(fname)
+            self.__initChromosomeSources(fname)
     
     def getGenes(self,chromosome,start,end,getFeatures=True):
         if chromosome not in self.__chromosomeSources:
@@ -89,13 +102,18 @@ class DataSource(object):
         genes = self.__chromosomeSources[chromosome].getGenes(start,end,getFeatures)
         return genes
     
+    def getGeneHistogram(self,chromosome):
+        if chromosome not in self.__chromosomeSources:
+            raise Exception('Chromosome Data-Source %s not found' % chromosome)
+        data = self.__chromosomeSources[chromosome].getGeneHistogram()
+        return int(self.trackData['histogramMeta'][0]['basesPerBin']),data
     
-    def __initChromocomeSources(self,fname):
+    def __initChromosomeSources(self,fname):
         track_folder = self.__getChromosomeTrackFolder(fname)
         fp = open(track_folder+'trackData.json')
-        trackData = simplejson.load(fp)
+        self.trackData = simplejson.load(fp)
         fp.close()
-        self.__chromosomeSources[fname] = ChromosomeData(track_folder,trackData)
+        self.__chromosomeSources[fname] = ChromosomeData(track_folder,self.trackData)
     
     def __getChromosomeTrackFolder(self,chromosome):
         return self.__jbrowse_tracks_folder + '/data/tracks/%s/%s/' % (chromosome,self.__track_key)
