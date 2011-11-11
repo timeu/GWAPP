@@ -236,7 +236,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 			DataTable dataTable = iterator.next();
 			String color = colors[i%colors.length];
 			String gene_marker_color = gene_mark_colors[i%gene_mark_colors.length];
-			GWASGeneViewer chart = new GWASGeneViewer("Chr"+i.toString(), color, gene_marker_color, width,geneDataSource);
+			GWASGeneViewer chart = new GWASGeneViewer("Chr"+i.toString(), color, gene_marker_color, geneDataSource);
 			gwasGeneViewers.add(chart);
 			for (Cofactor cofactor: cofactors){
 				if (cofactor.getChr() == i)
