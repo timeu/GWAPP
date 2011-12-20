@@ -14,7 +14,7 @@
 		</p>
 		<div id="accessions" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=accessions" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=accessions" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#accessions">
 				<img src="/public/resources/screens/accessions.png" class="{mainRes.style.help_image}"></img>
 			</a>

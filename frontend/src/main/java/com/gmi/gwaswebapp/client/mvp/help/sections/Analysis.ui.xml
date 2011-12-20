@@ -23,7 +23,7 @@
 		<h2><a name="analysis_navigation" id="analysis_navigation">Navigation</a></h2>
 		<div id="navigation" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#navigation">
 				<img src="/public/resources/screens/navigation.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -47,7 +47,7 @@
 		</p>
 		<div id="phenotype_view" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#phenotype_view">
 				<img src="/public/resources/screens/phenotype_view.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -80,7 +80,7 @@
 		</p>
 			<div id="dataset_view" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#dataset_view">
 				<img src="/public/resources/screens/create_subsets.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -110,7 +110,7 @@
 			</p> 
 			<div id="transformation_view" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#transformation_view">
 				<img src="/public/resources/screens/transformation_view.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -135,7 +135,7 @@
 		</p>
 		<div id="phenotype_explorer_scatter" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#phenotype_explorer_scatter">
 				<img src="/public/resources/screens/phenotype_explorer_scatter.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -148,7 +148,7 @@
 		</p>
 		<div id="phenotype_explorer_bar" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#phenotype_explorer_bar">
 				<img src="/public/resources/screens/phenotype_explorer_bar.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -173,7 +173,7 @@
 			</p>
 			<div id="results_view_plots" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#results_view_plots">
 				<img src="/public/resources/screens/results_view_plots.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -195,7 +195,7 @@
 			</p>
 			<div id="results_view_plots_zoom1" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#results_view_plots_zoom1">
 				<img src="/public/resources/screens/results_view_plots_zoom1.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -210,7 +210,7 @@
 			</p>
 			<div id="results_view_plots_zoom2" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#results_view_plots_zoom2">
 				<img src="/public/resources/screens/results_view_plots_zoom2.png" class="{mainRes.style.help_image}"></img>
 			</a>
@@ -229,7 +229,7 @@
 			</p>
 			<div id="results_view_statistics" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#results_view_statistics">
 				<img src="/public/resources/screens/results_view_statistics.png" class="{mainRes.style.help_image}"></img>
 			</a>

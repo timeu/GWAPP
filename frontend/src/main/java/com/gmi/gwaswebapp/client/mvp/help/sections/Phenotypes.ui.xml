@@ -17,7 +17,7 @@
 		</p>
 		<div id="upload_phenotype" class="{mainRes.style.help_image_container}">
 			<div>
-			<a href="#!helpPage;section=phenotypes" class="{mainRes.style.help_image_close_link}"><img src="/public/resources/close.png" /></a>
+			<a href="#!helpPage;section=phenotypes" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 			<a href="#upload_phenotype">
 				<img src="/public/resources/screens/upload_phenotypes.png" class="{mainRes.style.help_image}"></img>
 			</a>

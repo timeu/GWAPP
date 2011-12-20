@@ -2,8 +2,6 @@ package com.gmi.gwaswebapp.client.mvp.help;
 
 import java.util.Iterator;
 
-import org.mortbay.resource.Resource;
-
 import com.gwtplatform.mvp.client.ViewImpl;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gwtplatform.mvp.client.proxy.PlaceRequest;
