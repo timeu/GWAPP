@@ -4,6 +4,7 @@ import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.resources.client.DataResource;
 import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.resources.client.ImageResource.ImageOptions;
 
 public interface MyResources extends ClientBundle {
 	
@@ -39,10 +40,22 @@ public interface MyResources extends ClientBundle {
 		 String help_image_container();
 		 String help_image_close_link();
 		 String header();
+		 String transplant_logo();
+		 String fp7_logo();
+		 String eu_flag();
 	 }
 	 
 	 @Source("logo.png")
 	 ImageResource logo();
+	 
+	 @Source("FP7_logo_medium.png")
+	 ImageResource fp7_logo();
+
+	 @Source("transplant_logo_medium.png")
+	 ImageResource transplant_logo();
+	 
+	 @Source("flag_eu_medium.png")
+	 ImageResource eu_flag();
 	 
 	 @Source("search_white.png")
 	 ImageResource search_white();
@@ -65,8 +78,9 @@ public interface MyResources extends ClientBundle {
 	 @Source("screens/run_gwas.png")
 	 DataResource run_gwas();
 	 
+	 @ImageOptions(preventInlining=true)
 	 @Source("close.png")
-	 DataResource close_button();
+	 ImageResource close_button();
 	 
 	 @Source("screens/view_results.png")
 	 DataResource view_results();

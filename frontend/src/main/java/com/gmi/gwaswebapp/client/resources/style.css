@@ -509,4 +509,14 @@
   	top: -15px;
 }
 
+@sprite .transplant_logo {
+	gwt-image:'transplant_logo';
+}
 
+@sprite .eu_flag {
+	gwt-image:'eu_flag';
+}
+
+@sprite .fp7_logo {
+	gwt-image:'fp7_logo';
+}
