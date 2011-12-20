@@ -5,7 +5,7 @@ Created on Nov 16, 2010
 '''
 
 import gviz_api,os
-from variation.src import gwa_records
+import gwa_records
 from cherrypy import tools
 import cherrypy
 import h5py
@@ -17,7 +17,7 @@ from cherrypy.lib import http
 import tables
 import time
 from datetime import datetime
-from variation.src.gwa_records import ProgressFileWriter
+from gwa_records import ProgressFileWriter
 import cPickle
  
 
@@ -32,7 +32,7 @@ class GWASService:
     __datasource = None
     _lazyArrayChunks = [{},{},{},{},{}]
     hdf5_filename = base_path + "data.hdf5"
-    genomeStats_hdf5_filename = base_path+ 'genestats.hdf5'
+    genomeStats_hdf5_filename = base_path+ '250k_stats.hdf5'
     gene_annot_file = base_path + "genome_annotation.pickled"
     
     def __init__(self):
@@ -43,8 +43,7 @@ class GWASService:
         gene_annot_file.close()
         self.genomestats_file = h5py.File(self.genomeStats_hdf5_filename,'r')
         self.genome_wide_stats =   [{'name':'genecount','label':'# Genes','isStackable':False,'isStepPlot':True}, \
-                    {'name':'Dn'},{'name':'Ds'},{'name':'Pn'},{'name':'Ps'},{'name':'MK_test'}, \
-                    {'name':'Pn/Ps'},{'name':'Dn/Ds'},{'name':'alpha'},{'name':'pesudo_tajima_d_s','label':'Tajima D (synonymous)'},{'name':'pesudo_tajima_d_ns','label':'Tajima D (non-synonymous)'}]
+                    {'name':'fst','label':'Fst (North-South)'},{'name':'clr','label':'CLR (Nielsen citation)'},{'name':'phs','label':'PHS (citation?)'}]
         
     def _getUserId(self):
         request = cherrypy.request
@@ -367,22 +366,21 @@ class GWASService:
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def getQQPlots(self,phenotype,transformation,analysis,userID=None):
+    def getQQPlotData(self,phenotype,dataset,transformation,analysis=None):
         try:
             path = self._getUserPath()
             gwa_record = gwa_records.GWASRecord(path)
             gwa_record.open("r+")
-            column_name_type_ls = [("x_axis", ("number","Expected (p)")), \
-                            ("y_axis",("number", "Observed (p)"))]
+            column_name_type_ls = [('x_axis',"number", "Expected (p)")]
             data = gwa_record.getQQPlotData(phenotype,transformation,analysis)
-            for results in data:
-                column_name_type_ls.append((results['name'],("number","")))
+            for results in data['observed']:
+                column_name_type_ls.append((results['name'],("number","Observer (p) - %s" % results['name'])))
                 
             description = dict(column_name_type_ls)
             data_table = gviz_api.DataTable(description)
-            #data_table.LoadData(gwa_record.preview_transform_phenotype(phenotype,new_transformation,transformation))
+            data_table.LoadData(zip(data['expected'],*data['observerd'].values()))
             column_ls = [row[0] for row in column_name_type_ls]
-            #result['transformationTable'] = data_table.ToJSon(columns_order=column_ls)
+            result ={'status':'OK','data':data_table.ToJSon(columns_order=column_ls)}
         except Exception, err:
             result ={"status":"ERROR","statustext":"%s"%str(err)}
         return result 
@@ -609,12 +607,12 @@ class GWASService:
                 data = self._getGeneCountHistogramData(chr)
             else:
                 group = self.genomestats_file['GeneStats']
-                stats_list = group['headers'][:]
+                stats_list = group.attrs['headers']
                 chr_numbers = ['chr1','chr2','chr3','chr4','chr5']
                 chr_num = chr_numbers.index(chr.lower())
                 stats_ix = [numpy.where(stats_list ==stat)[0][0] for stat in stats]
                 stats_ix.sort()
-                stats = stats_list[stats_ix,0]
+                stats = stats_list[stats_ix]
                 chr_region = group.attrs['chr_regions'][chr_num]
                 stats_values = group['stats'][chr_region[0]:chr_region[1],stats_ix]
                 positions = group['positions'][chr_region[0]:chr_region[1],1]
@@ -635,6 +633,7 @@ class GWASService:
             retval =  {"status":"ERROR","statustext":"%s" %str(err)}
         return retval
     
+  
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
