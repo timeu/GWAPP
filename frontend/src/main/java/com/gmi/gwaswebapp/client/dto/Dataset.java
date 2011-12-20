@@ -163,7 +163,7 @@ public class Dataset extends BaseModel {
 		return isAdd;
 	}
 	
-	public <S> List<Accession> filterAccessions(List<AbstractDtoPredicate<Accession,S>> predicates) {
+	public  List<Accession> filterAccessions(List<AbstractDtoPredicate<Accession,?>> predicates) {
 		return Accession.filter(getAccessions(), predicates);
 	}
 

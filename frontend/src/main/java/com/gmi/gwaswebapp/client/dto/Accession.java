@@ -12,6 +12,9 @@ import com.google.gwt.view.client.ProvidesKey;
 
 public class Accession extends BaseModel implements Comparable<Object>{
 	
+	
+
+
 	public static ProvidesKey<Accession> KEY_PROVIDER = new ProvidesKey<Accession>() {
 		@Override
 		public Object getKey(Accession item) {
@@ -130,15 +133,39 @@ public class Accession extends BaseModel implements Comparable<Object>{
 		}
 	}
 	
+	public static class AccessionIdPredicate extends AbstractDtoPredicate<Accession, Integer> {
+		public AccessionIdPredicate(Integer value) {
+			super(value,TYPE.OR);
+		}
+
+		@Override
+		public boolean apply(Accession type) {
+			if (value != null && value.equals(type.getAccessionId())) 
+				return true;
+			else
+				return false;
+		}
+
+		public Integer getValue() {
+			return value;
+		}
+	}
 	
-	public static <S> List<Accession> filter(List<Accession> accessions, List<AbstractDtoPredicate<Accession,S>> predicates) {
+	public static  List<Accession> filter(List<Accession> accessions, List<AbstractDtoPredicate<Accession, ?>> accessionPredicates) {
 		List<Accession> filtered_list = new ArrayList<Accession>();
 		for (Accession accession : accessions) {
 			boolean isAdd = true;
-			for (AbstractDtoPredicate<Accession,S> predicate: predicates) {
-				if (!predicate.apply(accession)) {
-					isAdd = false;
-					break;
+			for (AbstractDtoPredicate<Accession,?> predicate: accessionPredicates) {
+				if (predicate.getType() == AbstractDtoPredicate.TYPE.OR) {
+					if (predicate.apply(accession)) {
+						isAdd = true;
+						break;
+					}
+				}
+				else {
+					if (!predicate.apply(accession)) {
+						isAdd = false;
+					}
 				}
 			 }
 			if (isAdd)
@@ -146,5 +173,4 @@ public class Accession extends BaseModel implements Comparable<Object>{
 		}
 		return filtered_list;
 	}
-	
 }
