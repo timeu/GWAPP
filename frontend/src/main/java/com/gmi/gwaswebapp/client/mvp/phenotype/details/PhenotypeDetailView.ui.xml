@@ -61,11 +61,12 @@
 				</div>
 				<ul class="{style.phenotype_values}">
 					<li><h4>Values:</h4><g:InlineLabel ui:field="label_num_values"></g:InlineLabel></li>
-					<li><h4>Std-Dev:</h4><g:InlineLabel ui:field="label_stddev"></g:InlineLabel></li>
+					<g:HTMLPanel visible="false"><li><h4>Std-Dev:</h4><g:InlineLabel ui:field="label_stddev"></g:InlineLabel></li>
 					<li><h4>Condition:</h4><g:InlineLabel ui:field="label_condition"></g:InlineLabel></li>
 					<li><h4>Scoring:</h4><g:InlineLabel ui:field="label_scoring"></g:InlineLabel></li>
 					<li><h4>Method:</h4><g:InlineLabel ui:field="label_method"></g:InlineLabel></li>
 					<li><h4>Scale:</h4><g:InlineLabel ui:field="label_scale"></g:InlineLabel></li>
+					 </g:HTMLPanel>
 				</ul>
 			</div>
 			<g:HTMLPanel width="100%" height="100%">

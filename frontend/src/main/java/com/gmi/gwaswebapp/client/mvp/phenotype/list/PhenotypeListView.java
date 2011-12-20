@@ -67,11 +67,11 @@ public class PhenotypeListView extends ViewWithUiHandlers<PhenotypeListUIHandler
 		phenotypeTable.addColumn(new PhenotypeCellTableColumns.NameColumn(),"Name");
 		phenotypeTable.addColumn(new PhenotypeCellTableColumns.NumberColumn(),"#-Values");
 		phenotypeTable.addColumn(new PhenotypeCellTableColumns.SubsetColumn(),"Subsets");
-		phenotypeTable.addColumn(new PhenotypeCellTableColumns.StdevColumn(),"std");
+		/*phenotypeTable.addColumn(new PhenotypeCellTableColumns.StdevColumn(),"std");
 		phenotypeTable.addColumn(new PhenotypeCellTableColumns.GrowthConditionColumn(),"Condition");
 		phenotypeTable.addColumn(new PhenotypeCellTableColumns.PhenotypScoringColumn(),"Scoring");
 		phenotypeTable.addColumn(new PhenotypeCellTableColumns.MethodDescriptionColumn(),"Method");
-		phenotypeTable.addColumn(new PhenotypeCellTableColumns.MeasurementScaleColumn(),"Scale");
+		phenotypeTable.addColumn(new PhenotypeCellTableColumns.MeasurementScaleColumn(),"Scale");*/
 		
 		List<HasCell<Phenotype,?>> actionCells = new ArrayList<HasCell<Phenotype,?>>();
 		
