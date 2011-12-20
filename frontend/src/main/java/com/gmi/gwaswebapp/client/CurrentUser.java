@@ -82,6 +82,19 @@ public class CurrentUser {
 		if (this.userdata.getUserID() != null)
 			Cookies.setCookie(useridCookie, this.userdata.getUserID(),now);
  	}
+	
+	public void updateCookie(String userID,final Runnable callback) {
+		if (userID.isEmpty()) {
+			int COOKIE_TIMEOUT = 0;
+			Date removeExpire = new Date((new Date()).getTime() + COOKIE_TIMEOUT);         //  //remove the cookie, works.
+		    Cookies.setCookie(useridCookie,null, removeExpire);
+			Cookies.removeCookie(useridCookie);
+		}else {
+			Date now = new Date(2035,1,1); 
+			Cookies.setCookie(useridCookie, userID,now);
+		}
+		refresh(callback);
+	}
 
 	public UserData getUserData() {
 		return userdata;
