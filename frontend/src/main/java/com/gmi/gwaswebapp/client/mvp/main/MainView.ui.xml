@@ -4,8 +4,9 @@
 	xmlns:gwas="urn:import:com.gmi.gwaswebapp.client.ui">
 	<ui:with type="com.gmi.gwaswebapp.client.NameTokens" field="nameTokens"></ui:with>
 	
-	<ui:image field="logo" src='../../resources/gmi-logo-transp.png'>
-	</ui:image>
+	<ui:image field="logo" src='../../resources/gmi-logo-transp.png' />
+	<ui:image field="transplant_logo" src='../../resources/transplant_logo.png' />
+
 	
 	<!-- http://uricomondelo.com/2011/02/pure-css-horizontal-menu/ -->
 	<ui:style ui:field='style' type='com.gmi.gwaswebapp.client.mvp.main.MainView.MyStyle'>
@@ -37,6 +38,14 @@
 			margin: 0px;
 			float:right;
 		}
+		
+		@sprite .transplant_logo {
+	        gwt-image: 'transplant_logo';
+	        top:0pt;
+	        right:10pt;
+	        margin:0px;
+	        float:right;
+	    }
    
    
 		.nav2 {
@@ -129,7 +138,7 @@
 		.progressBarContainer {
 			position:absolute;
 			bottom:50%;
-			left:50%;
+			left:35%;
 			margin: 0 0 0 0;
 		}
 		   
@@ -154,6 +163,7 @@
 			<g:HTMLPanel addStyleNames="{style.progressBarContainer}" ui:field="progressBarContainer">
 				
 			</g:HTMLPanel>
+			<div class="{style.transplant_logo}"/>
 			<div class="{style.logo} {style.clearfix}">
 			</div>
 			<div class="{style.nav2}">
