@@ -3,6 +3,33 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
 	<ui:style>
+	
+	   .dataset_key {
+	        width:235px;
+
+	    }
+	
+	    .logo_container {
+	        float:left;
+	        margin-left:10px;
+
+	    }
+	    .logo_container div {
+			margin-top:10px;
+
+		}
+		
+		.clear {
+	       clear:both;
+
+     	}
+
+		.logo_left {
+			float:left;
+			margin-right:10px;
+		}
+		
+		
 		.container {
 			font-size:1.2em;
 			margin-top:1.5em;
@@ -15,6 +42,7 @@
 			width:100%;
 			min-width:18.75em;
 			max-width:37.5em;
+			float:left;
 		}
 		.quick_container {
 			float:left;
@@ -97,20 +125,26 @@
 		
 	</ui:style>
 	<g:HTMLPanel addStyleNames="{style.container}">
-		<div class="{style.welcome_container}">
-			<div class="{mainRes.style.title}">Welcome to the GWAS-Web-App</div>
-			<p>The GWAS-Web-App enables reseachers working with <a href="http://en.wikipedia.org/wiki/Arabidopsis_thaliana" target="_blank">Arabidopsis Thaliana</a> to do <a href="http://www.gmi.oeaw.ac.at/research-groups/magnus-nordborg/genome-wide-association-mapping-in-a.-thaliana" target="_blank">Genome Wide Association Mapping (GWAS)</a> on their phenotypes.
+		<div class="{mainRes.style.title}">Welcome to the GWAS-Web-App</div>
+		  <div class="{style.welcome_container}">
+		  	<p>
+		  	Dataset key: <g:TextBox ui:field="dataset_key"  addStyleNames="{style.dataset_key}"/><g:Button ui:field="dataset_key_submit" text="Change"/>
+		  	</p>
+			<p>The GWAS-Web-App enables reseachers working with <a href="http://en.wikipedia.org/wiki/Arabidopsis_thaliana" target="_blank">Arabidopsis thaliana</a> to do <a href="http://www.gmi.oeaw.ac.at/research-groups/magnus-nordborg/genome-wide-association-mapping-in-a.-thaliana" target="_blank">Genome Wide Association Mapping (GWAS)</a> on their phenotypes.</p>
+			<p>
+			<i>This GWAS-Web-App is part of the TransPLANT project (grant agreement number 283496), which is funded by the Framework Programme 7 of the European Commission.</i>
 			</p> 
 			<p>
 			Check out the Quick Start below to see how to use the GWAS-Web-App. For a more detailed information refer to the <a href="#!helpPage">Help</a> page.
 			</p> 
 		</div>
-		<div class="{mainRes.style.title}">Quick Start</div> (click on figures to view steps in fullscreen)
+		<div class="{style.logo_container}"><div class="{mainRes.style.transplant_logo} {mainRes.style.box_shadow}" /> <div class="{mainRes.style.fp7_logo} {style.logo_left} {mainRes.style.box_shadow}" /> <div class="{mainRes.style.eu_flag} {mainRes.style.box_shadow}" /></div>
+		<div class="{mainRes.style.title} {style.clear}">Quick Start</div> (click on figures to view steps in fullscreen)
 		<div class="{style.quick_container} ">
 			<div id ="step1" class="{style.step_container} " >
 			<div class="{mainRes.style.box_shadow} {style.full_size}">
 				<div class="{mainRes.style.box_container} {style.full_size}">
-					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 					<h1>Step 1 - Upload Phenotypes</h1>
 					<a href="#step1">
 						<img src="{mainRes.upload_phenotypes.getUrl}" class="{style.step_image}"/>
@@ -121,7 +155,7 @@
 			<div id ="step2" class="{style.step_container} " >
 				<div class="{mainRes.style.box_shadow} {style.full_size}">
 					<div class="{mainRes.style.box_container}  {style.full_size}">
-						<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+						<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 						<h1>Step 2 -Verify Phenotypes</h1>
 						<a href="#step2">
 						<g:Image url="{mainRes.phenotype_list.getUrl}" addStyleNames="{style.step_image}"/>
@@ -132,7 +166,7 @@
 			<div id ="step3" class="{style.step_container} " >
 			<div class="{mainRes.style.box_shadow} {style.full_size}">
 				<div class="{mainRes.style.box_container} {style.full_size}">
-					<a href="#homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<a href="#homePage" class="{style.close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 					<h1>Step 3 - Create Dataset (Optional)</h1>
 					<a href="#step3">
 						<g:Image url="{mainRes.create_subsets.getUrl}" addStyleNames="{style.step_image}"/>
@@ -143,7 +177,7 @@
 			<div id ="step4" class="{style.step_container} " >
 			<div class="{mainRes.style.box_shadow} {style.full_size}">
 				<div class="{mainRes.style.box_container} {style.full_size}">
-					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 					<h1>Step 4 - Apply Transformations (Optional)</h1>
 					<a href="#step4">
 						<g:Image url="{mainRes.apply_transformations.getUrl}" addStyleNames="{style.step_image}"/>
@@ -154,7 +188,7 @@
 			<div id ="step5" class="{style.step_container} " >
 			<div class="{mainRes.style.box_shadow} {style.full_size}">
 				<div class="{mainRes.style.box_container} {style.full_size}">
-					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 					<h1>Step 5 - Run GWAS</h1>
 					<a href="#step5">
 						<g:Image url="{mainRes.run_gwas.getUrl}" addStyleNames="{style.step_image}"/>
@@ -165,7 +199,7 @@
 			<div id ="step6" class="{style.step_container} " >
 			<div class="{mainRes.style.box_shadow} {style.full_size}">
 				<div class="{mainRes.style.box_container} {style.full_size}">
-					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 					<h1>Step 6 - View Results</h1>
 					<a href="#step6">
 						<g:Image url="{mainRes.view_results.getUrl}" addStyleNames="{style.step_image}"/>
@@ -176,7 +210,7 @@
 			<div id ="step7" class="{style.step_container} " >
 			<div class="{mainRes.style.box_shadow} {style.full_size}">
 				<div class="{mainRes.style.box_container} {style.full_size}">
-					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getUrl}" /></a>
+					<a href="#!homePage" class="{style.close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
 					<h1>Step 7 - Run Step-Wise GWAS (Optional)</h1>
 					<a href="#step7">
 						<g:Image url="{mainRes.run_step_gwas.getUrl}" addStyleNames="{style.step_image}"/>
