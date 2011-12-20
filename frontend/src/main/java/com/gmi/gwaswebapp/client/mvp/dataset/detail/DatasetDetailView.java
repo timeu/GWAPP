@@ -104,7 +104,7 @@ public class DatasetDetailView extends ViewWithUiHandlers<DatasetDetailUiHandler
 		widget = binder.createAndBindUi(this);
 		Search_Collector.getElement().setAttribute("placeHolder", "Collector");
 		Search_Country.getElement().setAttribute("placeHolder", "Country");
-		Search_Name.getElement().setAttribute("placeHolder", "Name");
+		Search_Name.getElement().setAttribute("placeHolder", "Name or Id");
 	}
 
 	private void initCellTable() {
@@ -112,9 +112,11 @@ public class DatasetDetailView extends ViewWithUiHandlers<DatasetDetailUiHandler
 		searchTerms.put(SearchTerm.CRITERIA.Name, new SearchTerm(SearchTerm.CRITERIA.Name));
 		searchTerms.put(SearchTerm.CRITERIA.Country, new SearchTerm(SearchTerm.CRITERIA.Country));
 		searchTerms.put(SearchTerm.CRITERIA.Collector, new SearchTerm(SearchTerm.CRITERIA.Collector));
+		searchTerms.put(SearchTerm.CRITERIA.AccessionID, new SearchTerm(SearchTerm.CRITERIA.AccessionID));
 		SearchTerm searchTerm;
+		searchTerm = searchTerms.get(SearchTerm.CRITERIA.AccessionID);
+		accession_list.addColumn(new AccessionCellTableColumns.AccessionIdColumn(searchTerm),"ID");
 		searchTerm = searchTerms.get(SearchTerm.CRITERIA.Name);
-		accession_list.addColumn(new AccessionCellTableColumns.AccessionIdColumn(),"ID");
 		accession_list.addColumn(new AccessionCellTableColumns.NameColumn(searchTerm),"Name");
 		//accession_list.addColumn(new AccessionCellTableColumns.LongitudeLatitudeColumn(),"Lon/Lat");
 		searchTerm = searchTerms.get(SearchTerm.CRITERIA.Country);

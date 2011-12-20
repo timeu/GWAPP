@@ -110,10 +110,11 @@ public class DatasetDetailPresenter extends
 	private SelectionChangeEvent.Handler selectionChangeHandler = null;
 	private boolean isDisplayAll = false;
 	
+	private Accession.AccessionIdPredicate accessionIdPredicate = new Accession.AccessionIdPredicate(null);
 	private Accession.AccessionNamePredicate accessionNamePredicate = new Accession.AccessionNamePredicate(""); 
 	private Accession.AccessionCountryPredicate accessionCountryPredicate = new Accession.AccessionCountryPredicate("");
 	private Accession.AccessionCollectorPredicate accessionCollectorPredicate = new Accession.AccessionCollectorPredicate("");
-	private List<AbstractDtoPredicate<Accession, String>> accessionPredicates = new ArrayList<AbstractDtoPredicate<Accession, String>>();
+	private List<AbstractDtoPredicate<Accession, ?>> accessionPredicates = new ArrayList<AbstractDtoPredicate<Accession, ?>>();
 	private Column<Accession,Boolean> inDatasetColumn;
 	private MultiSelectionModel<Accession> selectionModel = new MultiSelectionModel<Accession>(Accession.KEY_PROVIDER);
 	
@@ -130,6 +131,7 @@ public class DatasetDetailPresenter extends
 		this.backendResultReader = backendResultReader;
 		this.datasetWriter = datasetWriter;
 		getView().setUiHandlers(this);
+		accessionPredicates.add(accessionIdPredicate);
 		accessionPredicates.add(accessionNamePredicate);
 		accessionPredicates.add(accessionCountryPredicate);
 		accessionPredicates.add(accessionCollectorPredicate);
@@ -171,8 +173,15 @@ public class DatasetDetailPresenter extends
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				String value = getView().getSearchNameHandlers().getText();
+				try {
+					accessionIdPredicate.setValue(Integer.parseInt(value));
+				}
+				catch (Exception ex) {
+					accessionIdPredicate.setValue(null);
+				}
 				accessionNamePredicate.setValue(value);
 				getView().getSearchCriterias().get(SearchTerm.CRITERIA.Name).setValue(value);
+				getView().getSearchCriterias().get(SearchTerm.CRITERIA.AccessionID).setValue((accessionIdPredicate.getValue() != null ? accessionIdPredicate.getValue().toString():""));
 				List<Accession> accessions = getAccessionsToDisplay();
 				accessionListProvider.setList(Accession.filter(accessions,accessionPredicates));
 							
