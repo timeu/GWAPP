@@ -93,7 +93,7 @@ public class AccessionView extends ViewWithUiHandlers<AccessionUiHandlers> imple
 		widget = binder.createAndBindUi(this);
 		Search_Collector.getElement().setAttribute("placeHolder", "Collector");
 		Search_Country.getElement().setAttribute("placeHolder", "Country");
-		Search_Name.getElement().setAttribute("placeHolder", "Name");
+		Search_Name.getElement().setAttribute("placeHolder", "Name or ID");
 		Maps.loadMapsApi("ABQIAAAAHExtiY5_qKaTj9xWKMjl4xTtEpWa7kqih2tSZ3rpmArayZxetBS7MKdCA3ZN4ypVkrPZAbUr8J2cZw", "2", false, new Runnable() {
 		      public void run() {
 		    	  map = new MapWidget();
@@ -124,8 +124,10 @@ public class AccessionView extends ViewWithUiHandlers<AccessionUiHandlers> imple
 		searchTerms.put(SearchTerm.CRITERIA.Name, new SearchTerm(SearchTerm.CRITERIA.Name));
 		searchTerms.put(SearchTerm.CRITERIA.Country, new SearchTerm(SearchTerm.CRITERIA.Country));
 		searchTerms.put(SearchTerm.CRITERIA.Collector, new SearchTerm(SearchTerm.CRITERIA.Collector));
-		SearchTerm searchTerm;
-		table.addColumn(new AccessionCellTableColumns.AccessionIdColumn(),"ID");
+		searchTerms.put(SearchTerm.CRITERIA.AccessionID, new SearchTerm(SearchTerm.CRITERIA.AccessionID));
+		SearchTerm searchTerm ;
+		searchTerm = searchTerms.get(SearchTerm.CRITERIA.AccessionID);
+		table.addColumn(new AccessionCellTableColumns.AccessionIdColumn(searchTerm),"ID");
 		searchTerm = searchTerms.get(SearchTerm.CRITERIA.Name);
 		table.addColumn(new AccessionCellTableColumns.NameColumn(searchTerm),"Name");
 		table.addColumn(new AccessionCellTableColumns.LongitudeColunn(),"Lon");

@@ -67,7 +67,8 @@ public class AccessionPresenter extends
 	private ListDataProvider<Accession> accessionDataProvider = new ListDataProvider<Accession>();
 	private final DispatchAsync dispatch;
 	private final CurrentUser currentUser; 
-	private List<AbstractDtoPredicate<Accession, String>> accessionPredicates = new ArrayList<AbstractDtoPredicate<Accession, String>>();
+	private List<AbstractDtoPredicate<Accession, ?>> accessionPredicates = new ArrayList<AbstractDtoPredicate<Accession, ?>>();
+	private Accession.AccessionIdPredicate accessionIdPredicate = new Accession.AccessionIdPredicate(null);
 	private Accession.AccessionNamePredicate accessionNamePredicate = new Accession.AccessionNamePredicate(""); 
 	private Accession.AccessionCountryPredicate accessionCountryPredicate = new Accession.AccessionCountryPredicate("");
 	private Accession.AccessionCollectorPredicate accessionCollectorPredicate = new Accession.AccessionCollectorPredicate("");
@@ -105,6 +106,7 @@ public class AccessionPresenter extends
 		accessionPredicates.add(accessionNamePredicate);
 		accessionPredicates.add(accessionCountryPredicate);
 		accessionPredicates.add(accessionCollectorPredicate);
+		accessionPredicates.add(accessionIdPredicate);
 	}
 
 	@Override
@@ -127,10 +129,17 @@ public class AccessionPresenter extends
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				String value = getView().getSearchNameHandlers().getText();
+				try {
+					accessionIdPredicate.setValue(Integer.parseInt(value));
+				}
+				catch (Exception ex) {
+					accessionIdPredicate.setValue(null);
+				}
 				accessionNamePredicate.setValue(value);
 				getView().getSearchCriterias().get(SearchTerm.CRITERIA.Name).setValue(value);
+				getView().getSearchCriterias().get(SearchTerm.CRITERIA.AccessionID).setValue((accessionIdPredicate.getValue() != null ? accessionIdPredicate.getValue().toString():""));
 				accessionDataProvider.setList(Accession.filter(currentUser.getUserData().getAccessions(),accessionPredicates));
-							
+				
 			}
 		}));
 		

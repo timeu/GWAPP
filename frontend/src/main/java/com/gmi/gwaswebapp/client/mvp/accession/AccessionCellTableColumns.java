@@ -211,14 +211,14 @@ public interface AccessionCellTableColumns {
 		
 	}
 
-	public static class AccessionIdColumn extends Column<Accession, Number> {
-		public AccessionIdColumn() {
-			super(new NumberCell(NumberFormat.getFormat("0")));
+	public static class AccessionIdColumn extends Column<Accession, String> {
+		public AccessionIdColumn(SearchTerm searchTerm) {
+			super(new HighlightCell(searchTerm));
 		}
 
 		@Override
-		public Integer getValue(Accession object) {
-			return object.getAccessionId();
+		public String getValue(Accession object) {
+			return object.getAccessionId().toString();
 		}
 	}
 	
