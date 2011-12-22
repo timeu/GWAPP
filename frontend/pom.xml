@@ -98,7 +98,7 @@
 		 <dependency>
     	<groupId>at.gmi.nordborglab.widgets</groupId>
     	<artifactId>gwasgeneviewer</artifactId>
-    	<version>0.4.0</version>
+    	<version>0.4.1</version>
     	<scope>provided</scope>
     </dependency>
 		 <dependency>
