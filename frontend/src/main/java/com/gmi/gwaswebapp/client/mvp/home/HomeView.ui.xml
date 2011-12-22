@@ -5,7 +5,7 @@
 	<ui:style>
 	
 	   .dataset_key {
-	        width:235px;
+	        width:240px;
 
 	    }
 	
@@ -122,10 +122,39 @@
 			height:auto;
 		}
 		
+		.notification_button {
+			-moz-user-select: none;
+		    background: literal("-webkit-linear-gradient(#F9F9F9 40%,#E3E3E3 70%);");
+			background: literal("-moz-linear-gradient(#F9F9F9 40%,#E3E3E3 70%);");
+			background: literal("-ms-linear-gradient(#F9F9F9 40%,#E3E3E3 70%);");
+			background: literal("-o-linear-gradient(#F9F9F9 40%,#E3E3E3 70%);");
+			background: linear-gradient(#F9F9F9 40%,#E3E3E3 70%);
+			border: 1px solid #999;
+		    border: 1px solid #999999;
+		    border-radius: 3px 3px 3px 3px;
+		    cursor: pointer;
+		    display: inline-block;
+		    font-size: 10pt;
+		    font-weight: 700;
+		    outline: 0 none;
+		    padding: 5px 8px;
+		    text-shadow: 1px 1px #FFFFFF;
+		    white-space: nowrap;
+		    margin-bottom:5px;
+		    margin-right:20px;
+		}
+		
+		.notification_blocked {
+			display:inline;
+			color:red;
+			font-size:14px;
+			text-shadow:0 0 0 #000000;
+		}
+		
 		
 	</ui:style>
 	<g:HTMLPanel addStyleNames="{style.container}">
-		<div class="{mainRes.style.title}">Welcome to the GWAS-Web-App</div>
+		<div class="{mainRes.style.title}">Welcome to the GWAS-Web-App <g:Button ui:field="request_permission_btn" visible="false" text="Activate browser notifications" addStyleNames="{style.notification_button}" /><g:HTMLPanel addStyleNames="{style.notification_blocked}" ui:field="notification_blocked_text" visible="false">Browser notification blocked. Right click <a href="chrome://settings/contentExceptions#notifications">here</a> and open in new Tab/Window to change it (refresh page)</g:HTMLPanel></div>
 		  <div class="{style.welcome_container}">
 		  	<p>
 		  	Dataset key: <g:TextBox ui:field="dataset_key"  addStyleNames="{style.dataset_key}"/><g:Button ui:field="dataset_key_submit" text="Change"/>

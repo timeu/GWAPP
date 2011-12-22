@@ -29,6 +29,7 @@ public class HomePresenter extends Presenter<HomePresenter.MyView,HomePresenter.
 		
 		HasText getDatasetKey();
 		HasClickHandlers getSubmitButton();
+		void initBrowserNotificationButton();
 	}
 	
 	private final CurrentUser currentUser;
@@ -69,5 +70,6 @@ public class HomePresenter extends Presenter<HomePresenter.MyView,HomePresenter.
 	 @Override
 	 public void onReset() {
 		 getView().getDatasetKey().setText(currentUser.getUserData().getUserID());
+		 getView().initBrowserNotificationButton();
 	 }
 }

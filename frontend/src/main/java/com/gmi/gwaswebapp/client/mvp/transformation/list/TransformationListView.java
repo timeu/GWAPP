@@ -8,6 +8,7 @@ import com.gmi.gwaswebapp.client.dto.BaseModel;
 import com.gmi.gwaswebapp.client.dto.Transformation;
 import com.gmi.gwaswebapp.client.mvp.transformation.list.TransformationListPresenter.MyView;
 import com.gmi.gwaswebapp.client.resources.CellTableResources;
+import com.gmi.gwaswebapp.client.util.notifications.Notification;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.CompositeCell;
 import com.google.gwt.cell.client.FieldUpdater;
@@ -235,10 +236,20 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 	
 	private void performGWAS(Analysis.TYPE analysis,Transformation transformation)
 	{
+		if (Notification.isSupported() && Notification.isNotificationNotAllowed())
+			Notification.requestPermission();
+		
 		if (Window.confirm("Do you really want to run a " + analysis.toString() + " analysis on the transformation " + transformation.getName()))
 		{
 			getUiHandlers().performGWAS(transformation,analysis);
 		}
+	}
+
+	@Override
+	public void showNotification(String iconUrl, String title, String body) {
+		Notification notification = Notification.createIfSupported(iconUrl, title, body);
+		if (notification != null)
+			notification.show();
 	}
 	
 

@@ -17,7 +17,8 @@ public class ProgressPresenter extends
 
 	public interface MyView extends View {
 		void setVisible(boolean visible);
-		void setProgress(int progress,String remainingSeconds,String currentTask);
+		void setProgress(Integer progress,String remainingSeconds,String currentTask);
+		void showBrowserNotification(String contentUrl);
 	}
 	
 	class ProgressCallBack extends GWASCallback<GetProgressActionResult> {
@@ -63,7 +64,7 @@ public class ProgressPresenter extends
 	public void start(String url) {
 		
 		getView().setVisible(true);
-		
+		getView().showBrowserNotification("/gwas/getProgressBarHTML");
 		final GetProgressAction action = new GetProgressAction(url, reader);
 		final ProgressCallBack callback = new ProgressCallBack(getEventBus());
 		progressTimer = new Timer() {
