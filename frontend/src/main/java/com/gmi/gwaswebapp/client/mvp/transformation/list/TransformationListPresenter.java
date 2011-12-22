@@ -194,6 +194,7 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 				}
 				else {
 					googleAnalytics.trackEvent("GWAS", "failed");
+					ProgressBarEvent.fire(getEventBus(),gwasAction.getUrl(),true);
 					getView().showNotification("", "Error", "GWAS analysis failed");
 					DisplayNotificationEvent.fireError(TransformationListPresenter.this, "Backend-Error", result.result.getStatustext());
 				}
