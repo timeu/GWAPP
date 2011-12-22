@@ -268,7 +268,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 			@Override
 			public void run() {
 				PlaceRequest place = new PlaceRequest(NameTokens.analysisPage);
-				place = place.with("phenotype",event.getPhenotype()).with("transformation", event.getTransformation());
+				place = place.with("phenotype",event.getPhenotype()).with("dataset",event.getDataset()).with("transformation", event.getTransformation());
 				placeManager.revealPlace(place);
 			}
 		});

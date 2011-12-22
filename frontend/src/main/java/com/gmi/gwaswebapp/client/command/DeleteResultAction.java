@@ -8,14 +8,16 @@ import com.google.gwt.http.client.Response;
 public class DeleteResultAction extends RequestBuilderActionImpl<BaseStatusResult> {
 
 	public final String Phenotype;
+	public final String Dataset;
 	public final String Transformation;
 	public final String Analysis;
 	public final String ResultName;
 	private final BackendResultReader reader;
 	
-	public DeleteResultAction(String phenotype,String transformation,String analysis,String resultname,final BackendResultReader reader) {
+	public DeleteResultAction(String phenotype,String dataset,String transformation,String analysis,String resultname, final BackendResultReader reader) {
 		super();
 		this.Phenotype = phenotype;
+		this.Dataset = dataset;
 		this.Transformation = transformation;
 		this.Analysis = analysis;
 		this.ResultName = resultname;
@@ -24,7 +26,7 @@ public class DeleteResultAction extends RequestBuilderActionImpl<BaseStatusResul
 
 	@Override
 	public String getUrl() {
-		return _getUrl(Phenotype, Transformation, Analysis,ResultName);
+		return _getUrl(Phenotype, Dataset,Transformation, Analysis,ResultName);
 	}
 
 	@Override
@@ -37,8 +39,8 @@ public class DeleteResultAction extends RequestBuilderActionImpl<BaseStatusResul
 		return new BaseStatusResult(result);
 	}
 	
-	public static String _getUrl(String Phenotype,String Transformation,String Analysis,String ResultName) {
-		return BaseURL + "/deleteResult?phenotype="+ Phenotype + "&transformation=" + Transformation + "&analysis="+Analysis+"&result_name=" +ResultName;
+	public static String _getUrl(String Phenotype,String Dataset,String Transformation,String Analysis,String ResultName) {
+		return BaseURL + "/deleteResult?phenotype="+ Phenotype + "&dataset="+Dataset+"&transformation=" + Transformation + "&analysis="+Analysis+"&result_name=" +ResultName;
 	}
 }
 
