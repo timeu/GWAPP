@@ -42,6 +42,7 @@ public class PhenotypeUploadPresenter extends Presenter<PhenotypeUploadPresenter
 		void setSubmitEnabled(boolean enabled);
 		HandlerRegistration addFormSubmitHandler(SubmitCompleteHandler submitCompleteHandler);
 		void setFormAction(String url);
+		void resetForm();
 	}
 	
 	@ProxyCodeSplit
@@ -118,6 +119,7 @@ public class PhenotypeUploadPresenter extends Presenter<PhenotypeUploadPresenter
 				
 				if (result != null && result.getStatus() == BackendResult.STATUS.OK)
 				{
+					getView().resetForm();
 					googleAnalytics.trackEvent("Phenotype-Upload", "successful");
 					//cache.clear();
 					currentUser.refresh(new Runnable() {

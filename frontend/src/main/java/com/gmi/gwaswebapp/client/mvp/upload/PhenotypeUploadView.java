@@ -3,6 +3,8 @@ package com.gmi.gwaswebapp.client.mvp.upload;
 import com.gmi.gwaswebapp.client.mvp.upload.PhenotypeUploadPresenter.MyView;
 import com.gmi.gwaswebapp.client.resources.MyResources;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -88,6 +90,11 @@ public class PhenotypeUploadView extends ViewWithUiHandlers<PhenotypeUploadUiHan
 	public void setFormAction(String url) {
 		phenotype_upload_form.setAction(url);
 		
+	}
+
+	@Override
+	public void resetForm() {
+		phenotype_upload_form.reset();
 	}
 	
 	
