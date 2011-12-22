@@ -284,13 +284,13 @@ class GWASService:
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def deleteAnalysis(self,phenotype,transformation,analysis,userID=None):
+    def deleteAnalysis(self,phenotype,dataset,transformation,analysis,userID=None):
         try:
             result = {}
             path = self._getUserPath()
             gwa_record = gwa_records.GWASRecord(path)
             gwa_record.open("r+")
-            gwa_record.delete_analysis(phenotype, transformation,analysis.lower())
+            gwa_record.delete_analysis(phenotype, dataset,transformation,analysis.lower())
             result ={"status":"OK","statustext":""}
         except Exception, err:
             result ={"status":"ERROR","statustext":"%s"%str(err)}
@@ -298,7 +298,7 @@ class GWASService:
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def deleteResult(self,phenotype,transformation,analysis,result_name,userID=None):
+    def deleteResult(self,phenotype,dataset,transformation,analysis,result_name,userID=None):
         try:
             result = {}
             #result ={"status":"OK","statustext":""}
@@ -306,7 +306,7 @@ class GWASService:
             path = self._getUserPath()
             gwa_record = gwa_records.GWASRecord(path)
             gwa_record.open("r+")
-            gwa_record.delete_result(phenotype, transformation,analysis.lower(),result_name)
+            gwa_record.delete_result(phenotype,dataset, transformation,analysis.lower(),result_name)
             result ={"status":"OK","statustext":""}
         except Exception, err:
             result ={"status":"ERROR","statustext":"%s"%str(err)}
@@ -422,11 +422,22 @@ class GWASService:
     
     @cherrypy.expose
     def uploadPhenotype(self,phenotype_file=None,phenotype_content=None):
+        import tempfile
         try:
             path = self._getUserPath()
             gwa_record = gwa_records.GWASRecord(path)
             gwa_record.open("r+")
-            retval = gwa_record.add_phenotype_file(file_object=phenotype_file.file,ecotype_ids=map(str,self._getAccessionIds()))
+            temp_file = tempfile.NamedTemporaryFile(delete=False)
+            if phenotype_file.file is not None:
+                temp_file.file.write(phenotype_file.file.read())
+                
+            elif phenotype_content is not None:
+                temp_file.file.write(phenotype_content)
+            else:
+                raise Exception('You have to specify either file or content')
+            temp_file.close()
+            retval = gwa_record.add_phenotype_file(phen_file_name=temp_file.name,ecotype_ids=map(str,self._getAccessionIds()))
+            os.unlink(temp_file.name)
         except Exception,err:
             retval =  {"status":"ERROR","statustext":"%s" %str(err)}
         return simplejson.dumps(retval)
@@ -633,7 +644,231 @@ class GWASService:
             retval =  {"status":"ERROR","statustext":"%s" %str(err)}
         return retval
     
-  
+    @cherrypy.expose()
+    def getProgressBarHTML(self):
+        retval = """
+        <html>
+        <head>
+        <STYLE type="text/css">
+             .progress_bar{
+            -webkit-border-radius: 4px 4px 4px 4px;
+            -moz-border-radius: 4px 4px 4px 4px;
+            border-radius: 4px 4px 4px 4px;
+            float:left;
+            width:100%;
+            height:24px;
+            overflow:hidden;
+            padding:1px;
+            position:relative;
+            background: literal("-webkit-gradient(linear, left top, left bottom, color-stop(0, #D6D5D4), color-stop(1, #E5E5E4)) !important");
+            background: literal("-moz-linear-gradient(#D6D5D4 0%, #E5E5E4 100%) !important");
+            background: literal("-o-linear-gradient(#D6D5D4 0%, #E5E5E4 100%) !important");
+        }
+        
+        
+        .progress_bar_bg {
+            -webkit-border-radius: 4px 4px 4px 4px;
+            -moz-border-radius: 4px 4px 4px 4px;
+            border-radius: 4px 4px 4px 4px;
+            padding-right: 2px;
+            width:100%;
+            height:100%;
+            position: relative;
+            background: #B7B5B3;
+            background: literal("-webkit-gradient(linear, left top, left bottom, color-stop(0, #ABA9A7), color-stop(.3, #B7B5B3), color-stop(1, #B7B5B3)) !important");
+            background: literal("-moz-linear-gradient(#ABA9A7 0%, #B7B5B3 30%, #B7B5B3 100%) !important");
+            background: literal("-o-linear-gradient(#ABA9A7 0%, #B7B5B3 30%, #B7B5B3 100%) !important");
+            -webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px rgba(255, 255, 255, .5);
+            -moz-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px rgba(255, 255, 255, .5);
+            box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.5), 0px 1px 0px 0px rgba(255, 255, 255, .5);
+        }
+        
+        .progress_bar_status {
+            transition: width 2s;
+            -moz-transition: width 2s; /* Firefox 4 */
+            -webkit-transition: width 2s; /* Safari and Chrome */
+            -o-transition: width 2s; /* Opera */
+            -webkit-border-radius: 4px 4px 4px 4px;
+            -moz-border-radius: 4px 4px 4px 4px;
+            border-radius: 4px 4px 4px 4px;
+            background: literal("-moz-linear-gradient(#6DA8EF 0%, #3776B4 100%) repeat scroll 0 0 transparent !important");
+            box-shadow: 1px -1px 0 0 #8A8987;
+            margin: 1px 0 0 1px;
+            overflow: hidden;
+            position: absolute;
+            top: 1px;
+            width: 0;
+
+        }
+        
+        .progress_bar_status_complete {
+            color: green;
+            /* background: #E5FDD0; */
+        }
+        
+        .progress_content {
+            border-right:2px solid transparent;
+            position:relative;
+            top: -25px;
+        }
+        
+        .progress_inner {
+             background: none repeat scroll 0 0 #5993CE;
+            height: 23px;
+        }
+        
+        .progress_highlight {
+            border-radius: 100% 100% 100% 100%;
+            box-shadow: 0 12px 16px -4px rgba(255, 255, 255, 0.4), 0 40px 8px -8px rgba(255, 255, 255, 0.4);
+            height: 32px;
+            position: absolute;
+            top: -32px;
+            width: 100%;
+        }
+        .progress_border_l_r {
+            padding: 1px 0;
+            width: 1px;    
+        }
+        .progress_border {
+            left:0;
+            position:absolute;
+            top:0;
+        }
+        
+        .progress_border_left div, .progress_border_right div {
+             background: literal("-moz-linear-gradient(#67A5EC 0%, #3776B4 100%) repeat scroll 0 0 transparent !important");
+            height: 21px;
+        }
+        
+        .progress_border_bg {
+            top:22px;
+            width:100%;
+        }
+        
+        .progress_border_bt {
+            width:100%;
+        }
+        
+        .progress_border_bt div {
+            background: #D8E8F7;
+            background: literal("-webkit-gradient(linear, left top, right top, color-stop(0, #6CA8EF), color-stop(.5, #D8E8F7), color-stop(1, #6CA8EF))!important");
+            background: literal("-moz-linear-gradient(left, #6CA8EF 0%, #D8E8F7 50%, #6CA8EF 100%) !important");
+            background: literal("-o-linear-gradient(left, #6CA8EF 0%, #D8E8F7 50%, #6CA8EF 100%) !important");
+            height: 1px;
+            margin: 0 1px;
+        }
+        
+        .progress_border_bg div {
+             background: none repeat scroll 0 0 #3776B4;
+             height:1px;
+             margin 0 1px;
+        }
+        
+        .progress_border_right {
+            left:auto;
+            right:0;
+        }
+        .progress_label {
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+            position: absolute;
+            line-height: 23px;
+            top: 2px;
+            left: 50%;
+        }
+        .progress_bar_task {
+            transition: all 2s;
+            -moz-transition: all 2s; /* Firefox 4 */
+            -webkit-transition: all 2s; /* Safari and Chrome */
+            -o-transition: all 2s; /* Opera */
+            text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
+            left:50%;
+        }
+        
+        .progress_bar_container {
+            opacity : 1;
+            transition: opacity 1s;
+            -moz-transition: opacity 1s; /* Firefox 4 */
+            -webkit-transition: opacity 1s; /* Safari and Chrome */
+            -o-transition: opacity 1s; /* Opera */
+        }
+        
+        .progress_bar_container_visible {
+            opacity: 1;
+        }
+         </STYLE>
+         <script type="text/javascript">
+                
+                window.addEventListener("storage", function(e) {
+                    var progress_bar_status = document.getElementById('progress_bar_status');
+                    var progress_bar_label = document.getElementById('progress_label');
+                    var progress_bar_task = document.getElementById('progress_bar_task');
+                    var key = e.key;
+                    var value = e.newValue;
+                    if (key == 'progress') {
+                        if (value == null || value == '')
+                            value = '100';
+                        if (value == '100') {
+                            progress_bar_task.innerHTML = 'FINISHED';
+                        }
+                        progress_bar_status.style.width = value + '%';
+                        progress_bar_label.innerHTML=value+'%';
+                    }
+                    else if (key == 'task') {
+                        if (value == null || value == '')  {
+                            value = 'FINISHED';
+                            progress_bar_task.style.color='green';
+                            progress_bar_task.style.font-weight='bold';
+                        }
+                        progress_bar_task.innerHTML = value;
+                    }
+                }, false);
+                
+        function refresh() {
+           
+           document.getElementById('progress_bar_task').innerHTML = 'test';
+        }
+         </script>
+        </head>
+        """
+        retval2 = """
+        <body style="font-family:Arial Unicode MS, Arial, sans-serif;font-size:small;";>
+        <div class="container" style="width: 350px; height: 50px;">
+            <div class="progress_bar_container" style="width: 280px; height: 100%%;">
+                <div> 
+                    <span class="progress_bar_task" id="progress_bar_task">&nbsp;</span> 
+                </div> 
+                <div class="progress_bar"> 
+                   <div class="progress_bar_bg">  </div> 
+                   <div class="progress_content"> 
+                      <div class="progress_bar_status" id="progress_bar_status" style="width: 0%;">
+                         <div class="progress_inner"> 
+                         <div class="progress_highlight">
+                             <div>  </div>
+                        </div> 
+                        <div class="progress_border_left progress_border_l_r progress_border"><div>
+                      </div>
+                    </div> 
+                    <div class="progress_border_right progress_border_l_r progress_border">
+                       <div>
+                    </div>
+                  </div> 
+                  <div class="progress_border_bg progress_border">
+                     <div></div>
+                  </div> 
+                </div> 
+                <div class="progress_border progress_border_bt">
+                   <div> </div>
+                </div>
+              </div> 
+              <span class="progress_label" id="progress_label">0%</span> 
+            </div> 
+        </div>
+    </div>
+</div>
+        </body>
+        </html>
+        """ 
+        return retval + retval2
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
