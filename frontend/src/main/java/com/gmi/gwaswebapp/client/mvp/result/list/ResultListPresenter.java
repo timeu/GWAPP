@@ -61,11 +61,11 @@ public class ResultListPresenter extends PresenterWidget<ResultListPresenter.MyV
 
 	@Override
 	public void deleteAnalysis(final Analysis analysis) {
-		dispatch.execute(new DeleteResultAction(analysis.getPhenotype(),analysis.getTransformation(),analysis.getType().toString(),analysis.getResultName(),backendResultReader), new GWASCallback<BaseStatusResult>(getEventBus()) {
+		dispatch.execute(new DeleteResultAction(analysis.getPhenotype(),analysis.getDataset(),analysis.getTransformation(),analysis.getType().toString(),analysis.getResultName(),backendResultReader), new GWASCallback<BaseStatusResult>(getEventBus()) {
 			@Override
 			public void onSuccess(BaseStatusResult result) {
 				if (result.result.getStatus() == BackendResult.STATUS.OK)
-					DeleteResultEvent.fire(ResultListPresenter.this,analysis.getPhenotype(),analysis.getTransformation());
+					DeleteResultEvent.fire(ResultListPresenter.this,analysis.getPhenotype(),analysis.getDataset(),analysis.getTransformation());
 				else
 					DisplayNotificationEvent.fireError(ResultListPresenter.this,"Backend-Error",result.result.getStatustext());
 			}
