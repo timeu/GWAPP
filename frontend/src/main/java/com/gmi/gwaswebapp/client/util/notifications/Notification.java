@@ -80,9 +80,9 @@ public class Notification {
          * @return
          */
         public static int checkPermission() {
-                if (permission == -1) {
+                //if (permission == -1) {
                         permission = impl.checkPermission();
-                }
+                //}
                 return permission;
         }
         
