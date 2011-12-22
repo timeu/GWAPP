@@ -126,6 +126,7 @@ public class Notification {
                 	notification.iconUrl = iconUrl;
                 	notification.title = title;
                 	notification.body = body;
+                	notification.contentUrl = null;
                 }
                 return notification;
         	}
