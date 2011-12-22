@@ -10,6 +10,10 @@
 			float:left;
 			position:relative;
 		}
+		.phenotype_file {
+	       width:350px !important;
+
+	     }
 	</ui:style>
 	<g:HTMLPanel>
 	   <div class="{style.uploadContainer} {mainRes.style.formbox}">
@@ -21,7 +25,7 @@
 		   	<label for="phenotype_file" >File
 		   	<span class="{mainRes.style.small}">File containing the phenotypes</span>
 		   	</label>
-		   	<g:FileUpload ui:field="phenotype_file"  name="phenotype_file"></g:FileUpload>
+		   	<g:FileUpload ui:field="phenotype_file" addStyleNames="{style.phenotype_file}"  name="phenotype_file"></g:FileUpload>
 		   	<label for="phenotype_content">Content
 		   	<span class="{mainRes.style.small}">
 		   	Alternatively paste the contents of the phenotype file into this textfield
