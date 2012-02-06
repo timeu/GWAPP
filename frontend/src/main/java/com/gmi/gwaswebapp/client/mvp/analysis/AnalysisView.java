@@ -13,7 +13,6 @@ import com.gmi.gwaswebapp.client.dto.Dataset;
 import com.gmi.gwaswebapp.client.dto.Phenotype;
 import com.gmi.gwaswebapp.client.dto.Transformation;
 import com.gmi.gwaswebapp.client.mvp.analysis.AnalysisPresenter.MyView;
-import com.gmi.gwaswebapp.client.ui.CustomTreeItem;
 import com.gmi.gwaswebapp.client.ui.SlidingPanel;
 import com.gmi.gwaswebapp.client.ui.SlidingPanel.DIRECTION;
 import com.google.gwt.core.client.GWT;
