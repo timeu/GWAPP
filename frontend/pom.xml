@@ -21,7 +21,7 @@
 		<!-- GWT needs at least java 1.5 -->
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gwtp.version>0.6</gwtp.version>
+		<gwtp.version>0.7</gwtp.version>
 	</properties>
 
 	<repositories>
@@ -98,7 +98,7 @@
 		 <dependency>
     	<groupId>at.gmi.nordborglab.widgets</groupId>
     	<artifactId>gwasgeneviewer</artifactId>
-    	<version>0.4.1</version>
+    	<version>0.4.3</version>
     	<scope>provided</scope>
     </dependency>
 		 <dependency>
