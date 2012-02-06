@@ -27,7 +27,7 @@ import com.gmi.gwaswebapp.client.events.DisplayNotificationEvent;
 import com.gmi.gwaswebapp.client.events.NewDatasetEvent;
 import com.gmi.gwaswebapp.client.mvp.transformation.list.TransformationListPresenter;
 import com.google.inject.Inject;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -168,7 +168,7 @@ public class DatasetListPresenter extends
 					if (result.result.getStatus() == BackendResult.STATUS.OK)
 						DeleteDatasetEvent.fire(DatasetListPresenter.this,dataset.getPhenotype());
 					else
-						DisplayNotificationEvent.fireError(getEventBus(), "Deleting Dataset failed",result.result.getStatustext() );
+						DisplayNotificationEvent.fireError(this, "Deleting Dataset failed",result.result.getStatustext() );
 				}
 			});
 		}
@@ -176,6 +176,6 @@ public class DatasetListPresenter extends
 
 	@Override
 	public void createSubset(Dataset dataset) {
-		NewDatasetEvent.fire(getEventBus(), dataset);
+		NewDatasetEvent.fire(this, dataset);
 	}
 }

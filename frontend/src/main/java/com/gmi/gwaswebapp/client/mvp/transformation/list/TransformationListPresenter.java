@@ -1,6 +1,7 @@
 package com.gmi.gwaswebapp.client.mvp.transformation.list;
 
 import java.util.List;
+
 import com.gmi.gwaswebapp.client.command.BaseStatusResult;
 import com.gmi.gwaswebapp.client.command.DeleteTransformationAction;
 import com.gmi.gwaswebapp.client.command.PreviewTransformationAction;
@@ -10,7 +11,7 @@ import com.gmi.gwaswebapp.client.command.RunGWASActionResult;
 import com.gmi.gwaswebapp.client.command.SaveNewTransformationAction;
 import com.gmi.gwaswebapp.client.dispatch.GWASCallback;
 import com.gmi.gwaswebapp.client.dto.Analysis.TYPE;
-import com.gmi.gwaswebapp.client.dto.Analysis;
+import com.gmi.gwaswebapp.client.dto.BackendResult;
 import com.gmi.gwaswebapp.client.dto.BaseModel;
 import com.gmi.gwaswebapp.client.dto.Readers.BackendResultReader;
 import com.gmi.gwaswebapp.client.dto.Readers.GWASResultReader;
@@ -20,28 +21,21 @@ import com.gmi.gwaswebapp.client.events.DisplayNotificationEvent;
 import com.gmi.gwaswebapp.client.events.NewTransformationSavedEvent;
 import com.gmi.gwaswebapp.client.events.ProgressBarEvent;
 import com.gmi.gwaswebapp.client.events.RunGWASFinishedEvent;
-import com.gmi.gwaswebapp.client.events.UpdateDataEvent;
 import com.gmi.gwaswebapp.client.mvp.progress.ProgressPresenter;
 import com.gmi.gwaswebapp.client.mvp.result.list.ResultListPresenter;
 import com.gmi.gwaswebapp.client.mvp.transformation.details.TransformationDetailPresenter;
-import com.gmi.gwaswebapp.client.util.notifications.Notification;
-import com.gmi.gwaswebapp.client.dto.BackendResult;
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.event.shared.GwtEvent.Type;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.dispatch.shared.Result;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.annotations.ContentSlot;
 import com.gwtplatform.mvp.client.googleanalytics.GoogleAnalytics;
-import com.gwtplatform.mvp.client.proxy.RevealContentHandler;
 
 
 public class TransformationListPresenter extends PresenterWidget<TransformationListPresenter.MyView> implements TransformationListUiHandlers{
@@ -130,7 +124,7 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 				@Override
 				public void onSuccess(PreviewTransformationActionResult result) {
 					if (result.transformationTable == null)
-						DisplayNotificationEvent.fireError(getEventBus(), "Backend-Error" , "Error getting transformation data");
+						DisplayNotificationEvent.fireError(this, "Backend-Error" , "Error getting transformation data");
 					else
 						getView().showTransformationPreviewHistogram(result.transformationTable);
 				}
@@ -170,7 +164,7 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 				if (result.result.getStatus() == BackendResult.STATUS.OK)
 					DeleteTransformationEvent.fire(TransformationListPresenter.this,transformation.getPhenotype());
 				else
-					DisplayNotificationEvent.fireError(getEventBus(),"Backend-Error", result.result.getStatustext());
+					DisplayNotificationEvent.fireError(this,"Backend-Error", result.result.getStatustext());
 			}
 		});
 	}
@@ -181,7 +175,7 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 		dispatch.execute(gwasAction, new GWASCallback<RunGWASActionResult>(getEventBus()) {
 			@Override
 			public void onFailure(Throwable caught) {
-				ProgressBarEvent.fire(getEventBus(),gwasAction.getUrl(),true);
+				ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
 				getView().showNotification("", "Error", "GWAS analysis failed");
 				super.onFailure(caught);
 			}
@@ -194,14 +188,14 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 				}
 				else {
 					googleAnalytics.trackEvent("GWAS", "failed");
-					ProgressBarEvent.fire(getEventBus(),gwasAction.getUrl(),true);
+					ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
 					getView().showNotification("", "Error", "GWAS analysis failed");
 					DisplayNotificationEvent.fireError(TransformationListPresenter.this, "Backend-Error", result.result.getStatustext());
 				}
 			}
 			
 		});
-		ProgressBarEvent.fire(getEventBus(),gwasAction.getUrl());
+		ProgressBarEvent.fire(this,gwasAction.getUrl());
 	}
 	
 	

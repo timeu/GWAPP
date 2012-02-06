@@ -3,11 +3,11 @@ package com.gmi.gwaswebapp.client.dispatch;
 
 import com.gmi.gwaswebapp.client.command.RequestBuilderAction;
 import com.gmi.gwaswebapp.client.events.LoadingIndicatorEvent;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchRequest;
 import com.gwtplatform.dispatch.client.actionhandler.ExecuteCommand;
 import com.gwtplatform.dispatch.client.actionhandler.caching.AbstractCachingClientActionHandler;

@@ -5,15 +5,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import com.gwtplatform.dispatch.shared.DispatchAsync;
-import com.gwtplatform.mvp.client.HasUiHandlers;
-import com.gwtplatform.mvp.client.PresenterWidget;
-import com.gwtplatform.mvp.client.View;
-import com.gwtplatform.mvp.client.proxy.PlaceManager;
 import com.gmi.gwaswebapp.client.CurrentUser;
 import com.gmi.gwaswebapp.client.command.BaseStatusResult;
-import com.gmi.gwaswebapp.client.command.GetAccessionsAction;
-import com.gmi.gwaswebapp.client.command.GetAccessionsActionResult;
 import com.gmi.gwaswebapp.client.command.GetLocationDistributionAction;
 import com.gmi.gwaswebapp.client.command.GetLocationDistributionActionResult;
 import com.gmi.gwaswebapp.client.command.SaveDatasetAction;
@@ -29,33 +22,28 @@ import com.gmi.gwaswebapp.client.events.SaveDatasetEvent;
 import com.gmi.gwaswebapp.client.mvp.accession.AccessionCellTableColumns.SearchTerm;
 import com.gmi.gwaswebapp.client.ui.HasSearchHandlers;
 import com.gmi.gwaswebapp.client.util.AbstractDtoPredicate;
-import com.google.inject.Inject;
 import com.google.gwt.cell.client.CheckboxCell;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.event.dom.client.ChangeEvent;
-import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasChangeHandlers;
 import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.event.dom.client.HasKeyUpHandlers;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.HandlerRegistration;
-
 import com.google.gwt.user.cellview.client.Column;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.ui.HasText;
-import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.MultiSelectionModel;
 import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SelectionModel;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.DataTable;
+import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
+import com.gwtplatform.dispatch.shared.DispatchAsync;
+import com.gwtplatform.mvp.client.HasUiHandlers;
+import com.gwtplatform.mvp.client.PresenterWidget;
+import com.gwtplatform.mvp.client.View;
+import com.gwtplatform.mvp.client.proxy.PlaceManager;
 
 public class DatasetDetailPresenter extends
 		PresenterWidget<DatasetDetailPresenter.MyView> implements DatasetDetailUiHandlers{
@@ -348,12 +336,12 @@ public class DatasetDetailPresenter extends
 							dataset.setInternId(result.result.getStatustext());
 						setMode(MODE.READ);
 						accessionListProvider.setList(dataset.getAccessions());
-						SaveDatasetEvent.fire(getEventBus(), dataset);
+						SaveDatasetEvent.fire(this, dataset);
 						
 					}
 					else
 					{
-						DisplayNotificationEvent.fireError(getEventBus(), "Saving Dataset failed",result.result.getStatustext() );
+						DisplayNotificationEvent.fireError(this, "Saving Dataset failed",result.result.getStatustext() );
 					}
 				}
 				

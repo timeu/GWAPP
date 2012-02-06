@@ -4,16 +4,33 @@
 	xmlns:p1="urn:import:com.google.gwt.user.cellview.client"
 	xmlns:gui="urn:import:com.gmi.gwaswebapp.client.ui">
 	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
+	<ui:image field="treeitem_selected" src='../../resources/treeitem_selected.png' />
+	
 	
 	<ui:style>
+	   
+	   
+		@external .gwt-TreeItem-selected;
+	     .gwt-TreeItem-selected {
+			color:black !important;
+			font-weight:bold !important;
+	    }
+	   
 		
+		@external .gwt-TreeItem;
+       .gwt-TreeItem { 
+			display:block !important;
+			padding-top:4px !important;
+			padding-bottom:4px !important;
+		}
 	</ui:style>
 	<g:DockLayoutPanel height="100%" width="100%">
 		<g:west size="160.0">
 			<g:HTMLPanel addStyleNames="{mainRes.style.tree_container}">
 				<div class="{mainRes.style.tree_header}"><span>Navigation</span>
 				</div>
-				<p1:CellTree ui:field="resultsTree"/>
+				<g:Tree ui:field="tree" animationEnabled="true" />
+				<!-- <p1:CellTree ui:field="resultsTree"/> -->
 			</g:HTMLPanel>
 		</g:west>
 		<g:center>

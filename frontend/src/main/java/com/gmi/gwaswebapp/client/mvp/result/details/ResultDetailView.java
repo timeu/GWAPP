@@ -15,6 +15,8 @@ import com.gmi.gwaswebapp.client.dto.Cofactor;
 import com.gmi.gwaswebapp.client.mvp.result.details.ResultDetailPresenter.MyView;
 import com.gmi.gwaswebapp.client.resources.CellTableResources;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArrayString;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -43,8 +45,11 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.SuggestBox.DefaultSuggestionDisplay;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
 import com.google.gwt.view.client.HasData;
+import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.DataView;
+import com.google.gwt.visualization.client.visualizations.corechart.AreaChart;
+import com.google.gwt.visualization.client.visualizations.corechart.AxisOptions;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.google.inject.Inject;
@@ -69,7 +74,8 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	//@UiField Button selected_optimal_snp;
 	@UiField(provided = true) CellTable<Cofactor> cofactorTable;
 	@UiField(provided = true) LineChart statistic_chart;
-	@UiField ListBox statistic_type;
+	@UiField(provided = true) AreaChart area_chart;
+ 	@UiField ListBox statistic_type;
 	@UiField AnchorElement download_link;
 	protected List<GWASGeneViewer> gwasGeneViewers = new ArrayList<GWASGeneViewer>();
 	private String[] colors = {"blue", "green", "red", "cyan", "purple"};
@@ -142,14 +148,6 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 
 			@Override
 			public String getValue(Cofactor object) {
-				return Double.toString(object.getMbic());
-			}
-			
-		}, "m-BIC");
-		cofactorTable.addColumn(new TextColumn<Cofactor>(){
-
-			@Override
-			public String getValue(Cofactor object) {
 				return Double.toString(object.getMaxCofPval());
 			}
 			
@@ -162,13 +160,38 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 			}
 			
 		}, "pseudo-heritability");
+		cofactorTable.addColumn(new TextColumn<Cofactor>(){
+
+			@Override
+			public String getValue(Cofactor object) {
+				return Double.toString(object.getPercVarExpl());
+			}
+			
+		}, "percVarExpl");
+		cofactorTable.addColumn(new TextColumn<Cofactor>(){
+
+			@Override
+			public String getValue(Cofactor object) {
+				return Double.toString(object.getRemainingPercGenVar());
+			}
+			
+		}, "percGenVarExpl");
+		cofactorTable.addColumn(new TextColumn<Cofactor>(){
+
+			@Override
+			public String getValue(Cofactor object) {
+				return Double.toString(object.getRemainingPercErrVar());
+			}
+			
+		}, "percErrVarExpl");
+		
 		statistic_chart = new LineChart(DataTable.create(), createStatsticChartOptions());
+		area_chart = new AreaChart(DataTable.create(), createVarChartOptions());
 		widget = uiBinder.createAndBindUi(this);
 		if (statistic_type.getItemCount() == 0)
 		{
 			statistic_type.addItem("", "");
 			statistic_type.addItem("BIC", "1");
-			statistic_type.addItem("mBIC", "2");
 			statistic_type.addItem("eBIC", "3");
 			statistic_type.addItem("max cofactor pValue", "4");
 			statistic_type.addItem("pseudo-heritability", "5");
@@ -189,6 +212,27 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	    options.setWidth(600);
 	    options.setHeight(400);
 	    return options;
+	}
+	
+	private Options createVarChartOptions() {
+		Options options = Options.create();
+		options.setWidth(600);
+		options.setHeight(400);
+		options.set("focusTarget","category");
+		options.set("isStacked", true);
+		options.set("opacity",0.0);
+		JsArrayString array = JsArrayString.createArray().cast();
+		array.push("blue");
+		array.push("green");
+		array.push("orange");
+		options.set("colors",array.cast());
+		AxisOptions vaxis_options = AxisOptions.create();
+		vaxis_options.setTitle("Partition of variance");
+		AxisOptions haxis_options = AxisOptions.create();
+		haxis_options.setTitle("Step number");
+		options.setVAxisOptions(vaxis_options);
+		options.setHAxisOptions(haxis_options);
+		return options;
 	}
 
 	protected GWASGeneViewer getGWASGeneViewer(String chromosome) {
@@ -213,8 +257,8 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	
 	@Override
 	public void clearAssociationCharts() {
-		container.clear();
-		gwasGeneViewers.clear();
+		//container.clear();
+		//gwasGeneViewers.clear();
 	}
 
 	@Override
@@ -233,11 +277,39 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 		
 		while(iterator.hasNext())
 		{
+			GWASGeneViewer chart =null;
 			DataTable dataTable = iterator.next();
-			String color = colors[i%colors.length];
+			String[] color = new String[] {colors[i%colors.length]};
 			String gene_marker_color = gene_mark_colors[i%gene_mark_colors.length];
-			GWASGeneViewer chart = new GWASGeneViewer("Chr"+i.toString(), color, gene_marker_color, geneDataSource);
-			gwasGeneViewers.add(chart);
+			if (gwasGeneViewers.size() >= i)
+				chart = gwasGeneViewers.get((i-1));
+			if (chart == null)
+			{
+				chart = new GWASGeneViewer("Chr"+i.toString(), color, gene_marker_color, geneDataSource);
+				gwasGeneViewers.add(chart);
+				chart.setGeneInfoUrl("http://arabidopsis.org/servlets/TairObject?name={0}&type=gene");
+				container.add((IsWidget)chart);
+				chart.addSelectionHandler(new SelectHandler() {
+
+					@Override
+					public void onSelect(SelectEvent event) {
+						DataPoint point = event.point;
+						Event mouseEvent = event.event;
+						String id = event.id;
+						int chromosome;
+						try
+						{
+							chromosome = Integer.parseInt(id);
+						}
+						catch (Exception e)
+						{
+							chromosome =Integer.parseInt(id.charAt(3)+"");
+						}
+						getUiHandlers().onSelectSNP(chromosome,(int)point.getXVal(),mouseEvent.getClientX(),mouseEvent.getClientY());
+					}
+					
+				});
+			}
 			for (Cofactor cofactor: cofactors){
 				if (cofactor.getChr() == i)
 				{
@@ -245,28 +317,6 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 					cofactors.remove(i);
 				}
 			}
-			chart.addSelectionHandler(new SelectHandler() {
-
-				@Override
-				public void onSelect(SelectEvent event) {
-					DataPoint point = event.point;
-					Event mouseEvent = event.event;
-					String id = event.id;
-					int chromosome;
-					try
-					{
-						chromosome = Integer.parseInt(id);
-					}
-					catch (Exception e)
-					{
-						chromosome =Integer.parseInt(id.charAt(3)+"");
-					}
-					getUiHandlers().onSelectSNP(chromosome,(int)point.getXVal(),mouseEvent.getClientX(),mouseEvent.getClientY());
-				}
-				
-			});
-			chart.setGeneInfoUrl("http://arabidopsis.org/servlets/TairObject?name={0}&type=gene");
-			container.add((IsWidget)chart);
 			chart.draw(dataTable,maxScore,0,chrLengths.get(i-1),bonferroniThreshold);
 			i++;
 		}
@@ -285,7 +335,6 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 		statistic_chart.setVisible(true);
 		Options options = createStatsticChartOptions();
 		statistic_chart.draw(view,options);
-		
 	}
 
 	@Override
@@ -298,6 +347,16 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	@Override
 	public void setDownloadURL(String url) {
 		download_link.setHref(url);
+	}
+
+	@Override
+	public void drawVarStatisticChart(AbstractDataTable data) {
+		if (data.getNumberOfRows() > 0)	{
+			area_chart.setVisible(true);
+			Options options = createVarChartOptions();
+			area_chart.draw(data,options);
+		}
+				
 	}
 
 

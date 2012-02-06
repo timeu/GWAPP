@@ -5,10 +5,10 @@ import com.gmi.gwaswebapp.client.command.BaseStatusResult;
 import com.gmi.gwaswebapp.client.command.GetUserInfoAction;
 import com.gmi.gwaswebapp.client.command.RunGWASAction;
 import com.gmi.gwaswebapp.client.command.RunGWASActionResult;
-import com.google.gwt.event.shared.EventBus;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.client.actionhandler.caching.Cache;
-//import com.gwtplatform.mvp.client.EventBus;
+
 
 
 public class RunGWASActionHandler extends AbstractRequestBuilderCacheClientActionHandler<RunGWASAction, RunGWASActionResult> {

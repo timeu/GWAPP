@@ -1,5 +1,6 @@
 package com.gmi.gwaswebapp.client.dto;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class Transformation extends BaseModel {
 	@Transient boolean isNewTransformation;
 	@Transient String newTransformation;
 	
-	List<Analysis> analysis_methods;
+	List<Analysis> analysis_methods = new ArrayList<Analysis>();
 	
 	public Transformation() {
 		

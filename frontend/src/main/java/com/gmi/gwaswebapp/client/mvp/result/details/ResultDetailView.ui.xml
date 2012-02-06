@@ -5,13 +5,23 @@
 	xmlns:gviz="urn:import:com.google.gwt.visualization.client.visualizations.corechart">
 	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
 	<ui:style>
-		.container, .chart_container{
+		.container{
 			margin-top:10px;
 			clear:both;
 		}
 		.chart_container {
-			width:610px;
+			margin-top:10px;
+		}
+		.chart_container_right {
+			float:left;
+
 		}	
+		
+		.chart_container {
+			margin-top:10px;
+			width:610px;
+			float:left;
+		}
 		
 		.download_link {
 			float:right;
@@ -43,10 +53,15 @@
 			       </div>
 			       <div class="{mainRes.style.clearfix}"></div>
 			     </g:HTMLPanel>
-			     <g:HTMLPanel addStyleNames="{mainRes.style.box_shadow} {style.chart_container}">
+			     <g:HTMLPanel addStyleNames="{mainRes.style.box_shadow} {style.chart_container} ">
 			      	<div class ="{mainRes.style.box_container}">
 			      		Statistic:<g:ListBox ui:field="statistic_type"></g:ListBox>
 			       		<gviz:LineChart ui:field="statistic_chart" visible="false"></gviz:LineChart>
+			       	</div>
+			     </g:HTMLPanel>
+			       <g:HTMLPanel addStyleNames="{mainRes.style.box_shadow} {style.chart_container} {style.chart_container_right}">
+			      	<div class ="{mainRes.style.box_container}">
+			       		<gviz:AreaChart ui:field="area_chart" visible="false"></gviz:AreaChart>
 			       	</div>
 			     </g:HTMLPanel>
 	     </g:FlowPanel>

@@ -3,9 +3,10 @@ package com.gmi.gwaswebapp.client.events;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
+import com.google.web.bindery.event.shared.EventBus;
 
 
-public class DisplayNotificationEvent extends GwtEvent<DisplayNotificationEvent.DisplayNotificationHandler> {
+public class DisplayNotificationEvent extends GwtEvent<DisplayNotificationEvent.DisplayNotificationHandler>  {
 
 	  
 	public interface DisplayNotificationHandler extends EventHandler {

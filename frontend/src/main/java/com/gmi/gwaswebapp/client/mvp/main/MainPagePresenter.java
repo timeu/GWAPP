@@ -7,10 +7,9 @@ import com.gmi.gwaswebapp.client.events.LoadingIndicatorEvent.LoadingIndicatorHa
 import com.gmi.gwaswebapp.client.events.ProgressBarEvent.ProgressBarHandler;
 import com.gmi.gwaswebapp.client.events.ProgressBarEvent;
 import com.gmi.gwaswebapp.client.mvp.progress.ProgressPresenter;
-import com.google.gwt.event.logical.shared.ShowRangeHandler;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.mvp.client.Presenter;
 import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.ContentSlot;

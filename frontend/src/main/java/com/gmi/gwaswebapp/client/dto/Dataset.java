@@ -34,6 +34,7 @@ public class Dataset extends BaseModel {
 		this.phenotype = phenotype;
 		this.accession_ids = accession_ids;
 		this.transformations = transformations;
+		this.isAdd = isAdd;
 	}
 	
 	public Dataset() {}

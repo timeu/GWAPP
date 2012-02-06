@@ -7,7 +7,7 @@ import com.gmi.gwaswebapp.client.command.GetProgressAction;
 import com.gmi.gwaswebapp.client.command.GetProgressActionResult;
 import com.gmi.gwaswebapp.client.dispatch.GWASCallback;
 import com.google.inject.Inject;
-import com.google.gwt.event.shared.EventBus;
+import com.google.web.bindery.event.shared.EventBus;
 import com.google.gwt.user.client.Timer;
 import com.gmi.gwaswebapp.client.dto.ProgressResult;
 import com.gmi.gwaswebapp.client.dto.Readers.ProgressResultReader;

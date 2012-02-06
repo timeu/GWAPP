@@ -28,11 +28,11 @@ import com.gmi.gwaswebapp.client.mvp.main.MainPagePresenter;
 import com.gmi.gwaswebapp.client.mvp.phenotype.details.PhenotypeDetailPresenter;
 import com.gmi.gwaswebapp.client.mvp.phenotype.list.PhenotypeListPresenter;
 import com.gmi.gwaswebapp.client.mvp.result.details.ResultDetailPresenter;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.event.shared.GwtEvent.Type;
 import com.google.gwt.user.cellview.client.TreeNode;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.inject.Inject;
+import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.Presenter;
@@ -70,6 +70,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 		void initTreeItems(List<Phenotype> phenotypes);
 		SingleSelectionModel<BaseModel> getTreeSelectionModel();
 		boolean expandTree(BaseModel selectedItem,TreeNode node);
+		void setSelectedTreeItem(BaseModel itemToSelect);
 	}
 	
 	protected final CurrentUser currentUser;
@@ -81,6 +82,8 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	protected final PhenotypeDetailPresenter phenotypeDetailPresenter;
 	protected final ResultDetailPresenter resultDetailPresenter;
 	private boolean dontExpandTree = false;
+	private boolean isTreeInitialized = false;
+	private boolean isTreeDirty = false;
 	
 	@Inject
 	public AnalysisPresenter(EventBus eventBus, MyView view, MyProxy proxy,
@@ -99,8 +102,8 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 		this.phenotypeDetailPresenter = phenotypeDetailPresenter;
 		this.resultDetailPresenter = resultDetailPresenter;
 		getView().setUiHandlers(this);
-		
 	}
+	
 
 	@Override
 	protected void revealInParent() {
@@ -111,13 +114,14 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	public void onReset()
 	{
 		super.onReset();
-		getView().initTreeItems(currentUser.getUserData().getPhenotypes());
+		if (!isTreeInitialized || isTreeDirty ) {
+			getView().initTreeItems(currentUser.getUserData().getPhenotypes());
+			isTreeInitialized = true;
+			isTreeDirty = false;
+		}
 		
 		PlaceRequest currentRequest = placeManager.getCurrentPlaceRequest();
 		if (currentRequest.getParameterNames().size() == 0) {
-			BaseModel selectedItem = getView().getTreeSelectionModel().getSelectedObject();
-			if (selectedItem != null)
-				getView().getTreeSelectionModel().setSelected(selectedItem, false);
 			setInSlot(TYPE_SetPhenotypeListContent, phenotypeListPresenter);
 			phenotypeListPresenter.setPhenotypeList(currentUser.getUserData().getPhenotypes());
 			clearSlot(TYPE_SetPhenotypeDetailContent);
@@ -141,28 +145,32 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 				selectedAnalysis = selectedTransformation.getAnalysisFromName(analysis_name);
 			
 			if (selectedAnalysis != null) {
-				getView().getTreeSelectionModel().setSelected(selectedAnalysis, true);
+				getView().setSelectedTreeItem(selectedAnalysis);
+				//getView().getTreeSelectionModel().setSelected(selectedAnalysis, true);
 				if (!dontExpandTree)
 					getView().expandTree(selectedAnalysis,null);
 				else 
 					dontExpandTree = false;
 			}
 			else if (selectedTransformation != null) {
-				getView().getTreeSelectionModel().setSelected(selectedTransformation, true);
+				getView().setSelectedTreeItem(selectedTransformation);
+				//getView().getTreeSelectionModel().setSelected(selectedTransformation, true);
 				if (!dontExpandTree)
 					getView().expandTree(selectedTransformation,null);
 				else 
 					dontExpandTree = false;
 			}
 			else if (selectedDataset != null) {
-				getView().getTreeSelectionModel().setSelected(selectedDataset, true);
+				getView().setSelectedTreeItem(selectedDataset);
+				//getView().getTreeSelectionModel().setSelected(selectedDataset, true);
 				if (!dontExpandTree)
 					getView().expandTree(selectedDataset,null);
 				else 
 					dontExpandTree = false;
 			}
 			else if (selectedPhenotype != null) {
-				getView().getTreeSelectionModel().setSelected(selectedPhenotype, true);
+				getView().setSelectedTreeItem(selectedPhenotype);
+				//getView().getTreeSelectionModel().setSelected(selectedPhenotype, true);
 			}
 			clearSlot(TYPE_SetPhenotypeListContent);
 			if (selectedAnalysis != null) {
@@ -207,6 +215,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	@ProxyEvent
 	@Override
 	public void onNewTransformationSaved(final NewTransformationSavedEvent event) {
+		isTreeDirty = true;
 		currentUser.refresh(new Runnable() {
 			
 			@Override
@@ -225,6 +234,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	@Override
 	public void onUpdateData(UpdateDataEvent event)
 	{
+		isTreeDirty = true;
 		currentUser.refresh(new Runnable() {
 			
 			@Override
@@ -238,6 +248,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	@ProxyEvent
 	@Override
 	public void onDeleteTransformation(final DeleteTransformationEvent event) {
+		isTreeDirty = true;
 		currentUser.refresh(new Runnable() {
 			
 			@Override
@@ -253,6 +264,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	@ProxyEvent
 	@Override
 	public void onGWASFinished(RunGWASFinishedEvent event) {
+		isTreeDirty = true;
 		currentUser.refresh(event.Phenotypes);
 		getView().initTreeItems(currentUser.getUserData().getPhenotypes());
 		PlaceRequest place = new PlaceRequest(NameTokens.analysisPage);
@@ -263,10 +275,12 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	@ProxyEvent
 	@Override
 	public void onDeleteResult(final DeleteResultEvent event) {
+		isTreeDirty = true;
 		currentUser.refresh(new Runnable() {
 			
 			@Override
 			public void run() {
+				
 				PlaceRequest place = new PlaceRequest(NameTokens.analysisPage);
 				place = place.with("phenotype",event.getPhenotype()).with("dataset",event.getDataset()).with("transformation", event.getTransformation());
 				placeManager.revealPlace(place);
@@ -305,6 +319,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	@ProxyEvent
 	@Override
 	public void onNewDataset(NewDatasetEvent event) {
+		isTreeDirty = true;
 		String url = placeManager.buildHistoryToken(placeManager.getCurrentPlaceRequest());
 		PlaceRequest place = new PlaceRequest(NameTokens.analysisPage);
 		Phenotype phenotype= currentUser.getUserData().getPhenotypeFromName(event.getDataset().getPhenotype());
@@ -317,6 +332,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	@ProxyEvent
 	@Override
 	public void onSaveDataset(SaveDatasetEvent event) {
+		isTreeDirty = true;
 		PlaceRequest place = new PlaceRequest(NameTokens.analysisPage);
 		place = place.with("phenotype",event.getDataset().getPhenotype()).with("dataset",event.getDataset().getName());
 		//placeManager.revealPlace(place);

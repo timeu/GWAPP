@@ -8,9 +8,11 @@ public class Cofactor extends BaseModel{
 	Integer pos;
 	double bic;
 	double ebic;
-	double mbic;
 	double max_cof_pval;
 	double pseudo_heritability;
+	double perc_var_expl;
+	double remain_perc_gen_var;
+	double remain_perc_err_var;
 	
 	
 	@Override
@@ -34,10 +36,6 @@ public class Cofactor extends BaseModel{
 		return bic;
 	}
 
-	public double getMbic() {
-		return mbic;
-	}
-
 	public double getEbic() {
 		return ebic;
 	}
@@ -50,5 +48,16 @@ public class Cofactor extends BaseModel{
 		return pseudo_heritability;
 	}
 	
+	public double getPercVarExpl() {
+		return perc_var_expl;
+	}
+	
+	public double getRemainingPercGenVar() {
+		return remain_perc_gen_var;
+	}
+	
+	public double getRemainingPercErrVar() {
+		return remain_perc_err_var;
+	}
 	
 }
