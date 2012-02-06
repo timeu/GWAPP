@@ -5,6 +5,7 @@ Created on Nov 16, 2010
 '''
 
 import gviz_api,os
+import traceback
 import gwa_records
 from cherrypy import tools
 import cherrypy
@@ -16,9 +17,77 @@ from JBrowseDataSource import DataSource as JBrowseDataSource
 from cherrypy.lib import http
 import tables
 import time
-from datetime import datetime
+from gviz_api import *
+import datetime
 from gwa_records import ProgressFileWriter
 import cPickle
+
+@staticmethod
+def SingleValueToJSPerf(value, value_type, escape_func=None):
+    if escape_func is None:
+        escape_func = gviz_api.DataTable._EscapeValue
+    if isinstance(value, tuple):
+        # In case of a tuple, we run the same function on the value itself and
+        # add the formatted value.
+        if (len(value) not in [2, 3] or
+          (len(value) == 3 and not isinstance(value[2], dict))):
+            raise DataTableException("Wrong format for value and formatting - %s." %
+                                 str(value))
+        if not isinstance(value[1], types.StringTypes + (types.NoneType,)):
+            raise DataTableException("Formatted value is not string, given %s." %
+                                 type(value[1]))
+        js_value = DataTable.SingleValueToJS(value[0], value_type)
+        if value[1] is None:
+            return (js_value, None)
+        return (js_value, escape_func(value[1]))
+
+    # The standard case - no formatting.
+    t_value = type(value)
+    if value is None:
+        return "null"
+    if value_type == "boolean":
+        if value:
+            return "true"
+        return "false"
+    elif value_type == "number":
+        if isinstance(value, (int, long, float)):
+            if isinstance(value,float):
+                return "%.2f" % value
+            else:
+                return str(value)
+        raise DataTableException("Wrong type %s when expected number" % t_value)
+
+    elif value_type == "string":
+        if isinstance(value, tuple):
+            raise DataTableException("Tuple is not allowed as string value.")
+        return escape_func(value)
+
+    elif value_type == "date":
+        if not isinstance(value, (datetime.date, datetime.datetime)):
+            raise DataTableException("Wrong type %s when expected date" % t_value)
+        # We need to shift the month by 1 to match JS Date format
+        return "new Date(%d,%d,%d)" % (value.year, value.month - 1, value.day)
+
+    elif value_type == "timeofday":
+        if not isinstance(value, (datetime.time, datetime.datetime)):
+            raise DataTableException("Wrong type %s when expected time" % t_value)
+        return "[%d,%d,%d]" % (value.hour, value.minute, value.second)
+
+    elif value_type == "datetime":
+        if not isinstance(value, datetime.datetime):
+            raise DataTableException("Wrong type %s when expected datetime" %
+                                 t_value)
+        return "new Date(%d,%d,%d,%d,%d,%d)" % (value.year,
+                                              value.month - 1,  # To match JS
+                                              value.day,
+                                              value.hour,
+                                              value.minute,
+                                              value.second)
+    # If we got here, it means the given value_type was not one of the
+    # supported types.
+    raise DataTableException("Unsupported type %s" % value_type)
+
+gviz_api.DataTable.SingleValueToJS =  SingleValueToJSPerf
  
 
 class GWASService:
@@ -43,7 +112,8 @@ class GWASService:
         gene_annot_file.close()
         self.genomestats_file = h5py.File(self.genomeStats_hdf5_filename,'r')
         self.genome_wide_stats =   [{'name':'genecount','label':'# Genes','isStackable':False,'isStepPlot':True}, \
-                    {'name':'fst','label':'Fst (North-South)'},{'name':'clr','label':'CLR (Nielsen citation)'},{'name':'phs','label':'PHS (citation?)'}]
+                    {'name':'fst','label':'Fst (North-South)'},{'name':'clr','label':'CLR (Nielsen citation)'},\
+                    {'name':'phs','label':'PHS (citation?)'}]
         
     def _getUserId(self):
         request = cherrypy.request
@@ -136,8 +206,8 @@ class GWASService:
             isCriteria = True
         if isCriteria == False:
             for row in table.iterrows(start=int(start),stop=table.nrows):
-                collection_date = datetime.fromtimestamp(int(row[1]))
-                collection_date = datetime.strftime(collection_date,'%d.%m.%Y')
+                collection_date = datetime.datetime.fromtimestamp(int(row[1]))
+                collection_date = datetime.datetime.strftime(collection_date,'%d.%m.%Y')
                 accession = {'accession_id':row[0],'collection_date':collection_date,'collector':unicode(row[2],'latin1'),'country':row[4],'latitude':row[5],'longitude':row[6],'name':unicode(row[7],'utf8')}
                 accessions.append(accession)
             count = table.nrows
@@ -254,6 +324,7 @@ class GWASService:
             chr2data ={}
             for i in range(1,6):
                 data = zip(association_result[i]['position'],association_result[i]['score'])
+                data.sort()
                 data_table = gviz_api.DataTable(description)
                 data_table.LoadData(data)
                 chr2data[i] =  data_table.ToJSon(columns_order=("position", "value")) 
@@ -329,7 +400,7 @@ class GWASService:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def run_gwas(self,phenotype,dataset,transformation,analysis,result_name=None,chromosome=None,position=None,showProgress=None):
-        try:
+      #  try:
             response = cherrypy.response
             response.timeout = 3600
             result = {}
@@ -360,9 +431,9 @@ class GWASService:
                 result ={"status":"OK","statustext":"",'phenotypes':gwa_record.get_phenotype_info(),'result_name':result_name}
                 showProgress_writer.close_file()
                 os.remove(progress_filename)
-        except Exception, err:
-            result = {'status':'ERROR','statustext':str(err)}
-        return result
+       # except Exception, err:
+        #    result = {'status':'ERROR','statustext':str(err)}
+            return result
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
