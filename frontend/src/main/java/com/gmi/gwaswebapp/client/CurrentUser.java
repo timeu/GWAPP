@@ -11,6 +11,8 @@ import com.gmi.gwaswebapp.client.dto.Accession;
 import com.gmi.gwaswebapp.client.dto.Phenotype;
 import com.gmi.gwaswebapp.client.dto.Readers.UserDataReader;
 import com.gmi.gwaswebapp.client.dto.UserData;
+import com.gmi.gwaswebapp.client.events.RefreshDataEvent;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Cookies;
 import com.google.inject.Inject;
@@ -18,7 +20,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.dispatch.client.actionhandler.caching.Cache;
 
-public class CurrentUser {
+public class CurrentUser implements HasHandlers{
 
 	protected UserData userdata;
 	private final UserDataReader userdataReader;
@@ -70,6 +72,7 @@ public class CurrentUser {
 				storeUserData(result.getUserData());
 				if (callback != null)
 					callback.run();
+				RefreshDataEvent.fire(this);
 			}
 		});
 	}
@@ -79,7 +82,7 @@ public class CurrentUser {
 		Date now = new Date(2035,1,1); 
 		this.userdata = userdata;
 		if (userdata.getAccessions() != null)
-			this.accessions = userdata.getAccessions();
+			CurrentUser.accessions = userdata.getAccessions();
 		if (this.userdata.getUserID() != null)
 			Cookies.setCookie(useridCookie, this.userdata.getUserID(),now);
  	}
@@ -108,6 +111,11 @@ public class CurrentUser {
 	public void refresh(List<Phenotype> phenotypes) {
 		cache.clear();
 		this.userdata.setPhenotypes(phenotypes);
+	}
+
+	@Override
+	public void fireEvent(GwtEvent<?> event) {
+		eventBus.fireEvent(event);
 	}
 
 }
