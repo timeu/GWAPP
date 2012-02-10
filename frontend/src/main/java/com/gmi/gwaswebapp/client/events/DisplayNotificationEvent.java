@@ -78,6 +78,10 @@ public class DisplayNotificationEvent extends GwtEvent<DisplayNotificationEvent.
 	public static void fireError(HasHandlers source, String caption, String message) {
 		fire(source,caption, message, true, LEVEL_ERROR, DURATION_PERMANENT);
 	}
+	
+	public static void fireWarning(HasHandlers source,String caption, String message) {
+		fire(source,caption,message,true,LEVEL_WARNING,DURATION_NORMAL);
+	}
 
 
 

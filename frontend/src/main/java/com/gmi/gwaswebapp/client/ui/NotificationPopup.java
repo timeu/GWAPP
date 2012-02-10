@@ -23,6 +23,7 @@ public class NotificationPopup extends PopupPanel {
 	interface MyStyle extends CssResource {
 		String notification();
 		String error();
+		String warning();
 	}
 	
 	@UiField MyStyle style;
@@ -54,12 +55,15 @@ public class NotificationPopup extends PopupPanel {
 		this.level = level;
 		switch (level) {
 			case 0:
-				
 				break;
 			case 1:
+				addStyleName(style.warning());
+				removeStyleName(style.error());
+				//setStyleDependentName(style.warning(),true);
 				break;
 			case 2:
 				addStyleName(style.error());
+				removeStyleName(style.warning());
 			case 3:
 				break;
 			

@@ -14,6 +14,7 @@
 			line-height:1.3;
 			-webkit-transition: color 2s linear;
     		-moz-transition: color 2s linear;
+    		z-index:99999;
 		}
 		
 		.notification_content {
@@ -27,6 +28,11 @@
 		.error {
 			background: #b40000 url(notification/img/error-close.png) no-repeat right top;
 		    border: 3px solid #ca3030;
+		}
+		.warning {
+			background: none repeat scroll 0 0 #FDF3B5;
+    		border: 3px solid #FEE3AF;
+	  		color: #CA9A61;
 		}
 	</ui:style>
 	<g:HTMLPanel addStyleNames="{style.notification_content}">
