@@ -8,6 +8,7 @@ import com.gmi.gwaswebapp.client.dto.BaseModel;
 import com.gmi.gwaswebapp.client.dto.Transformation;
 import com.gmi.gwaswebapp.client.mvp.transformation.list.TransformationListPresenter.MyView;
 import com.gmi.gwaswebapp.client.resources.CellTableResources;
+import com.gmi.gwaswebapp.client.ui.QQPlotPopup;
 import com.gmi.gwaswebapp.client.util.notifications.Notification;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.CompositeCell;
@@ -20,6 +21,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -48,7 +50,8 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 	@UiField HTMLPanel transformation_detail_container;
 	@UiField HTMLPanel results_list_container;
 	protected ColumnChart transformation_preview_chart;
-	
+	protected QQPlotPopup qqPlotPopup = new QQPlotPopup();
+	protected PopupPanel popup  = new PopupPanel(true);
 
 	@Inject
 	public TransformationListView(final CellTableResources cellTableResources) {
@@ -56,6 +59,9 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 		transformationTable = new CellTable<Transformation>(15,cellTableResources);
 		initCellTable();
 		widget = uiBinder.createAndBindUi(this);
+		popup.add(qqPlotPopup);
+		popup.setAutoHideOnHistoryEventsEnabled(true);
+		popup.setAnimationEnabled(true);
 	}
 
 	private void initCellTable() {
@@ -131,12 +137,14 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 		
 		List<HasCell<Transformation,?>> actionCells = new ArrayList<HasCell<Transformation,?>>();
 		
-		actionCells.add(new TransformationCellTableColumns.ActionHasCell(new ActionCell<Transformation>("QQ-Plot",new ActionCell.Delegate<Transformation>() {
+		/*actionCells.add(new TransformationCellTableColumns.ActionHasCell(new ActionCell<Transformation>("QQ-Plot",new ActionCell.Delegate<Transformation>() {
 			@Override
 			public void execute(Transformation object) {
-				//getUiHandlers().showQQPlot(object);
+				qqPlotPopup.setData(object);
+				popup.show();
+				popup.center();
 			}
-		})));
+		})));*/
 		
 		actionCells.add(new TransformationCellTableColumns.ActionHasCell(new ActionCell<Transformation>("Delete",new ActionCell.Delegate<Transformation>() {
 			@Override

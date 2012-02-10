@@ -9,6 +9,7 @@ import com.gmi.gwaswebapp.client.dto.Analysis;
 import com.gmi.gwaswebapp.client.dto.BaseModel;
 import com.gmi.gwaswebapp.client.mvp.result.list.ResultListPresenter.MyView;
 import com.gmi.gwaswebapp.client.resources.CellTableResources;
+import com.gmi.gwaswebapp.client.ui.QQPlotPopup;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.CompositeCell;
 import com.google.gwt.cell.client.HasCell;
@@ -17,6 +18,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -34,6 +36,8 @@ public class ResultListView extends ViewWithUiHandlers<ResultListUiHandlers> imp
 	protected JBrowseDataSourceImpl geneDataSource = new JBrowseDataSourceImpl("/gwas/");
 	private final Widget widget;
 	private final CellTableResources cellTableResources;
+	private PopupPanel popup = new PopupPanel(true);
+	private QQPlotPopup qqPlotPopup = new QQPlotPopup();
 	@UiField(provided = true) CellTable<Analysis> resultsTable;
 
 	@Inject
@@ -42,6 +46,8 @@ public class ResultListView extends ViewWithUiHandlers<ResultListUiHandlers> imp
 		resultsTable = new CellTable<Analysis>(15,cellTableResources);
 		initCellTable();
 		widget = uiBinder.createAndBindUi(this);
+		popup.setSize("1100px","500px");
+		popup.add(qqPlotPopup);
 	}
 
 	@Override
@@ -69,7 +75,9 @@ public class ResultListView extends ViewWithUiHandlers<ResultListUiHandlers> imp
 		actionCells.add(new ResultsCellTableColumns.ActionHasCell(new ActionCell<Analysis>("QQ-Plot",new ActionCell.Delegate<Analysis>() {
 			@Override
 			public void execute(Analysis object) {
-					//getUiHandlers().showQQPlot(object);
+				qqPlotPopup.setData(object);
+				popup.show();
+				popup.center();
 			}
 		})));
 		

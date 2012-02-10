@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.container {
+	      float:left;
+
+	    }
+	</ui:style>
+	<g:HTMLPanel >
+		<div class="{style.container}">
+			<g:Image ui:field="qq_plot" ></g:Image>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 
