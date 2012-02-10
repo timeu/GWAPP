@@ -194,6 +194,10 @@ public class AnalysisView extends ViewWithUiHandlers<AnalysisUiHandlers> impleme
 	
 	@Override
 	public void setSelectedTreeItem(BaseModel itemToSelect) {
+		if (itemToSelect == null) {
+			tree.setSelectedItem(null);
+			return;
+		}
 		Iterator<TreeItem> iterator = null;
 		BaseModel item = null;
 		if (tree.getSelectedItem() != null) {
