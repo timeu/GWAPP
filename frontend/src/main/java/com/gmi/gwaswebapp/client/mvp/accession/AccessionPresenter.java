@@ -100,9 +100,9 @@ public class AccessionPresenter extends
 		this.dispatch = dispatch;
 		this.currentUser = currentUser;
 		getView().setUiHandlers(this);
-		getView().addMarkers(currentUser.getUserData().getAccessions());
+		getView().addMarkers(CurrentUser.accessions);
 		accessionDataProvider.addDataDisplay(getView().getDisplay());
-		accessionDataProvider.setList(currentUser.getUserData().getAccessions());
+		accessionDataProvider.setList(CurrentUser.accessions);
 		accessionPredicates.add(accessionNamePredicate);
 		accessionPredicates.add(accessionCountryPredicate);
 		accessionPredicates.add(accessionCollectorPredicate);
@@ -138,7 +138,7 @@ public class AccessionPresenter extends
 				accessionNamePredicate.setValue(value);
 				getView().getSearchCriterias().get(SearchTerm.CRITERIA.Name).setValue(value);
 				getView().getSearchCriterias().get(SearchTerm.CRITERIA.AccessionID).setValue((accessionIdPredicate.getValue() != null ? accessionIdPredicate.getValue().toString():""));
-				accessionDataProvider.setList(Accession.filter(currentUser.getUserData().getAccessions(),accessionPredicates));
+				accessionDataProvider.setList(Accession.filter(CurrentUser.accessions,accessionPredicates));
 				
 			}
 		}));
@@ -150,7 +150,7 @@ public class AccessionPresenter extends
 				String value = getView().getSearchCountryHandlers().getText();
 				accessionCountryPredicate.setValue(value);
 				getView().getSearchCriterias().get(SearchTerm.CRITERIA.Country).setValue(value);
-				accessionDataProvider.setList(Accession.filter(currentUser.getUserData().getAccessions(),accessionPredicates));
+				accessionDataProvider.setList(Accession.filter(CurrentUser.accessions,accessionPredicates));
 			}
 		}));
 		
@@ -161,7 +161,7 @@ public class AccessionPresenter extends
 				String value = getView().getSearchCollectorHandlers().getText();
 				accessionCollectorPredicate.setValue(value);
 				getView().getSearchCriterias().get(SearchTerm.CRITERIA.Collector).setValue(value);
-				accessionDataProvider.setList(Accession.filter(currentUser.getUserData().getAccessions(),accessionPredicates));
+				accessionDataProvider.setList(Accession.filter(CurrentUser.accessions,accessionPredicates));
 			}
 		}));
 	}
