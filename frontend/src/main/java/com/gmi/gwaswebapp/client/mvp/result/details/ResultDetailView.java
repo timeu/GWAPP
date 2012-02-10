@@ -42,6 +42,8 @@ import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SuggestBox;
 import com.google.gwt.user.client.ui.SuggestOracle;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.SuggestBox.DefaultSuggestionDisplay;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
@@ -49,6 +51,7 @@ import com.google.gwt.view.client.HasData;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.DataView;
+import com.google.gwt.visualization.client.LegendPosition;
 import com.google.gwt.visualization.client.visualizations.corechart.AreaChart;
 import com.google.gwt.visualization.client.visualizations.corechart.AxisOptions;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
@@ -71,6 +74,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	protected SNPPopup snpPopup = new SNPPopup();
 	@UiField(provided=true)	final SuggestBox searchGene;
 	@UiField FlowPanel container;
+	@UiField TabLayoutPanel gwas_tabpanel;
 	@UiField FlowPanel container_cofactor;
 	//@UiField Button selected_optimal_snp;
 	@UiField(provided = true) CellTable<Cofactor> cofactorTable;
@@ -83,7 +87,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	protected List<GWASGeneViewer> gwasGeneViewers = new ArrayList<GWASGeneViewer>();
 	private String[] colors = {"blue", "green", "red", "cyan", "purple"};
 	private String[] gene_mark_colors = {"red", "red", "blue", "red", "green"};
-	
+	private boolean requireResize = true;
 
 	@Inject
 	public ResultDetailView(final CellTableResources cellTableResources) {
@@ -170,7 +174,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 				return Double.toString(object.getPercVarExpl());
 			}
 			
-		}, "percVarExpl");
+		}, "% var. explained");
 		cofactorTable.addColumn(new TextColumn<Cofactor>(){
 
 			@Override
@@ -178,7 +182,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 				return Double.toString(object.getRemainingPercGenVar());
 			}
 			
-		}, "percGenVarRem");
+		}, "% gen. var. remaining");
 		cofactorTable.addColumn(new TextColumn<Cofactor>(){
 
 			@Override
@@ -186,9 +190,9 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 				return Double.toString(object.getRemainingPercErrVar());
 			}
 			
-		}, "percErrVarRem");
+		}, "% err. var. remaining");
 		
-		statistic_chart = new LineChart(DataTable.create(), createStatsticChartOptions());
+		statistic_chart = new LineChart(DataTable.create(), createStatsticChartOptions(""));
 		area_chart = new AreaChart(DataTable.create(), createVarChartOptions());
 		widget = uiBinder.createAndBindUi(this);
 		if (statistic_type.getItemCount() == 0)
@@ -208,12 +212,35 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 				snpPopup.hide();
 			}
 		});
+		
+		gwas_tabpanel.addSelectionHandler(new SelectionHandler<Integer>() {
+
+			@Override
+			public void onSelection(SelectionEvent<Integer> event) {
+				if (event.getSelectedItem() == 0) {
+					if (!requireResize) 
+						return;
+					for (GWASGeneViewer gwasGeneViewer: gwasGeneViewers) {
+							gwasGeneViewer.onResize();
+					}
+					requireResize = false;
+				}
+			}
+			
+		});
 	}
 
-	private Options createStatsticChartOptions() {
+	private Options createStatsticChartOptions(String statistic) {
 		Options options = Options.create();
 	    options.setWidth(600);
 	    options.setHeight(400);
+	    AxisOptions vaxis_options = AxisOptions.create();
+		vaxis_options.setTitle(statistic);
+		AxisOptions haxis_options = AxisOptions.create();
+		haxis_options.setTitle("Step number");
+		options.setVAxisOptions(vaxis_options);
+		options.setHAxisOptions(haxis_options);
+		options.setLegend(LegendPosition.TOP);
 	    return options;
 	}
 	
@@ -269,6 +296,9 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 			List<Integer> chrLengths, double maxScore,
 			double bonferroniThreshold) {
 		clearAssociationCharts();
+		requireResize = true;
+		if (gwas_tabpanel.getSelectedIndex() == 0) 
+			requireResize = false;
 		Integer i = 1;
 		java.util.Iterator<DataTable> iterator = dataTables.iterator();
 		int minWidth = 600;
@@ -336,7 +366,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 
 	@Override
 	public void drawStatisticPlots(DataView view) {
-		Options options = createStatsticChartOptions();
+		Options options = createStatsticChartOptions(statistic_type.getItemText(statistic_type.getSelectedIndex()));
 		if (statistic_chart == null) {
 			statistic_chart = new LineChart(view,options );
 			statistic_container.add(statistic_chart);
