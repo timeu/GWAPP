@@ -138,7 +138,7 @@ public class AccessionView extends ViewWithUiHandlers<AccessionUiHandlers> imple
 		table.addColumn(new AccessionCellTableColumns.CollectionDateColumn(),"Date");
 		table.addColumn(new AccessionCellTableColumns.CollectorColumn(searchTerm),"Collector");
 		
-		table.setColumnWidth(table.getColumn(0),5, Unit.PCT);
+		table.setColumnWidth(table.getColumn(0),6, Unit.PCT);
 		table.setColumnWidth(table.getColumn(1),15, Unit.PCT);
 		table.setColumnWidth(table.getColumn(2),8, Unit.PCT);
 		table.setColumnWidth(table.getColumn(3),8, Unit.PCT);
@@ -181,6 +181,8 @@ public class AccessionView extends ViewWithUiHandlers<AccessionUiHandlers> imple
 		clearMap();
 		accessionId2Marker.clear();
 		for (final Accession accession:accessions) {
+			if (accession.getLatitude() == null || accession.getLongitude() == null)
+				continue;
 			MarkerOptions options = MarkerOptions.newInstance();
 			final Icon icon = Icon.getDefaultIcon();
 			icon.setShadowSize(Size.newInstance(0, 0));
