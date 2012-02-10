@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.visualization.client.ChartArea;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.visualizations.MotionChart;
+import com.google.gwt.visualization.client.visualizations.corechart.AxisOptions;
 import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.gwtplatform.mvp.client.ViewImpl;
@@ -112,6 +113,9 @@ public class TransformationDetailView extends ViewImpl implements MyView{
 		options.setHeight(400);
 		options.setWidth(widget.getOffsetWidth()-18);
 		options.setBackgroundColor("#FAFAFA");
+		AxisOptions vaxis_options = AxisOptions.create();
+		vaxis_options.setMinValue(0.0);
+		options.setVAxisOptions(vaxis_options);
 		ChartArea area = ChartArea.create();
 		area.setLeft("10%");
 		area.setTop("20%");
