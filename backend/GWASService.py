@@ -206,9 +206,12 @@ class GWASService:
             isCriteria = True
         if isCriteria == False:
             for row in table.iterrows(start=int(start),stop=table.nrows):
-                collection_date = datetime.datetime.fromtimestamp(int(row[1]))
-                collection_date = datetime.datetime.strftime(collection_date,'%d.%m.%Y')
-                accession = {'accession_id':row[0],'collection_date':collection_date,'collector':unicode(row[2],'latin1'),'country':row[4],'latitude':row[5],'longitude':row[6],'name':unicode(row[7],'utf8')}
+                if row['collection_date'] != 0:
+                    collection_date = datetime.datetime.fromtimestamp(int(row['collection_date']))
+                    collection_date = datetime.datetime.strftime(collection_date,'%d.%m.%Y')
+                else:
+                    collection_date = None
+                accession = {'accession_id':row['accession_id'],'collection_date':collection_date,'collector':unicode(row['collector'],'latin1'),'country':row['country_ISO'],'latitude':row['latitude'] if not numpy.isnan(row['latitude']) else None,'longitude':row['longitude'] if not numpy.isnan(row['longitude']) else None ,'name':unicode(row['name'],'utf8')}
                 accessions.append(accession)
             count = table.nrows
         else:
@@ -218,7 +221,8 @@ class GWASService:
                     if i >= start and i <= stop:
                         collection_date = datetime.fromtimestamp(int(row[1]))
                         collection_date = datetime.strftime(collection_date,'%d.%m.%Y')
-                        accession = {'accession_id':row[0],'collection_date':collection_date,'collector':unicode(row[2],'latin1'),'country':row[4],'latitude':row[4],'longitude':row[5],'name':unicode(row[6],'utf8')}
+                        accession = {'accession_id':row[0],'collection_date':collection_date,'collector':unicode(row[2],'latin1'),'country':row[4],'latitude':row[4] if not numpy.isnan(row[4]) else None,'longitude':row[5] if not numpy.isnan(row[5]) else None,'name':unicode(row[6],'utf8')}
+                        
                         accessions.append(accession)
                     i = i +1
             count = i
@@ -399,8 +403,21 @@ class GWASService:
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
+    def check_gwas(self):
+        result = {'status':'OK'}
+        path = self._getUserPath()
+        gwa_record = gwa_records.GWASRecord(path)
+        gwa_record.open("r+")
+        check = gwa_record.check_run_count()
+        if check is not None:
+            result['status'] = 'WARNING'
+            result['statustext'] = check
+        return result
+    
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
     def run_gwas(self,phenotype,dataset,transformation,analysis,result_name=None,chromosome=None,position=None,showProgress=None):
-      #  try:
+        try:
             response = cherrypy.response
             response.timeout = 3600
             result = {}
@@ -412,7 +429,7 @@ class GWASService:
             kinship_data_file = base_path + 'kinship_matrix_cm54.pickled'
             data = {}
             result = {}
-            progress_filename = '/tmp/%s_%s_%s_%s.log' %(phenotype,dataset,transformation,analysis)
+            progress_filename = '/tmp/%s_%s_%s_%s_%s.log' %(phenotype,dataset,transformation,analysis,self._getUserId())
             if showProgress is not None:
                 if not os.path.isfile(progress_filename):
                     result['progress']=100
@@ -431,9 +448,12 @@ class GWASService:
                 result ={"status":"OK","statustext":"",'phenotypes':gwa_record.get_phenotype_info(),'result_name':result_name}
                 showProgress_writer.close_file()
                 os.remove(progress_filename)
-       # except Exception, err:
-        #    result = {'status':'ERROR','statustext':str(err)}
-            return result
+        except Exception, err:
+            result = {'status':'ERROR','statustext':str(err)}
+        finally:
+            if showProgress is None:
+                gwa_record.dec_run_count()
+        return result
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
@@ -455,6 +475,16 @@ class GWASService:
         except Exception, err:
             result ={"status":"ERROR","statustext":"%s"%str(err)}
         return result 
+    
+    @cherrypy.expose
+    @cherrypy.tools.response_headers(headers=[('Content-Type', 'image/png')])
+    def getQQPlotImage(self,phenotype,dataset,transformation,analysis=None,result_name='results'):
+        path = self._getUserPath()
+        gwa_record = gwa_records.GWASRecord(path)
+        gwa_record.open("r+")
+        image = gwa_record.get_qq_plots(phenotype, dataset, transformation, analysis, result_name)
+        return image
+        
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
