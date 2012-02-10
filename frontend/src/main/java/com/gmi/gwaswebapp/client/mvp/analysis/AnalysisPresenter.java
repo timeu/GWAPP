@@ -18,6 +18,8 @@ import com.gmi.gwaswebapp.client.events.NewTransformationSavedEvent;
 import com.gmi.gwaswebapp.client.events.DeleteResultEvent.DeleteResultEventHandler;
 import com.gmi.gwaswebapp.client.events.DeleteTransformationEvent.DeleteTransformationEventHandler;
 import com.gmi.gwaswebapp.client.events.NewTransformationSavedEvent.NewTransformationSavedHandler;
+import com.gmi.gwaswebapp.client.events.RefreshDataEvent;
+import com.gmi.gwaswebapp.client.events.RefreshDataEvent.RefreshDataEventHandler;
 import com.gmi.gwaswebapp.client.events.RunGWASFinishedEvent;
 import com.gmi.gwaswebapp.client.events.SaveDatasetEvent;
 import com.gmi.gwaswebapp.client.events.UpdateDataEvent;
@@ -53,7 +55,8 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 							            RunGWASFinishedEventHandler,
 							            DeleteResultEventHandler,
 							            NewDatasetEventHandler,
-							            SaveDatasetEventHandler{
+							            SaveDatasetEventHandler,
+							            RefreshDataEventHandler{
 
 	
 	@ProxyCodeSplit
@@ -126,6 +129,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 			phenotypeListPresenter.setPhenotypeList(currentUser.getUserData().getPhenotypes());
 			clearSlot(TYPE_SetPhenotypeDetailContent);
 			clearSlot(TYPE_SetResultDetailContent);
+			getView().setSelectedTreeItem(null);
 		}
 		else
 		{
@@ -228,6 +232,11 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	}
 	
 
+	@ProxyEvent
+	@Override
+	public void onRefreshData(RefreshDataEvent event) {
+		isTreeDirty = true;
+	}
 	
 	
 	@ProxyEvent
