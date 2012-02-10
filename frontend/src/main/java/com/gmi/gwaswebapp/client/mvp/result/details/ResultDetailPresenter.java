@@ -6,6 +6,8 @@ import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.JBrowseDataS
 
 
 
+import com.gmi.gwaswebapp.client.command.CheckGWASAction;
+import com.gmi.gwaswebapp.client.command.CheckGWASActionResult;
 import com.gmi.gwaswebapp.client.command.GetAssociationDataAction;
 import com.gmi.gwaswebapp.client.command.GetAssociationDataActionResult;
 import com.gmi.gwaswebapp.client.command.RunGWASAction;
@@ -15,6 +17,7 @@ import com.gmi.gwaswebapp.client.dto.Analysis;
 import com.gmi.gwaswebapp.client.dto.Analysis.TYPE;
 import com.gmi.gwaswebapp.client.dto.BackendResult;
 import com.gmi.gwaswebapp.client.dto.Cofactor;
+import com.gmi.gwaswebapp.client.dto.Readers.BackendResultReader;
 import com.gmi.gwaswebapp.client.dto.Readers.GWASResultReader;
 import com.gmi.gwaswebapp.client.dto.ResultData;
 import com.gmi.gwaswebapp.client.events.DisplayNotificationEvent;
@@ -55,6 +58,10 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 		void setDownloadURL(String url);
 
 		void drawVarStatisticChart(AbstractDataTable data);
+
+		void detachCharts();
+
+		String getSelectedStatistic();
 	}
 	
 	private Analysis analysis;
@@ -64,13 +71,15 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 	protected DataTable varStatData = null;
 	protected List<DataTable> dataTables = null;
 	private final GWASResultReader gwasResultReader;
+	private final BackendResultReader backendResultReader;
 	
 	@Inject
-	public ResultDetailPresenter(EventBus eventBus, MyView view,final DispatchAsync dispatch,final GWASResultReader gwasResultReader) {
+	public ResultDetailPresenter(EventBus eventBus, MyView view,final DispatchAsync dispatch,final GWASResultReader gwasResultReader,final BackendResultReader backendResultReader) {
 		super(eventBus, view);
 		getView().setUiHandlers(this);
 		this.dispatch = dispatch;
 		this.gwasResultReader = gwasResultReader;
+		this.backendResultReader = backendResultReader;
 		dataProvider.addDataDisplay(getView().getDisplay());
 	}
 	
@@ -114,7 +123,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 				 statistics_data.setValue(index, 0, cofactor.getStep().toString());
 				 statistics_data.setValue(index, 1, cofactor.getBic());
 				 statistics_data.setValue(index, 2, cofactor.getEbic());
-				 statistics_data.setValue(index, 3, -1*Math.log10(cofactor.getMaxCofPval()));
+				 statistics_data.setValue(index, 3, cofactor.getMaxCofPval());
 				 statistics_data.setValue(index, 4, cofactor.getPseudoHeritability());
 				 varStatData.setValue(index, 0, cofactor.getStep().toString());
 				 varStatData.setValue(index, 1, cofactor.getPercVarExpl());
@@ -122,6 +131,10 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 				 varStatData.setValue(index, 3, cofactor.getRemainingPercErrVar());
 			}
 			getView().drawVarStatisticChart(varStatData);
+			String selectedStatistic = getView().getSelectedStatistic();
+			if (selectedStatistic != null) {
+				loadStatisticChart(selectedStatistic);
+			}
 		}
 		
 	}
@@ -144,33 +157,50 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 
 
 	@Override
-	public void runStepWiseGWAS(Integer chromosome, Integer position) {
-		if (analysis.getType() != TYPE.EMMAX) {
+	public void runStepWiseGWAS(final Integer chromosome, final Integer position) {
+		if (analysis.getType() != TYPE.EMMAX && analysis.getType() != TYPE.LM) {
 			DisplayNotificationEvent.fireError(ResultDetailPresenter.this, "GWAS-analysis", "Step-wise is only supported for EMMAX");
 			return;
 		}
-		final RunGWASAction gwasAction = new RunGWASAction(analysis.getPhenotype(),analysis.getDataset(), analysis.getTransformation(),analysis.getType(),analysis.getResultName(),chromosome,position,gwasResultReader);
-		dispatch.execute(gwasAction, new GWASCallback<RunGWASActionResult>(getEventBus()) {
+		dispatch.execute(new CheckGWASAction(backendResultReader),new GWASCallback<CheckGWASActionResult>(getEventBus()) {
 			@Override
-			public void onFailure(Throwable caught) {
-				ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
-				super.onFailure(caught);
-			}
-			
-			@Override
-			public void onSuccess(RunGWASActionResult result) {
-				if (result.result.getStatus() ==  BackendResult.STATUS.OK)
-					RunGWASFinishedEvent.fire(ResultDetailPresenter.this, result.Chromosome, result.Position, result.Phenotypes, result.Phenotype, result.Dataset, result.Transformation, result.ResultName);
-				else {
-					ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
-					DisplayNotificationEvent.fireError(ResultDetailPresenter.this, "Backend-Error", result.result.getStatustext());
+			public void onSuccess(CheckGWASActionResult result) {
+				if (result.getResult().getStatus() == BackendResult.STATUS.OK) {
+					final RunGWASAction gwasAction = new RunGWASAction(analysis.getPhenotype(),analysis.getDataset(), analysis.getTransformation(),analysis.getType(),analysis.getResultName(),chromosome,position,gwasResultReader);
+					dispatch.execute(gwasAction, new GWASCallback<RunGWASActionResult>(getEventBus()) {
+						@Override
+						public void onFailure(Throwable caught) {
+							ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
+							super.onFailure(caught);
+						}
+						
+						@Override
+						public void onSuccess(RunGWASActionResult result) {
+							if (result.result.getStatus() ==  BackendResult.STATUS.OK) {
+								RunGWASFinishedEvent.fire(ResultDetailPresenter.this, result.Chromosome, result.Position, result.Phenotypes, result.Phenotype, result.Dataset, result.Transformation, result.ResultName);
+							}
+							else if (result.result.getStatus() == BackendResult.STATUS.WARNING) {
+								DisplayNotificationEvent.fireWarning(ResultDetailPresenter.this, "GWAS-Analysis", result.result.getStatustext());
+							}
+							else {
+								ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
+								DisplayNotificationEvent.fireError(ResultDetailPresenter.this, "Backend-Error", result.result.getStatustext());
+							}
+						}
+					});
+					ProgressBarEvent.fire(this,gwasAction.getUrl());
 				}
-					
+				else
+				{
+					DisplayNotificationEvent.fireWarning(ResultDetailPresenter.this, "GWAS-Analysis", result.getResult().getStatustext());
+				}
 			}
 		});
-		ProgressBarEvent.fire(this,gwasAction.getUrl());
 	}
 	
-	
-
+	@Override
+	protected void onHide() {
+		super.onHide();
+		getView().detachCharts();
+	}
 }

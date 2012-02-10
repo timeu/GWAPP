@@ -1,6 +1,7 @@
 package com.gmi.gwaswebapp.client.gin;
 
 
+import com.gmi.gwaswebapp.client.command.impl.CheckGWASActionHandler;
 import com.gmi.gwaswebapp.client.command.impl.DeleteDatasetActionHandler;
 import com.gmi.gwaswebapp.client.command.impl.DeletePhenotypeActionHandler;
 import com.gmi.gwaswebapp.client.command.impl.DeleteResultActionHandler;
@@ -34,7 +35,8 @@ public class GWASClientActionHandlerRegistry extends DefaultClientActionHandlerR
 			GetAccessionsActionHandler getAccessionsActionHandler,
 			GetLocationDistrubtionActionHandler getLocationDistributionActionHandler,
 			SaveDatasetActionHandler saveDatasetActionHandler,
-			DeleteDatasetActionHandler deleteDatasetActionHandler)
+			DeleteDatasetActionHandler deleteDatasetActionHandler,
+			CheckGWASActionHandler checkGWASActionHandler)
 	{
 		register(getUserInfoActionHandler);
 		register(getTransformationActionHandler);
@@ -50,5 +52,6 @@ public class GWASClientActionHandlerRegistry extends DefaultClientActionHandlerR
 		register(getLocationDistributionActionHandler);
 		register(saveDatasetActionHandler);
 		register(deleteDatasetActionHandler);
+		register(checkGWASActionHandler);
 	}
 }

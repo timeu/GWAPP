@@ -56,12 +56,16 @@
 			     <g:HTMLPanel addStyleNames="{mainRes.style.box_shadow} {style.chart_container} ">
 			      	<div class ="{mainRes.style.box_container}">
 			      		Statistic:<g:ListBox ui:field="statistic_type"></g:ListBox>
-			       		<gviz:LineChart ui:field="statistic_chart" visible="false"></gviz:LineChart>
+						<g:HTMLPanel ui:field="statistic_container">
+				       		<gviz:LineChart ui:field="statistic_chart" visible="false"></gviz:LineChart>
+			       		</g:HTMLPanel>
 			       	</div>
 			     </g:HTMLPanel>
 			       <g:HTMLPanel addStyleNames="{mainRes.style.box_shadow} {style.chart_container} {style.chart_container_right}">
 			      	<div class ="{mainRes.style.box_container}">
-			       		<gviz:AreaChart ui:field="area_chart" visible="false"></gviz:AreaChart>
+			      		<g:HTMLPanel ui:field="area_chart_container">
+				       		<gviz:AreaChart ui:field="area_chart" visible="false"></gviz:AreaChart>
+			       		</g:HTMLPanel>
 			       	</div>
 			     </g:HTMLPanel>
 	     </g:FlowPanel>

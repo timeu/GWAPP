@@ -3,6 +3,8 @@ package com.gmi.gwaswebapp.client.mvp.transformation.list;
 import java.util.List;
 
 import com.gmi.gwaswebapp.client.command.BaseStatusResult;
+import com.gmi.gwaswebapp.client.command.CheckGWASAction;
+import com.gmi.gwaswebapp.client.command.CheckGWASActionResult;
 import com.gmi.gwaswebapp.client.command.DeleteTransformationAction;
 import com.gmi.gwaswebapp.client.command.PreviewTransformationAction;
 import com.gmi.gwaswebapp.client.command.PreviewTransformationActionResult;
@@ -22,6 +24,7 @@ import com.gmi.gwaswebapp.client.events.NewTransformationSavedEvent;
 import com.gmi.gwaswebapp.client.events.ProgressBarEvent;
 import com.gmi.gwaswebapp.client.events.RunGWASFinishedEvent;
 import com.gmi.gwaswebapp.client.mvp.progress.ProgressPresenter;
+import com.gmi.gwaswebapp.client.mvp.result.details.ResultDetailPresenter;
 import com.gmi.gwaswebapp.client.mvp.result.list.ResultListPresenter;
 import com.gmi.gwaswebapp.client.mvp.transformation.details.TransformationDetailPresenter;
 import com.google.gwt.view.client.HasData;
@@ -170,32 +173,45 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 	}
 
 	@Override
-	public void performGWAS(Transformation transformation, TYPE analysis) {
-		final RunGWASAction gwasAction = new RunGWASAction(transformation.getPhenotype(),transformation.getDataset(), transformation.getName(), analysis, gwasResultReader);
-		dispatch.execute(gwasAction, new GWASCallback<RunGWASActionResult>(getEventBus()) {
-			@Override
-			public void onFailure(Throwable caught) {
-				ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
-				getView().showNotification("", "Error", "GWAS analysis failed");
-				super.onFailure(caught);
-			}
-
-			@Override
-			public void onSuccess(RunGWASActionResult result) {
-				if (result.result.getStatus() ==  BackendResult.STATUS.OK) {
-					googleAnalytics.trackEvent("GWAS", "successful");
-					RunGWASFinishedEvent.fire(TransformationListPresenter.this, result.Chromosome, result.Position, result.Phenotypes, result.Phenotype, result.Dataset,result.Transformation, result.ResultName);
+	public void performGWAS(final Transformation transformation, final TYPE analysis) {
+		dispatch.execute(new CheckGWASAction(backendResultReader),new GWASCallback<CheckGWASActionResult>(getEventBus()) {
+				@Override
+				public void onSuccess(CheckGWASActionResult result) {
+					if (result.getResult().getStatus() == BackendResult.STATUS.OK) {
+						final RunGWASAction gwasAction = new RunGWASAction(transformation.getPhenotype(),transformation.getDataset(), transformation.getName(), analysis, gwasResultReader);
+						dispatch.execute(gwasAction, new GWASCallback<RunGWASActionResult>(getEventBus()) {
+							@Override
+							public void onFailure(Throwable caught) {
+								ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
+								getView().showNotification("", "Error", "GWAS analysis failed");
+								super.onFailure(caught);
+							}
+				
+							@Override
+							public void onSuccess(RunGWASActionResult result) {
+								if (result.result.getStatus() ==  BackendResult.STATUS.OK) {
+									googleAnalytics.trackEvent("GWAS", "successful");
+									RunGWASFinishedEvent.fire(TransformationListPresenter.this, result.Chromosome, result.Position, result.Phenotypes, result.Phenotype, result.Dataset,result.Transformation, result.ResultName);
+								}
+								else if (result.result.getStatus() == BackendResult.STATUS.WARNING) {
+									DisplayNotificationEvent.fireWarning(TransformationListPresenter.this, "GWAS-Analysis", result.result.getStatustext());
+								}
+								else {
+									googleAnalytics.trackEvent("GWAS", "failed");
+									ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
+									getView().showNotification("", "Error", "GWAS analysis failed");
+									DisplayNotificationEvent.fireError(TransformationListPresenter.this, "Backend-Error", result.result.getStatustext());
+								}
+							}
+						});
+						ProgressBarEvent.fire(this,gwasAction.getUrl());
+					}
+					else
+					{
+						DisplayNotificationEvent.fireWarning(TransformationListPresenter.this, "GWAS-Analysis", result.getResult().getStatustext());
+					}
 				}
-				else {
-					googleAnalytics.trackEvent("GWAS", "failed");
-					ProgressBarEvent.fire(this,gwasAction.getUrl(),true);
-					getView().showNotification("", "Error", "GWAS analysis failed");
-					DisplayNotificationEvent.fireError(TransformationListPresenter.this, "Backend-Error", result.result.getStatustext());
-				}
-			}
-			
 		});
-		ProgressBarEvent.fire(this,gwasAction.getUrl());
 	}
 	
 	

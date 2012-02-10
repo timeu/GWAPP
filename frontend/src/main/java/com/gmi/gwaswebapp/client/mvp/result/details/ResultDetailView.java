@@ -35,6 +35,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.InlineHyperlink;
 import com.google.gwt.user.client.ui.IsWidget;
@@ -77,6 +78,8 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	@UiField(provided = true) AreaChart area_chart;
  	@UiField ListBox statistic_type;
 	@UiField AnchorElement download_link;
+	@UiField HTMLPanel statistic_container;
+	@UiField HTMLPanel area_chart_container;
 	protected List<GWASGeneViewer> gwasGeneViewers = new ArrayList<GWASGeneViewer>();
 	private String[] colors = {"blue", "green", "red", "cyan", "purple"};
 	private String[] gene_mark_colors = {"red", "red", "blue", "red", "green"};
@@ -175,7 +178,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 				return Double.toString(object.getRemainingPercGenVar());
 			}
 			
-		}, "percGenVarExpl");
+		}, "percGenVarRem");
 		cofactorTable.addColumn(new TextColumn<Cofactor>(){
 
 			@Override
@@ -183,7 +186,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 				return Double.toString(object.getRemainingPercErrVar());
 			}
 			
-		}, "percErrVarExpl");
+		}, "percErrVarRem");
 		
 		statistic_chart = new LineChart(DataTable.create(), createStatsticChartOptions());
 		area_chart = new AreaChart(DataTable.create(), createVarChartOptions());
@@ -192,9 +195,9 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 		{
 			statistic_type.addItem("", "");
 			statistic_type.addItem("BIC", "1");
-			statistic_type.addItem("eBIC", "3");
-			statistic_type.addItem("max cofactor pValue", "4");
-			statistic_type.addItem("pseudo-heritability", "5");
+			statistic_type.addItem("eBIC", "2");
+			statistic_type.addItem("max cofactor pValue", "3");
+			statistic_type.addItem("pseudo-heritability", "4");
 		}
 		
 		snpPopup.getRunStepWiseLink().addClickHandler(new ClickHandler() {
@@ -310,6 +313,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 					
 				});
 			}
+			chart.clearSelection();
 			for (Cofactor cofactor: cofactors){
 				if (cofactor.getChr() == i)
 				{
@@ -332,9 +336,15 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 
 	@Override
 	public void drawStatisticPlots(DataView view) {
-		statistic_chart.setVisible(true);
 		Options options = createStatsticChartOptions();
-		statistic_chart.draw(view,options);
+		if (statistic_chart == null) {
+			statistic_chart = new LineChart(view,options );
+			statistic_container.add(statistic_chart);
+		}
+		else
+			statistic_chart.draw(view, options);
+		
+		statistic_chart.setVisible(true);
 	}
 
 	@Override
@@ -351,14 +361,32 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 
 	@Override
 	public void drawVarStatisticChart(AbstractDataTable data) {
+		Options options = createVarChartOptions();
 		if (data.getNumberOfRows() > 0)	{
+			if (area_chart == null) {
+				area_chart = new AreaChart(data, options); 	
+				area_chart_container.add(area_chart);
+			}
+			else
+				area_chart.draw(data,options);
 			area_chart.setVisible(true);
-			Options options = createVarChartOptions();
-			area_chart.draw(data,options);
 		}
-				
 	}
 
+	@Override
+	public void detachCharts() {
+		statistic_type.setSelectedIndex(0);
+		statistic_container.clear();
+		statistic_chart = null;
+		area_chart_container.clear();
+		area_chart = null;
+	}
 
+	@Override
+	public String getSelectedStatistic() {
+		if (statistic_type.getSelectedIndex() <= 0)
+			return null;
+		return statistic_type.getValue(statistic_type.getSelectedIndex());
+	}
 
 }
