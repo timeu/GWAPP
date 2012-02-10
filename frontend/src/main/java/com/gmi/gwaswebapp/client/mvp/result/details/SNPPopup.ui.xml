@@ -32,7 +32,7 @@
 	<g:HTMLPanel addStyleNames="{style.popup_content}">
 		<ul>
 			<li>
-				<g:Anchor ui:field="run_step_wise_link" text="Run Step-Wise GWAS" addStyleNames="{style.actionLink}"></g:Anchor>
+				<g:Anchor ui:field="run_step_wise_link" text="Run Conditional GWAS" addStyleNames="{style.actionLink}"></g:Anchor>
 			</li>
 		</ul>
 	</g:HTMLPanel>
