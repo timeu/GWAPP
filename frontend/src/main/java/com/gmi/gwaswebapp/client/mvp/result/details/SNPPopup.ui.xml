@@ -3,17 +3,17 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 	<ui:style type="com.gmi.gwaswebapp.client.mvp.result.details.SNPPopup.MyStyle">
 		.popup  {
-			color: white;
-			border-radius: 5px;
-			-moz-border-radius: 5px;
-			-webkit-border-radius: 5px;
+			-moz-user-select: none;
+		    background: none repeat scroll 0 0 #FFFFFF;
+		    border: 1px solid rgba(0, 0, 0, 0.2);
+		    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		    clip: auto !important;
+		    padding: 0 0 6px;
+		    z-index: 99;
 			font-size: 100%;
-			background: #C8CCD0;
 			font-weight: bold;
 			opacity: 0.9;
 			line-height:1.3;
-			-webkit-transition: color 2s linear;
-    		-moz-transition: color 2s linear;
 		}
 		
 		.popup_content {
@@ -22,6 +22,9 @@
 		
 		.popup p{
 			font-size:15px;
+		}
+		.popup_content ul {
+			padding-left:20px;
 		}
 		.actionLink {
 		 cursor:pointer;	
