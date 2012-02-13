@@ -3,7 +3,19 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client">
 	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
-	<ui:style>
+	<ui:style type="com.gmi.gwaswebapp.client.mvp.result.list.ResultListView.MyStyle">
+	.popup {
+			-moz-user-select: none;
+		    background: none repeat scroll 0 0 #FFFFFF;
+		    border: 1px solid rgba(0, 0, 0, 0.2);
+		    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+		    clip: auto !important;
+		    padding: 0 0 6px;
+		    z-index: 99;
+			font-size: 100%;
+			font-weight: bold;
+			opacity: 0.9;
+		}
 	.container {
 		float:left;
 		margin-top:10px;	

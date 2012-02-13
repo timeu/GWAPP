@@ -14,6 +14,7 @@ import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.CompositeCell;
 import com.google.gwt.cell.client.HasCell;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -33,12 +34,17 @@ public class ResultListView extends ViewWithUiHandlers<ResultListUiHandlers> imp
 	interface ResultListViewUiBinder extends UiBinder<Widget, ResultListView> {
 	}
 	
+	interface MyStyle extends CssResource {
+		String popup();
+		String container();
+	}
+	
 	protected JBrowseDataSourceImpl geneDataSource = new JBrowseDataSourceImpl("/gwas/");
 	private final Widget widget;
 	private final CellTableResources cellTableResources;
 	private PopupPanel popup = new PopupPanel(true);
-	private QQPlotPopup qqPlotPopup = new QQPlotPopup();
 	@UiField(provided = true) CellTable<Analysis> resultsTable;
+	@UiField MyStyle style;
 
 	@Inject
 	public ResultListView(final CellTableResources cellTableResources) {
@@ -47,7 +53,7 @@ public class ResultListView extends ViewWithUiHandlers<ResultListUiHandlers> imp
 		initCellTable();
 		widget = uiBinder.createAndBindUi(this);
 		popup.setSize("1100px","500px");
-		popup.add(qqPlotPopup);
+		popup.setStylePrimaryName(style.popup());
 	}
 
 	@Override
@@ -75,6 +81,9 @@ public class ResultListView extends ViewWithUiHandlers<ResultListUiHandlers> imp
 		actionCells.add(new ResultsCellTableColumns.ActionHasCell(new ActionCell<Analysis>("QQ-Plot",new ActionCell.Delegate<Analysis>() {
 			@Override
 			public void execute(Analysis object) {
+				QQPlotPopup qqPlotPopup = new QQPlotPopup();
+				popup.clear();
+				popup.add(qqPlotPopup);
 				qqPlotPopup.setData(object);
 				popup.show();
 				popup.center();
