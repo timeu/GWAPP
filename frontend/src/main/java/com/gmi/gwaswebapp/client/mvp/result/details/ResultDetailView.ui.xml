@@ -5,6 +5,10 @@
 	xmlns:gviz="urn:import:com.google.gwt.visualization.client.visualizations.corechart">
 	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
 	<ui:style>
+		@external .gwt-SuggestBoxPopup;
+		.gwt-SuggestBoxPopup {
+			z-index:99999;
+		}
 		.container{
 			margin-top:10px;
 			clear:both;
