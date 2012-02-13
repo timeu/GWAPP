@@ -146,8 +146,7 @@ public interface TransformationCellTableColumns {
 		}
 	}
 	
-	public static class GWASActionCell extends ActionCell<Transformation>
-	{
+	public static class GWASActionCell extends ActionCell<Transformation> {
 		protected Analysis.TYPE analysis;
 		
 		public GWASActionCell(Analysis.TYPE analysis,String text,com.google.gwt.cell.client.ActionCell.Delegate<Transformation> delegate) {
@@ -162,6 +161,20 @@ public interface TransformationCellTableColumns {
 				if (analysis.getType() == this.analysis)
 					return;
 			}
+			super.render(ctx,value, sb);
+		}
+	}
+	
+	public static class DeleteActionCell extends ActionCell<Transformation> {
+		
+		public DeleteActionCell(com.google.gwt.cell.client.ActionCell.Delegate<Transformation> delegate) {
+			super("Delete", delegate);
+		}
+
+		@Override
+		public void render(Context ctx,Transformation value, SafeHtmlBuilder sb) {
+			if (value.getName().toLowerCase().equals("raw"))
+				return;
 			super.render(ctx,value, sb);
 		}
 	}

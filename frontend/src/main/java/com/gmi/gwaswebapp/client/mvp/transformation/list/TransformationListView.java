@@ -31,6 +31,7 @@ import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.visualizations.corechart.ColumnChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.google.inject.Inject;
+import com.gmi.gwaswebapp.client.mvp.transformation.list.TransformationCellTableColumns.DeleteActionCell;
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
 public class TransformationListView extends ViewWithUiHandlers<TransformationListUiHandlers> implements MyView {
@@ -113,10 +114,10 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 		
 		List<HasCell<Transformation,?>> gwasCells = new ArrayList<HasCell<Transformation,?>>();
 		
-		gwasCells.add(new TransformationCellTableColumns.ActionHasCell(new TransformationCellTableColumns.GWASActionCell(Analysis.TYPE.EMMAX,Analysis.TYPE.EMMAX.toString(),new ActionCell.Delegate<Transformation>() {
+		gwasCells.add(new TransformationCellTableColumns.ActionHasCell(new TransformationCellTableColumns.GWASActionCell(Analysis.TYPE.AMM,Analysis.TYPE.AMM.toString(),new ActionCell.Delegate<Transformation>() {
 			@Override
 			public void execute(Transformation object) {
-				performGWAS(Analysis.TYPE.EMMAX,object);
+				performGWAS(Analysis.TYPE.AMM,object);
 			}
 		})));
 		
@@ -146,7 +147,7 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 			}
 		})));*/
 		
-		actionCells.add(new TransformationCellTableColumns.ActionHasCell(new ActionCell<Transformation>("Delete",new ActionCell.Delegate<Transformation>() {
+		actionCells.add(new TransformationCellTableColumns.ActionHasCell(new DeleteActionCell(new ActionCell.Delegate<Transformation>() {
 			@Override
 			public void execute(Transformation object) {
 				if (Window.confirm("Do you really want to delete the transformation? (all related GWAS results will also be deleted"))
