@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Analysis extends BaseModel{
 
-	public static enum TYPE {EMMAX,KW,LM}
+	public static enum TYPE {EMMAX,AMM,KW,LM}
 	
 	String name;
 	String resultName;
