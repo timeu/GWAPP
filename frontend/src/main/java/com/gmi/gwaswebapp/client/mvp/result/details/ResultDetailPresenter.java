@@ -142,7 +142,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 
 	@Override
 	public void onSelectSNP(int chromosome, int position, int x, int y) {
-		if (analysis.getType() == TYPE.EMMAX)
+		if (analysis.getType() == TYPE.AMM)
 			getView().showSNPPopup(chromosome,position,x,y);
 	}
 
@@ -158,7 +158,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 
 	@Override
 	public void runStepWiseGWAS(final Integer chromosome, final Integer position) {
-		if (analysis.getType() != TYPE.EMMAX && analysis.getType() != TYPE.LM) {
+		if (analysis.getType() != TYPE.AMM && analysis.getType() != TYPE.LM) {
 			DisplayNotificationEvent.fireError(ResultDetailPresenter.this, "GWAS-analysis", "Step-wise is only supported for EMMAX");
 			return;
 		}
