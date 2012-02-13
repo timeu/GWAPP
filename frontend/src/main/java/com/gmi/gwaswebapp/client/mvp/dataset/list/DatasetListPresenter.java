@@ -119,7 +119,7 @@ public class DatasetListPresenter extends
 			data.setValue(i, 0, dataset.getName());
 			data.setValue(i, 1, dataset.getAccessionCount());
 			data.setValue(i, 2, dataset.getTransformations().size());
-			data.setValue(i, 3, dataset.getResultCount(Analysis.TYPE.EMMAX));
+			data.setValue(i, 3, dataset.getResultCount(Analysis.TYPE.AMM));
 			data.setValue(i, 4, dataset.getResultCount(Analysis.TYPE.KW));
 			data.setValue(i, 5, dataset.getResultCount(Analysis.TYPE.LM));
 		}
