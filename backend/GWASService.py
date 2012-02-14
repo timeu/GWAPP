@@ -112,8 +112,8 @@ class GWASService:
         gene_annot_file.close()
         self.genomestats_file = h5py.File(self.genomeStats_hdf5_filename,'r')
         self.genome_wide_stats =   [{'name':'genecount','label':'# Genes','isStackable':False,'isStepPlot':True}, \
-                    {'name':'fst','label':'Fst (North-South)'},{'name':'clr','label':'CLR (Nielsen citation)'},\
-                    {'name':'phs','label':'PHS (citation?)'}]
+                    {'name':'fst','label':'Fst (North-South) [Lewontin and Krakhauer, 1973]'},{'name':'clr','label':'CLR [Nielsen et al., 2005]'},\
+                    {'name':'phs','label':'PHS [Toomaijan et al., 2006]'},{'name':'rho','label':'Recombination','isStackable':False}]
         
     def _getUserId(self):
         request = cherrypy.request
@@ -718,13 +718,17 @@ class GWASService:
                 description.append(('genecount',"number","# genes"))
                 data = self._getGeneCountHistogramData(chr)
             else:
-                group = self.genomestats_file['GeneStats']
-                stats_list = group.attrs['headers']
                 chr_numbers = ['chr1','chr2','chr3','chr4','chr5']
                 chr_num = chr_numbers.index(chr.lower())
-                stats_ix = [numpy.where(stats_list ==stat)[0][0] for stat in stats]
-                stats_ix.sort()
-                stats = stats_list[stats_ix]
+                if 'rho' in stats:
+                    group = self.genomestats_file['RecombStats']
+                    stats_ix = [0]
+                else:
+                    group = self.genomestats_file['GeneStats']
+                    stats_list = group.attrs['headers']
+                    stats_ix = [numpy.where(stats_list ==stat)[0][0] for stat in stats]
+                    stats_ix.sort()
+                    stats = stats_list[stats_ix]
                 chr_region = group.attrs['chr_regions'][chr_num]
                 stats_values = group['stats'][chr_region[0]:chr_region[1],stats_ix]
                 positions = group['positions'][chr_region[0]:chr_region[1],1]
