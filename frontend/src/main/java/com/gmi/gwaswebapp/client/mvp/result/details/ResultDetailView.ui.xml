@@ -13,6 +13,14 @@
 			margin-top:10px;
 			clear:both;
 		}
+		
+		.gwas_container {
+			user-select:none;
+			-webkit-user-select:none;
+			-moz-user-select:none;
+
+		}
+		
 		.chart_container {
 			margin-top:10px;
 		}
@@ -41,7 +49,7 @@
 		         <!-- <g:Button ui:field="selected_optimal_snp" text="select optimal SNP"></g:Button> -->
 		         <a ui:field="download_link" target="_blank" class="{style.download_link}">Download Results</a>
 		         <br></br>
-		         <g:FlowPanel ui:field="container"  > 
+		         <g:FlowPanel ui:field="container" addStyleNames="{style.gwas_container}"  > 
 				</g:FlowPanel>
 		       </g:HTMLPanel>
 		    </g:FlowPanel>
