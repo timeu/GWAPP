@@ -3,7 +3,12 @@ package com.gmi.gwaswebapp.client.mvp.result.details;
 import java.util.ArrayList;
 import java.util.List;
 
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.Cache;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.DefaultCacheImpl;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.LocalStorageImpl;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.LocalStorageImpl.TYPE;
 import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.GeneSuggestion;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.JBrowseCacheDataSourceImpl;
 import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.JBrowseDataSourceImpl;
 import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.ServerSuggestOracle;
 import at.gmi.nordborglab.widgets.gwasgeneviewer.client.GWASGeneViewer;
@@ -25,6 +30,7 @@ import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 
+import com.google.gwt.storage.client.Storage;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -70,7 +76,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	}
 	
 	private final Widget widget;
-	protected JBrowseDataSourceImpl geneDataSource = new JBrowseDataSourceImpl("/gwas/");
+	protected JBrowseCacheDataSourceImpl geneDataSource;
 	protected SNPPopup snpPopup = new SNPPopup();
 	@UiField(provided=true)	final SuggestBox searchGene;
 	@UiField FlowPanel container;
@@ -91,6 +97,17 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 
 	@Inject
 	public ResultDetailView(final CellTableResources cellTableResources) {
+		Cache cache =null; 
+		if (Storage.isSupported()) {
+			try {
+				cache = new LocalStorageImpl(TYPE.SESSION);
+			}
+			catch (Exception e) {}
+		}
+		else {
+			cache = new DefaultCacheImpl();
+		}
+		geneDataSource = new JBrowseCacheDataSourceImpl("/gwas/",cache);
 		searchGene = new SuggestBox(new ServerSuggestOracle(geneDataSource,5));
 		((DefaultSuggestionDisplay)searchGene.getSuggestionDisplay()).setAnimationEnabled(true);
 		searchGene.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
