@@ -113,7 +113,7 @@ class GWASService:
         self.genomestats_file = h5py.File(self.genomeStats_hdf5_filename,'r')
         self.genome_wide_stats =   [{'name':'genecount','label':'# Genes','isStackable':False,'isStepPlot':True}, \
                     {'name':'fst','label':'Fst (North-South) [Lewontin and Krakhauer, 1973]'},{'name':'clr','label':'CLR [Nielsen et al., 2005]'},\
-                    {'name':'phs','label':'PHS [Toomaijan et al., 2006]'},{'name':'rho','label':'Recombination','isStackable':False}]
+                    {'name':'phs','label':'PHS [Toomaijan et al., 2006]'},{'name':'rho','label':'RHO [McVean et al., 2004]','isStackable':False}]
         
     def _getUserId(self):
         request = cherrypy.request
@@ -156,7 +156,7 @@ class GWASService:
                 value = phen_vals['mean_value'][i]
                 label = '%s ID:%s Phenotype:%s.'%(accession['name'], ecotype, value)
                 data.append({'label':label,'date':datetime.date(2009,2,3),'accession_id':ecotype,\
-                             'lon':accession['longitude'],'lat':accession['latitude'],\
+                             'lon':None if math.isnan(accession['longitude']) else accession['longitude'],'lat':None if math.isnan(accession['latitude']) else accession['latitude'],\
                              'phenotype':value,'name':accession['name'],'country':accession['country']})
         data_table = gviz_api.DataTable(dict(column_name_type_ls))
         data_table.LoadData(data)
