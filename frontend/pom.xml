@@ -98,8 +98,7 @@
 		 <dependency>
     	<groupId>at.gmi.nordborglab.widgets</groupId>
     	<artifactId>gwasgeneviewer</artifactId>
-    	<version>0.4.4</version>
-    	<scope>provided</scope>
+    	<version>0.4.5</version>
     </dependency>
 		 <dependency>
 		 	<groupId>com.google.gwt.inject</groupId>
