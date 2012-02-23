@@ -109,6 +109,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 		}
 		geneDataSource = new JBrowseCacheDataSourceImpl("/gwas/",cache);
 		searchGene = new SuggestBox(new ServerSuggestOracle(geneDataSource,5));
+		searchGene.getElement().setAttribute("placeHolder", "Search gene");
 		((DefaultSuggestionDisplay)searchGene.getSuggestionDisplay()).setAnimationEnabled(true);
 		searchGene.addSelectionHandler(new SelectionHandler<SuggestOracle.Suggestion>() {
 			
@@ -360,6 +361,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 					
 				});
 			}
+			chart.clearDisplayGenes();
 			chart.clearSelection();
 			for (Cofactor cofactor: cofactors){
 				if (cofactor.getChr() == i)

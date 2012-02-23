@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-	xmlns:gviz="urn:import:com.google.gwt.visualization.client.visualizations.corechart">
+	xmlns:gviz="urn:import:com.google.gwt.visualization.client.visualizations.corechart"
+ 	xmlns:gui="urn:import:com.gmi.gwaswebapp.client.ui">
 	<ui:with field="mainRes" type="com.gmi.gwaswebapp.client.resources.MyResources" />
 	<ui:style>
 		@external .gwt-SuggestBoxPopup;
@@ -42,18 +43,19 @@
 	<g:TabLayoutPanel ui:field="gwas_tabpanel" barHeight="2" barUnit="EM">
 	  <g:tab>
 	  <g:header>Plots</g:header>
-		<g:ScrollPanel>
-		    <g:FlowPanel height="100%">
-		       <g:HTMLPanel >
-		         Genes: <g:SuggestBox ui:field="searchGene"></g:SuggestBox>
-		         <!-- <g:Button ui:field="selected_optimal_snp" text="select optimal SNP"></g:Button> -->
-		         <a ui:field="download_link" target="_blank" class="{style.download_link}">Download Results</a>
-		         <br></br>
-		         <g:FlowPanel ui:field="container" addStyleNames="{style.gwas_container}"  > 
-				</g:FlowPanel>
-		       </g:HTMLPanel>
-		    </g:FlowPanel>
-		</g:ScrollPanel>
+	  	<g:DockLayoutPanel>
+			<g:north size="32.0">
+				<g:HTMLPanel>
+					Genes: <g:SuggestBox ui:field="searchGene"></g:SuggestBox>
+		         	<a ui:field="download_link" target="_blank" class="{style.download_link}">Download Results</a>
+				</g:HTMLPanel>
+			</g:north>
+			<g:center>
+				<g:ScrollPanel>
+					<gui:ResizeableFlowPanel ui:field="container" addStyleNames="{style.gwas_container}"  />
+				</g:ScrollPanel>
+			</g:center>
+		</g:DockLayoutPanel>
 	 </g:tab>
 	 <g:tab>
 	 <g:header>Statistics</g:header>
