@@ -189,5 +189,7 @@ public class AccessionPresenter extends
 	@Override
 	public void selectAccessionInTable(Accession accession) {
 		getView().getSelectionModel().setSelected(accession, true);
+		int selectedIndex = accessionDataProvider.getList().indexOf(accession);
+		getView().getDisplay().setVisibleRange(selectedIndex, getView().getDisplay().getVisibleItemCount());
 	}
 }
