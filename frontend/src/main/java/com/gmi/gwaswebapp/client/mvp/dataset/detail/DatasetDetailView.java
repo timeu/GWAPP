@@ -212,6 +212,8 @@ public class DatasetDetailView extends ViewWithUiHandlers<DatasetDetailUiHandler
 		clearMap();
 		accessionId2Marker.clear();
 		for (final Accession accession:accessions) {
+			if (accession.getLatitude() == null || accession.getLongitude() == null)
+				continue;
 			MarkerOptions options = MarkerOptions.newInstance();
 			final Icon icon = Icon.getDefaultIcon();
 			icon.setShadowSize(Size.newInstance(0, 0));
@@ -230,7 +232,6 @@ public class DatasetDetailView extends ViewWithUiHandlers<DatasetDetailUiHandler
 					getUiHandlers().selectAccessionInTable(accession);
 				}
 			});
-			
 			map.addOverlay(marker);
 		}
 	}
