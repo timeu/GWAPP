@@ -30,6 +30,7 @@ public class CurrentUser implements HasHandlers{
 	protected final Cache cache;
 	private boolean isLoaded = false;
 	public static List<Accession> accessions = null;
+	public static List<String> supportedTransformations;
 	
 	  
 	@Inject
@@ -83,6 +84,7 @@ public class CurrentUser implements HasHandlers{
 		this.userdata = userdata;
 		if (userdata.getAccessions() != null)
 			CurrentUser.accessions = userdata.getAccessions();
+		CurrentUser.supportedTransformations = userdata.getSupportedTransformations();
 		if (this.userdata.getUserID() != null)
 			Cookies.setCookie(useridCookie, this.userdata.getUserID(),now);
  	}

@@ -13,9 +13,11 @@ public class DeleteTransformationEvent extends GwtEvent<DeleteTransformationEven
 	
 	private static final Type<DeleteTransformationEventHandler> TYPE = new Type<DeleteTransformationEventHandler>();
 	private final String phenotype;
+	private final String dataset;
 	
-	public DeleteTransformationEvent(String phenotype) {
+	public DeleteTransformationEvent(String phenotype,String dataset) {
 		this.phenotype  = phenotype;
+		this.dataset = dataset;
 	}
 
 	public static Type<DeleteTransformationEventHandler> getType() {
@@ -27,8 +29,12 @@ public class DeleteTransformationEvent extends GwtEvent<DeleteTransformationEven
 		return phenotype;
 	}
 	
-	public static void fire(HasHandlers eventBus,String phenotype) {
-	    eventBus.fireEvent(new DeleteTransformationEvent(phenotype));
+	public String getDataset() {
+		return dataset;
+	}
+	
+	public static void fire(HasHandlers eventBus,String phenotype,String dataset) {
+	    eventBus.fireEvent(new DeleteTransformationEvent(phenotype,dataset));
 	}
 	
 	@Override

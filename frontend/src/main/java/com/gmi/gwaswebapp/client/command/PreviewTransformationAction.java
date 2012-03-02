@@ -32,8 +32,9 @@ public class PreviewTransformationAction extends RequestBuilderActionImpl<Previe
 		// TODO Auto-generated method stub
 		JSONObject json =  JSONParser.parseLenient(response.getText()).isObject();
 		String phenotypeTable_str = json.get("transformationTable").isString().stringValue();
+		Double spPval = json.get("sp_pval").isNumber().doubleValue();
 		DataTable transformationDataTable = DataTable.create(JSONParser.parseLenient(phenotypeTable_str).isObject().getJavaScriptObject());
-		return new PreviewTransformationActionResult(transformationDataTable);
+		return new PreviewTransformationActionResult(transformationDataTable,spPval);
 	}
 	
 	public static String _getUrl(String Phenotype,String Dataset,String Transformation,String New_Transformation)

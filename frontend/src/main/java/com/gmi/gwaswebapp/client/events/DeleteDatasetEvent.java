@@ -27,7 +27,7 @@ public class DeleteDatasetEvent  extends GwtEvent<DeleteDatasetEvent.DeleteDatas
 	}
 	
 	public static void fire(HasHandlers eventBus,String phenotype) {
-	    eventBus.fireEvent(new DeleteTransformationEvent(phenotype));
+	    eventBus.fireEvent(new DeleteDatasetEvent(phenotype));
 	}
 	
 	@Override

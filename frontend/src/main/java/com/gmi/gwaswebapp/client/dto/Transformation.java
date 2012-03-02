@@ -9,8 +9,6 @@ import name.pehl.piriti.commons.client.Transient;
 
 public class Transformation extends BaseModel {
 	
-	public static final List<String>TRANSFORMATIONS = Arrays.asList("","log","sqrt");
-	
 	String name;
 	String description;
 	String dataset;

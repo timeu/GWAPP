@@ -7,6 +7,7 @@ import com.gwtplatform.dispatch.shared.DispatchAsync;
 import com.gwtplatform.mvp.client.HasUiHandlers;
 import com.gwtplatform.mvp.client.PresenterWidget;
 import com.gwtplatform.mvp.client.View;
+import com.gmi.gwaswebapp.client.CurrentUser;
 import com.gmi.gwaswebapp.client.command.BaseStatusResult;
 import com.gmi.gwaswebapp.client.command.DeleteDatasetAction;
 import com.gmi.gwaswebapp.client.command.DeleteTransformationAction;
@@ -53,13 +54,16 @@ public class DatasetListPresenter extends
 	private HashMap<String,DataTable> locationDistributionDataTables = null;
 	private final DispatchAsync dispatch;
 	private final BackendResultReader backendResultReader;
+	private final CurrentUser currentUser;
 
 	@Inject
-	public DatasetListPresenter(final EventBus eventBus, final MyView view,final DispatchAsync dispatch, final BackendResultReader backendResultReader) {
+	public DatasetListPresenter(final EventBus eventBus, final MyView view,final DispatchAsync dispatch, 
+			final BackendResultReader backendResultReader,final CurrentUser currentUser) {
 		super(eventBus, view);
 		getView().setUiHandlers(this);
 		this.dispatch = dispatch;
 		this.backendResultReader = backendResultReader;
+		this.currentUser = currentUser;
 		datasetListProvider.addDataDisplay(getView().getDisplay());
 		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			
@@ -158,6 +162,8 @@ public class DatasetListPresenter extends
 	public void deleteDataset(final Dataset dataset) {
 		if (dataset.isAdd())
 		{
+			Phenotype phenotype= currentUser.getUserData().getPhenotypeFromName(dataset.getPhenotype());
+			phenotype.getDatasets().remove(dataset);
 			DeleteDatasetEvent.fire(DatasetListPresenter.this,dataset.getPhenotype());
 		}
 		else
@@ -165,10 +171,14 @@ public class DatasetListPresenter extends
 			dispatch.execute(new DeleteDatasetAction(dataset.getPhenotype(),dataset.getInternId(),backendResultReader), new GWASCallback<BaseStatusResult>(getEventBus()) {
 				@Override
 				public void onSuccess(BaseStatusResult result) {
-					if (result.result.getStatus() == BackendResult.STATUS.OK)
+					if (result.result.getStatus() == BackendResult.STATUS.OK) {
+						Phenotype phenotype= currentUser.getUserData().getPhenotypeFromName(dataset.getPhenotype());
+						phenotype.getDatasets().remove(dataset);
 						DeleteDatasetEvent.fire(DatasetListPresenter.this,dataset.getPhenotype());
-					else
+					}
+					else {
 						DisplayNotificationEvent.fireError(this, "Deleting Dataset failed",result.result.getStatustext() );
+					}
 				}
 			});
 		}

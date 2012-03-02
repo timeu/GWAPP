@@ -7,6 +7,7 @@ public class UserData {
 	String userid;
 	List<Phenotype> phenotypes;
 	Accessions accessions;
+	List<String> supportedTransformations;
 	
 	public String getUserID() {
 		return userid;
@@ -32,5 +33,9 @@ public class UserData {
 		if (accessions == null)
 			return null;
 		return accessions.getAccessions();
+	}
+	
+	public List<String> getSupportedTransformations() {
+		return supportedTransformations;
 	}
 }

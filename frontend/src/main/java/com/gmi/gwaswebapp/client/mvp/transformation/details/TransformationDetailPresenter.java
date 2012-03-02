@@ -16,7 +16,7 @@ public class TransformationDetailPresenter extends PresenterWidget<Transformatio
 
 	public interface MyView extends View{
 
-		void setData(DataTable transformationDataTable,DataTable motionchartDataTable,String transformation);
+		void setData(DataTable transformationDataTable,DataTable motionchartDataTable,String transformation,Double spPval);
 		void attachCharts();
 		void detachCharts();
 	}
@@ -36,7 +36,7 @@ public class TransformationDetailPresenter extends PresenterWidget<Transformatio
 		dispatch.execute(new GetTransformationAction(transformation.getPhenotype(), transformation.getDataset(),transformation.getName()), new GWASCallback<GetTransformationActionResult>(getEventBus()) {
 			@Override
 			public void onSuccess(GetTransformationActionResult result) {
-				getView().setData(result.getTransformationDataTable(),result.getMotionchartDataTable(),transformation.getName());
+				getView().setData(result.getTransformationDataTable(),result.getMotionchartDataTable(),transformation.getName(),result.getSpPval());
 			}
 		});
 	}

@@ -30,7 +30,8 @@ public class GetTransformationAction extends RequestBuilderActionImpl<GetTransfo
 		String motionchartTable_str = json.get("motionchartTable").isString().stringValue();
 		DataTable transformationDataTable = DataTable.create(JSONParser.parseLenient(phenotypeTable_str).isObject().getJavaScriptObject());
 		DataTable motionchartDataTable = DataTable.create(JSONParser.parseLenient(motionchartTable_str).isObject().getJavaScriptObject());
-		return new GetTransformationActionResult(transformationDataTable,motionchartDataTable);
+		Double spPval = json.get("sp_pval").isNumber().doubleValue();
+		return new GetTransformationActionResult(transformationDataTable,motionchartDataTable,spPval);
 	}
 	
 	public static String _getUrl(String Phenotype,String Dataset,String Transformation)

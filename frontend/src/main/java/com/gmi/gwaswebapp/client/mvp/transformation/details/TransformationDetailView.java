@@ -38,6 +38,7 @@ public class TransformationDetailView extends ViewImpl implements MyView{
 	@UiField DisclosurePanel disclosure_panel;
 	private String transformation;
 	private HandlerRegistration openDisclosurePanelHandlerRegistration;
+	private Double spPval;
 	
 	private  class OpenDisclosurePanelHandler implements OpenHandler<DisclosurePanel> {
 
@@ -64,10 +65,11 @@ public class TransformationDetailView extends ViewImpl implements MyView{
 	}
 	
 	@Override
-	public void setData(DataTable transformationDataTable,DataTable motionchartDataTable,String transformation) {
+	public void setData(DataTable transformationDataTable,DataTable motionchartDataTable,String transformation,Double spPval) {
 		this.transformationDataTable = transformationDataTable;
 		this.motionchartDataTable = motionchartDataTable;
 		this.transformation = transformation;
+		this.spPval = spPval;
 		updateView();
 	}
 	
@@ -109,6 +111,8 @@ public class TransformationDetailView extends ViewImpl implements MyView{
 	private Options createColumnchartOptions(String title)
 	{
 		Options options = Options.create();
+		if (spPval != null) 
+			title = title + " (Shapiro-Wilk test: " + spPval+")";
 		options.setTitle(title);
 		options.setHeight(400);
 		options.setWidth(widget.getOffsetWidth()-18);

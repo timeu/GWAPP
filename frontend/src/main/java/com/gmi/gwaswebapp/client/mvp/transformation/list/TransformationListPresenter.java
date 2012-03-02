@@ -46,7 +46,7 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 	public interface MyView extends View,HasUiHandlers<TransformationListUiHandlers>{
 		HasData<Transformation> getDisplay();
 		void setSelectionModel(SingleSelectionModel<BaseModel> selectionModel);
-		void showTransformationPreviewHistogram(DataTable data);
+		void showTransformationPreviewHistogram(DataTable data, Double spPval);
 		void hideTransformationPreviewHistogram();
 		void showNotification(String iconUrl,String title,String body);
 	}
@@ -111,14 +111,14 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 		transformation.setIsNewTransformation(true);
 		transformation.setNewTransformation("");
 		transformationDataProvider.refresh();
-		getView().showTransformationPreviewHistogram(null);
+		getView().showTransformationPreviewHistogram(null,null);
 	}
 
 	@Override
 	public void changeNewTransformation(Transformation transformation) {
 		if (transformation.getNewTransformation().equals(""))
 		{
-			getView().showTransformationPreviewHistogram(null);
+			getView().showTransformationPreviewHistogram(null,null);
 		}
 		else
 		{
@@ -126,10 +126,10 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 	
 				@Override
 				public void onSuccess(PreviewTransformationActionResult result) {
-					if (result.transformationTable == null)
+					if (result.getTransformationTable() == null)
 						DisplayNotificationEvent.fireError(this, "Backend-Error" , "Error getting transformation data");
 					else
-						getView().showTransformationPreviewHistogram(result.transformationTable);
+						getView().showTransformationPreviewHistogram(result.getTransformationTable(),result.getSpPval());
 				}
 			});
 		}
@@ -165,7 +165,7 @@ public class TransformationListPresenter extends PresenterWidget<TransformationL
 			@Override
 			public void onSuccess(BaseStatusResult result) {
 				if (result.result.getStatus() == BackendResult.STATUS.OK)
-					DeleteTransformationEvent.fire(TransformationListPresenter.this,transformation.getPhenotype());
+					DeleteTransformationEvent.fire(TransformationListPresenter.this,transformation.getPhenotype(),transformation.getDataset());
 				else
 					DisplayNotificationEvent.fireError(this,"Backend-Error", result.result.getStatustext());
 			}

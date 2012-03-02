@@ -3,6 +3,7 @@ package com.gmi.gwaswebapp.client.mvp.transformation.list;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmi.gwaswebapp.client.CurrentUser;
 import com.gmi.gwaswebapp.client.dto.Analysis;
 import com.gmi.gwaswebapp.client.dto.BaseModel;
 import com.gmi.gwaswebapp.client.dto.Transformation;
@@ -79,7 +80,7 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 				}
 		})));
 		
-		compositeCells.add(new TransformationCellTableColumns.SelectionHasCell(new SelectionCell(Transformation.TRANSFORMATIONS), new FieldUpdater<Transformation, String>() {
+		compositeCells.add(new TransformationCellTableColumns.SelectionHasCell(new SelectionCell(CurrentUser.supportedTransformations), new FieldUpdater<Transformation, String>() {
 
 			@Override
 			public void update(int index, Transformation object, String value) {
@@ -198,11 +199,10 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 	}
 
 	@Override
-	public void showTransformationPreviewHistogram(DataTable data) {
+	public void showTransformationPreviewHistogram(DataTable data,Double spPval) {
 		if (data == null)
 			data = createEmptyDataTable();
-		drawTransformationPreviewChart(data);
-		
+		drawTransformationPreviewChart(data,spPval);
 	}
 	
 	protected DataTable createEmptyDataTable()
@@ -213,18 +213,20 @@ public class TransformationListView extends ViewWithUiHandlers<TransformationLis
 		return dataTable;
 	}
 	
-	protected void drawTransformationPreviewChart(DataTable data) {
+	protected void drawTransformationPreviewChart(DataTable data, Double spPval) {
 		if (transformation_preview_chart != null)
 			transformation_preview_container.remove(transformation_preview_chart);
-		transformation_preview_chart = new ColumnChart(data, createOptions("Preview"));
+		transformation_preview_chart = new ColumnChart(data, createOptions("Preview",spPval));
 		transformation_preview_container.add(transformation_preview_chart);
 	}
 	
 	
 	
-	private Options createOptions(String title)
+	private Options createOptions(String title, Double spPval)
 	{
 		Options options = Options.create();
+		if (spPval != null)
+			title = title + " (Shapiro-Wilk test: " + spPval+")";
 		options.setTitle(title);
 		options.setHeight(400);
 		options.setWidth(widget.getOffsetWidth()-18);

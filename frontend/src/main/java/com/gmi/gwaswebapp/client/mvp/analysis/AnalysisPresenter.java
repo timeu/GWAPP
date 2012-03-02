@@ -10,11 +10,13 @@ import com.gmi.gwaswebapp.client.dto.Phenotype;
 import com.gmi.gwaswebapp.client.dto.Readers.PhenotypeReader;
 import com.gmi.gwaswebapp.client.dto.Dataset;
 import com.gmi.gwaswebapp.client.dto.Transformation;
+import com.gmi.gwaswebapp.client.events.DeleteDatasetEvent;
 import com.gmi.gwaswebapp.client.events.DeleteResultEvent;
 import com.gmi.gwaswebapp.client.events.DeleteTransformationEvent;
 import com.gmi.gwaswebapp.client.events.NewDatasetEvent;
 import com.gmi.gwaswebapp.client.events.NewDatasetEvent.NewDatasetEventHandler;
 import com.gmi.gwaswebapp.client.events.NewTransformationSavedEvent;
+import com.gmi.gwaswebapp.client.events.DeleteDatasetEvent.DeleteDatasetEventHandler;
 import com.gmi.gwaswebapp.client.events.DeleteResultEvent.DeleteResultEventHandler;
 import com.gmi.gwaswebapp.client.events.DeleteTransformationEvent.DeleteTransformationEventHandler;
 import com.gmi.gwaswebapp.client.events.NewTransformationSavedEvent.NewTransformationSavedHandler;
@@ -56,7 +58,8 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 							            DeleteResultEventHandler,
 							            NewDatasetEventHandler,
 							            SaveDatasetEventHandler,
-							            RefreshDataEventHandler{
+							            RefreshDataEventHandler,
+							            DeleteDatasetEventHandler{
 
 	
 	@ProxyCodeSplit
@@ -262,7 +265,7 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 			
 			@Override
 			public void run() {
-				PlaceRequest place = new PlaceRequest(NameTokens.analysisPage);
+				PlaceRequest place = new PlaceRequest(NameTokens.analysisPage).with("dataset", event.getDataset()).with("transformation", "raw");
 				place = place.with("phenotype",event.getPhenotype());
 				placeManager.revealPlace(place);
 			}
@@ -343,7 +346,17 @@ public class AnalysisPresenter extends Presenter<AnalysisPresenter.MyView,Analys
 	public void onSaveDataset(SaveDatasetEvent event) {
 		isTreeDirty = true;
 		PlaceRequest place = new PlaceRequest(NameTokens.analysisPage);
-		place = place.with("phenotype",event.getDataset().getPhenotype()).with("dataset",event.getDataset().getName());
-		//placeManager.revealPlace(place);
+		place = place.with("phenotype",event.getDataset().getPhenotype()).with("dataset",event.getDataset().getInternId()).with("transformation", "raw");
+		placeManager.revealPlace(place);
+	}
+
+
+	@ProxyEvent
+	@Override
+	public void onDeleteDataset(DeleteDatasetEvent event) {
+		isTreeDirty = true;
+		PlaceRequest place = new PlaceRequest(NameTokens.analysisPage);
+		place = place.with("phenotype",event.getPhenotype());
+		placeManager.revealPlace(place);
 	}
 }

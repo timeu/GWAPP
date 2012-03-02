@@ -332,7 +332,7 @@ public class DatasetDetailPresenter extends
 					if (result.result.getStatus() == BackendResult.STATUS.OK) {
 						getView().getDatasetLabel().setText(dataset.getName() + " (" + dataset.getAccessionCount().toString()+")");
 						getView().getDatasetDescription().setText(dataset.getDescription());
-						if (dataset.getInternId() == null) 
+						if (dataset.getInternId() == null || dataset.getInternId().equals("_NEW_SUBSET_")) 
 							dataset.setInternId(result.result.getStatustext());
 						setMode(MODE.READ);
 						accessionListProvider.setList(dataset.getAccessions());
