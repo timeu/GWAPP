@@ -113,7 +113,7 @@ class GWASService:
         self.genomestats_file = h5py.File(self.genomeStats_hdf5_filename, 'r')
         self.genome_wide_stats = [{'name':'genecount', 'label':'# Genes', 'isStackable':False, 'isStepPlot':True}, \
                     {'name':'fst', 'label':'Fst (North-South) [Lewontin and Krakhauer, 1973]'}, {'name':'clr', 'label':'CLR [Nielsen et al., 2005]'}, \
-                    {'name':'phs', 'label':'PHS [Toomaijan et al., 2006]'}, {'name':'rho', 'label':'RHO [McVean et al., 2004]', 'isStackable':False}]
+                    {'name':'phs', 'label':'PHS [Toomaijan et al., 2006]'}, {'name':'rho', 'label':'RHO [McVean et al., 2004]', 'isStackable':False},{'name':'lyr','label':'Lyrata-similarity [Hu et al., 2011]','isStackable':False}]
         self.supported_transformations = ['', 'log', 'sqrt', 'box_cox']
         
     def _getUserId(self):
@@ -731,6 +731,9 @@ class GWASService:
                 chr_num = chr_numbers.index(chr.lower())
                 if 'rho' in stats:
                     group = self.genomestats_file['RecombStats']
+                    stats_ix = [0]
+                elif 'lyr' in stats:
+                    group = self.genomestats_file['lyrata_similarity']
                     stats_ix = [0]
                 else:
                     group = self.genomestats_file['GeneStats']
