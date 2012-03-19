@@ -154,17 +154,17 @@
 		
 	</ui:style>
 	<g:HTMLPanel addStyleNames="{style.container}">
-		<div class="{mainRes.style.title}">Welcome to the GWAS-Web-App <g:Button ui:field="request_permission_btn" visible="false" text="Activate browser notifications" addStyleNames="{style.notification_button}" /><g:HTMLPanel addStyleNames="{style.notification_blocked}" ui:field="notification_blocked_text" visible="false">Browser notification blocked. Right click <a href="chrome://settings/contentExceptions#notifications">here</a> and open in new Tab/Window to change it (refresh page)</g:HTMLPanel></div>
+		<div class="{mainRes.style.title}">Welcome to GWAPP<g:Button ui:field="request_permission_btn" visible="false" text="Activate browser notifications" addStyleNames="{style.notification_button}" /><g:HTMLPanel addStyleNames="{style.notification_blocked}" ui:field="notification_blocked_text" visible="false">Browser notification blocked. Right click <a href="chrome://settings/contentExceptions#notifications">here</a> and open in new Tab/Window to change it (refresh page)</g:HTMLPanel></div>
 		  <div class="{style.welcome_container}">
 		  	<p>
 		  	Dataset key: <g:TextBox ui:field="dataset_key"  addStyleNames="{style.dataset_key}"/><g:Button ui:field="dataset_key_submit" text="Change"/>
 		  	</p>
-			<p>The GWAS-Web-App enables reseachers working with <a href="http://en.wikipedia.org/wiki/Arabidopsis_thaliana" target="_blank">Arabidopsis thaliana</a> to do <a href="http://www.gmi.oeaw.ac.at/research-groups/magnus-nordborg/genome-wide-association-mapping-in-a.-thaliana" target="_blank">Genome Wide Association Mapping (GWAS)</a> on their phenotypes.</p>
+			<p>GWAPP enables reseachers working with <a href="http://en.wikipedia.org/wiki/Arabidopsis_thaliana" target="_blank">Arabidopsis thaliana</a> to do <a href="http://www.gmi.oeaw.ac.at/research-groups/magnus-nordborg/genome-wide-association-mapping-in-a.-thaliana" target="_blank">Genome Wide Association Mapping (GWAS)</a> on their phenotypes.</p>
 			<p>
-			<i>This GWAS-Web-App is part of the TransPLANT project (grant agreement number 283496), which is funded by the Framework Programme 7 of the European Commission.</i>
+			<i>GWAPP is part of the TransPLANT project (grant agreement number 283496), which is funded by the Framework Programme 7 of the European Commission.</i>
 			</p> 
 			<p>
-			Check out the Quick Start below to see how to use the GWAS-Web-App. For a more detailed information refer to the <a href="#!helpPage">Help</a> page.
+			Check out the Quick Start below to see how to use GWAPP. For a more detailed information refer to the <a href="#!helpPage">Help</a> page.
 			</p> 
 		</div>
 		<div class="{style.logo_container}"><div class="{mainRes.style.transplant_logo} {mainRes.style.box_shadow}" /> <div class="{mainRes.style.fp7_logo} {style.logo_left} {mainRes.style.box_shadow}" /> <div class="{mainRes.style.eu_flag} {mainRes.style.box_shadow}" /></div>

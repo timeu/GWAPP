@@ -154,7 +154,7 @@
 		<g:north size="69.1">
 			<g:HTMLPanel addStyleNames="{style.container}">
 			<div class="{style.title}">
-				GWAS-Web-App
+				GWAPP
 			</div>
 			<div class="{style.loadingIndicatorContainer}">
 				<gwas:LoadingIndicator ui:field="loadingIndicator">
