@@ -87,7 +87,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 	public void loadData(final Analysis analysis)  {
 		this.analysis = analysis;
 		this.initStatistics();
-		String download_url = "/gwas/downloadAssociationData?phenotype="+analysis.getPhenotype()+"&dataset="+analysis.getDataset()+"&transformation="+analysis.getTransformation()+"&analysis="+analysis.getName()+"&result_name="+analysis.getResultName();
+		String download_url = "/gwas/downloadAssociationData?phenotype="+analysis.getPhenotype()+"&dataset="+analysis.getDataset()+"&transformation="+analysis.getTransformation()+"&analysis="+analysis.getType().toString().toLowerCase()+"&result_name="+analysis.getResultName();
 		getView().setDownloadURL(download_url);
 		dispatch.execute(new GetAssociationDataAction(analysis.getPhenotype(),analysis.getDataset(),analysis.getTransformation(),analysis.getType().toString(),analysis.getResultName()), new GWASCallback<GetAssociationDataActionResult>(getEventBus()) {
 
