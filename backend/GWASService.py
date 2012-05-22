@@ -91,10 +91,10 @@ gviz_api.DataTable.SingleValueToJS = SingleValueToJSPerf
  
 
 class GWASService:
-    base_path = "/net/gmi.oeaw.ac.at/gwasapp/gwas-web/"
+    base_path = "/srv/data/"
     base_path_jbrowse = base_path
     base_path_datasets = base_path + "datasets/"
-    base_jbrowse_path = base_path_jbrowse + "jbrowse_1.2.1/"
+    base_jbrowse_path = base_path_jbrowse + "jbrowse/"
     track_folder = "TAIR10"
     
     #tracks/Chr%s/TAIR10/"
