@@ -11,4 +11,8 @@ public interface ResultDetailUiHandlers extends UiHandlers{
 
 	void runStepWiseGWAS(Integer chromosome, Integer position);
 
+	void showLocalLD(Integer chromosome, Integer position);
+
+	void runGlobalLD(Integer chromosome, Integer position);
+
 }

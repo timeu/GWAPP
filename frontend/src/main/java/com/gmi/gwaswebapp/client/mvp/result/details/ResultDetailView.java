@@ -3,34 +3,29 @@ package com.gmi.gwaswebapp.client.mvp.result.details;
 import java.util.ArrayList;
 import java.util.List;
 
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.Cache;
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.DefaultCacheImpl;
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.LocalStorageImpl;
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.LocalStorageImpl.TYPE;
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.GeneSuggestion;
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.JBrowseCacheDataSourceImpl;
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.JBrowseDataSourceImpl;
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.ServerSuggestOracle;
-import at.gmi.nordborglab.widgets.gwasgeneviewer.client.GWASGeneViewer;
-
 import org.danvk.dygraphs.client.events.DataPoint;
 import org.danvk.dygraphs.client.events.SelectHandler;
-import org.danvk.dygraphs.client.events.SelectHandler.SelectEvent;
+
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.DataSource;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.GeneSuggestion;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.ServerSuggestOracle;
+import at.gmi.nordborglab.widgets.gwasgeneviewer.client.GWASGeneViewer;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.LDDataSource;
+
 import com.gmi.gwaswebapp.client.dto.Cofactor;
 import com.gmi.gwaswebapp.client.mvp.result.details.ResultDetailPresenter.MyView;
 import com.gmi.gwaswebapp.client.resources.CellTableResources;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayInteger;
+import com.google.gwt.core.client.JsArrayNumber;
 import com.google.gwt.core.client.JsArrayString;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.AnchorElement;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-
-import com.google.gwt.storage.client.Storage;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -38,21 +33,16 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.Button;
-
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.InlineHyperlink;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SuggestBox;
-import com.google.gwt.user.client.ui.SuggestOracle;
-import com.google.gwt.user.client.ui.TabLayoutPanel;
-import com.google.gwt.user.client.ui.TabPanel;
-import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.SuggestBox.DefaultSuggestionDisplay;
+import com.google.gwt.user.client.ui.SuggestOracle;
 import com.google.gwt.user.client.ui.SuggestOracle.Suggestion;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.visualization.client.AbstractDataTable;
 import com.google.gwt.visualization.client.DataTable;
@@ -63,7 +53,6 @@ import com.google.gwt.visualization.client.visualizations.corechart.AxisOptions;
 import com.google.gwt.visualization.client.visualizations.corechart.LineChart;
 import com.google.gwt.visualization.client.visualizations.corechart.Options;
 import com.google.inject.Inject;
-
 import com.gwtplatform.mvp.client.ViewWithUiHandlers;
 
 public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers> implements MyView {
@@ -76,7 +65,8 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	}
 	
 	private final Widget widget;
-	protected JBrowseCacheDataSourceImpl geneDataSource;
+	protected DataSource geneDataSource;
+	protected LDDataSource ldDataSource;
 	protected SNPPopup snpPopup = new SNPPopup();
 	@UiField(provided=true)	final SuggestBox searchGene;
 	@UiField FlowPanel container;
@@ -96,18 +86,9 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	private boolean requireResize = true;
 
 	@Inject
-	public ResultDetailView(final CellTableResources cellTableResources) {
-		Cache cache =null; 
-		if (Storage.isSupported()) {
-			try {
-				cache = new LocalStorageImpl(TYPE.SESSION);
-			}
-			catch (Exception e) {}
-		}
-		else {
-			cache = new DefaultCacheImpl();
-		}
-		geneDataSource = new JBrowseCacheDataSourceImpl("/gwas/",cache);
+	public ResultDetailView(final CellTableResources cellTableResources,DataSource geneDataSource,LDDataSource ldDataSource) {
+		this.ldDataSource = ldDataSource;
+		this.geneDataSource = geneDataSource;
 		searchGene = new SuggestBox(new ServerSuggestOracle(geneDataSource,5));
 		searchGene.getElement().setAttribute("placeHolder", "Search gene");
 		((DefaultSuggestionDisplay)searchGene.getSuggestionDisplay()).setAnimationEnabled(true);
@@ -231,6 +212,24 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 			}
 		});
 		
+		snpPopup.getLocalLDLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				getUiHandlers().showLocalLD(snpPopup.chromosome,snpPopup.position);
+				snpPopup.hide();
+			}
+		});
+		
+		/*snpPopup.getGlobalLDLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				getUiHandlers().runGlobalLD(snpPopup.chromosome,snpPopup.position);
+				snpPopup.hide();
+			}
+		});*/
+		
 		gwas_tabpanel.addSelectionHandler(new SelectionHandler<Integer>() {
 
 			@Override
@@ -336,7 +335,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 				chart = gwasGeneViewers.get((i-1));
 			if (chart == null)
 			{
-				chart = new GWASGeneViewer("Chr"+i.toString(), color, gene_marker_color, geneDataSource);
+				chart = new GWASGeneViewer("Chr"+i.toString(), color, gene_marker_color, geneDataSource,ldDataSource);
 				gwasGeneViewers.add(chart);
 				chart.setGeneInfoUrl("http://arabidopsis.org/servlets/TairObject?name={0}&type=gene");
 				container.add((IsWidget)chart);
@@ -397,8 +396,8 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	}
 
 	@Override
-	public void showSNPPopup(int chromosome, int position, int x, int y) {
-		snpPopup.setDataPoint(chromosome, position);
+	public void showSNPPopup(int chromosome, int position, int x, int y,boolean showStepWiseLink) {
+		snpPopup.setDataPoint(chromosome, position,showStepWiseLink);
 		snpPopup.setPosition(x, y);
 		snpPopup.show();
 	}
@@ -436,6 +435,14 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 		if (statistic_type.getSelectedIndex() <= 0)
 			return null;
 		return statistic_type.getValue(statistic_type.getSelectedIndex());
+	}
+
+	@Override
+	public void showLDPlot(JsArrayInteger snps,
+			JsArray<JsArrayNumber> r2Values, int chr,int startSNP, int stopSNP) {
+		GWASGeneViewer chart = gwasGeneViewers.get(chr-1); 
+		chart.setZoom(startSNP-100, stopSNP+100);
+		chart.loadLDPlot(snps, r2Values, startSNP, stopSNP);
 	}
 
 }

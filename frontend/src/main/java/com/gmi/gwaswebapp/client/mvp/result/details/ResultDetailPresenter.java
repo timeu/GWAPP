@@ -3,6 +3,8 @@ package com.gmi.gwaswebapp.client.mvp.result.details;
 import java.util.List;
 
 import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.JBrowseDataSourceImpl;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.LDDataSource;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.LDDataSourceCallback;
 
 
 
@@ -21,9 +23,13 @@ import com.gmi.gwaswebapp.client.dto.Readers.BackendResultReader;
 import com.gmi.gwaswebapp.client.dto.Readers.GWASResultReader;
 import com.gmi.gwaswebapp.client.dto.ResultData;
 import com.gmi.gwaswebapp.client.events.DisplayNotificationEvent;
+import com.gmi.gwaswebapp.client.events.LoadingIndicatorEvent;
 import com.gmi.gwaswebapp.client.events.ProgressBarEvent;
 import com.gmi.gwaswebapp.client.events.RunGWASFinishedEvent;
 import com.gmi.gwaswebapp.client.mvp.transformation.list.TransformationListPresenter;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayInteger;
+import com.google.gwt.core.client.JsArrayNumber;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.HasClickHandlers;
@@ -53,7 +59,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 				double bonferroniThreshold);
 		void clearAssociationCharts();
 		void drawStatisticPlots(DataView view);
-		void showSNPPopup(int chromosome, int position, int x, int y);
+		void showSNPPopup(int chromosome, int position, int x, int y,boolean showStepWiseLink);
 		
 		void setDownloadURL(String url);
 
@@ -62,6 +68,9 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 		void detachCharts();
 
 		String getSelectedStatistic();
+
+		void showLDPlot(JsArrayInteger snps, JsArray<JsArrayNumber> r2Values,
+				int chr, int startSNP, int stopSNP);
 	}
 	
 	private Analysis analysis;
@@ -72,14 +81,16 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 	protected List<DataTable> dataTables = null;
 	private final GWASResultReader gwasResultReader;
 	private final BackendResultReader backendResultReader;
+	private final LDDataSource ldDataSource;
 	
 	@Inject
-	public ResultDetailPresenter(EventBus eventBus, MyView view,final DispatchAsync dispatch,final GWASResultReader gwasResultReader,final BackendResultReader backendResultReader) {
+	public ResultDetailPresenter(EventBus eventBus, MyView view,final DispatchAsync dispatch,final GWASResultReader gwasResultReader,final BackendResultReader backendResultReader,final LDDataSource ldDataSource) {
 		super(eventBus, view);
 		getView().setUiHandlers(this);
 		this.dispatch = dispatch;
 		this.gwasResultReader = gwasResultReader;
 		this.backendResultReader = backendResultReader;
+		this.ldDataSource = ldDataSource;
 		dataProvider.addDataDisplay(getView().getDisplay());
 	}
 	
@@ -142,8 +153,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 
 	@Override
 	public void onSelectSNP(int chromosome, int position, int x, int y) {
-		if (analysis.getType() == TYPE.AMM)
-			getView().showSNPPopup(chromosome,position,x,y);
+		getView().showSNPPopup(chromosome,position,x,y,analysis.getType() == TYPE.AMM);
 	}
 
 
@@ -203,4 +213,41 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 		super.onHide();
 		getView().detachCharts();
 	}
+
+
+	@Override
+	public void showLocalLD(final Integer chromosome, Integer position) {
+		int maximumSNPStoDisplay = 500;
+		DataTable data = dataTables.get(chromosome-1);
+		int indexOfPos = 0;
+		for (int i = 0;i<data.getNumberOfRows();i++) {
+			if (data.getValueInt(i, 0) == position) {
+				indexOfPos = i;
+				break;
+			}
+		}
+		final int startSNP = data.getValueInt((maximumSNPStoDisplay/2 > indexOfPos ? 1 : indexOfPos - maximumSNPStoDisplay/2),0);
+		final int stopSNP = data.getValueInt((maximumSNPStoDisplay/2 + indexOfPos > data.getNumberOfRows() ? data.getNumberOfRows()-2 : indexOfPos + maximumSNPStoDisplay/2), 0);
+		String url = "phenotype="+analysis.getPhenotype()+"&dataset="+analysis.getDataset()+"&transformation="+analysis.getTransformation()+"&analysis="+analysis.getType().toString().toLowerCase()+"&result_name="+analysis.getResultName();
+		LoadingIndicatorEvent.fire(this, true);
+		ldDataSource.fetchLDValues(url,chromosome.toString(), startSNP, stopSNP, new LDDataSourceCallback() {
+			
+			@Override
+			public void onFetchLDValues(JsArrayInteger snps,
+					JsArray<JsArrayNumber> r2Values) {
+				LoadingIndicatorEvent.fire(ResultDetailPresenter.this, false);
+				getView().showLDPlot(snps,r2Values,chromosome,startSNP,stopSNP);
+			}
+		});
+		
+	}
+
+
+	@Override
+	public void runGlobalLD(Integer chromosome, Integer position) {
+		// 
+		
+	}
+
+	
 }
