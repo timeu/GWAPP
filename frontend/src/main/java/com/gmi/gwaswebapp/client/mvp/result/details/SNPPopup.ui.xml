@@ -20,6 +20,13 @@
 			margin: 10px 10px 10px 10px;
 		}
 		
+		.popup_list {
+			list-style:none;
+		}
+		.popup_list li {
+			margin-bottom:5px;
+		}
+		
 		.popup p{
 			font-size:15px;
 		}
@@ -33,10 +40,17 @@
 		
 	</ui:style>
 	<g:HTMLPanel addStyleNames="{style.popup_content}">
-		<ul>
-			<li>
+		<ul class="{style.popup_list}">
+			<li ui:field="run_step_wise_link_item">
 				<g:Anchor ui:field="run_step_wise_link" text="Run Conditional GWAS" addStyleNames="{style.actionLink}"></g:Anchor>
 			</li>
+			<li>
+				<g:Anchor ui:field="local_ld_link" text="Show LD in this region" addStyleNames="{style.actionLink}"></g:Anchor>
+			</li>
+			<!-- <li>
+				<g:Anchor ui:field="global_ld_link" text="Highlight SNPs in LD for this SNP" addStyleNames="{style.actionLink}"></g:Anchor>
+			</li>
+			 -->
 		</ul>
 	</g:HTMLPanel>
 </ui:UiBinder> 

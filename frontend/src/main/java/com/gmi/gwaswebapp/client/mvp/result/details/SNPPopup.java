@@ -1,6 +1,7 @@
 package com.gmi.gwaswebapp.client.mvp.result.details;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.event.dom.client.HasClickHandlers;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -26,6 +27,9 @@ public class SNPPopup extends PopupPanel {
 	
 	@UiField MyStyle style;
 	@UiField Anchor run_step_wise_link;
+	@UiField Anchor local_ld_link;
+	//@UiField Anchor global_ld_link;
+	@UiField LIElement run_step_wise_link_item;
 	protected Integer chromosome;
 	protected Integer position;
 
@@ -37,9 +41,10 @@ public class SNPPopup extends PopupPanel {
 		setStylePrimaryName(style.popup());
 	}
 	
-	public void setDataPoint(Integer chromosome,Integer position) {
+	public void setDataPoint(Integer chromosome,Integer position,boolean showStepWise) {
 		this.chromosome = chromosome;
 		this.position = position;
+		run_step_wise_link_item.setAttribute("style","display:"+(showStepWise ? "list-item" : "none")+";");
 	}
 	
 	public void setPosition(int x, int y) {
@@ -49,5 +54,14 @@ public class SNPPopup extends PopupPanel {
 	public HasClickHandlers getRunStepWiseLink() {
 		return run_step_wise_link;
 	}
+	
+	public HasClickHandlers getLocalLDLink() {
+		return local_ld_link;
+	}
+	
+
+	/*public HasClickHandlers getGlobalLDLink() {
+		//return global_ld_link;
+	}*/
 
 }
