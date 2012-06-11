@@ -113,7 +113,7 @@ class GWASService:
         self.genomestats_file = h5py.File(self.genomeStats_hdf5_filename, 'r')
         self.genome_wide_stats = [{'name':'genecount', 'label':'# Genes', 'isStackable':False, 'isStepPlot':True}, \
                     {'name':'fst', 'label':'Fst (North-South) [Lewontin and Krakhauer, 1973]'}, {'name':'clr', 'label':'CLR [Nielsen et al., 2005]'}, \
-                    {'name':'phs', 'label':'PHS [Toomaijan et al., 2006]'}, {'name':'rho', 'label':'RHO [McVean et al., 2004]', 'isStackable':False},{'name':'lyr','label':'Lyrata-similarity [Hu et al., 2011]','isStackable':False}]
+                    {'name':'phs', 'label':'PHS [Toomaijan et al., 2006]'}, {'name':'rho', 'label':'RHO [McVean et al., 2004]', 'isStackable':False}, {'name':'lyr', 'label':'Lyrata-similarity [Hu et al., 2011]', 'isStackable':False}]
         self.supported_transformations = ['', 'log', 'sqrt', 'box_cox']
         
     def _getUserId(self):
@@ -608,6 +608,38 @@ class GWASService:
             retval = {'status': 'OK', 'description':description}
         except Exception, err:
             retval = {"status":"ERROR", "statustext":"%s" % str(err)}
+        return retval
+    
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def showLD(self, phenotype, dataset, transformation, analysis, result_name, chr, start, end):
+        path = self._getUserPath()
+        gwa_record = gwa_records.GWASRecord(path)
+        gwa_record.open("r+")
+        retval = gwa_record.get_ld_for_region(phenotype, dataset, transformation, analysis, result_name, chr, start, end)
+        return retval
+    
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def calculateLD(self, phenotype, dataset, transformation, analysis, result_name):
+        try:
+            path = self._getUserPath()
+            gwa_record = gwa_records.GWASRecord(path)
+            gwa_record.open("r+")
+            retval = gwa_record.calculate_ld(phenotype, dataset, transformation, analysis, result_name)
+            #json_data = {'name':'test'}
+        except Exception, err:
+            retval = {"status":"ERROR", "statustext":"%s" % str(err)}
+        return retval
+    
+    
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def getLDForSNP(self, phenotype, dataset, transformation, analysis, result_name, chromosome, position):
+        path = self._getUserPath()
+        gwa_record = gwa_records.GWASRecord(path)
+        gwa_record.open("r+")
+        retval = gwa_record.get_ld_for_snp(phenotype, dataset, transformation, analysis, result_name, chromosome, position)
         return retval
     
     @cherrypy.expose
