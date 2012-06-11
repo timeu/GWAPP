@@ -2,6 +2,13 @@ package com.gmi.gwaswebapp.client.gin;
 
 
 
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.DataSource;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.LocalStorageImpl;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.LocalStorageImpl.TYPE;
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.JBrowseCacheDataSourceImpl;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.LDDataSource;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.impl.JSOLDDataSource;
+
 import com.gmi.gwaswebapp.client.CurrentUser;
 import com.gmi.gwaswebapp.client.GWASPlaceManager;
 import com.gmi.gwaswebapp.client.NameTokens;
@@ -11,17 +18,26 @@ import com.gmi.gwaswebapp.client.dto.Readers.AnalysisReader;
 import com.gmi.gwaswebapp.client.dto.Readers.AnalysisWriter;
 import com.gmi.gwaswebapp.client.dto.Readers.BackendResultReader;
 import com.gmi.gwaswebapp.client.dto.Readers.CofactorReader;
+import com.gmi.gwaswebapp.client.dto.Readers.DatasetReader;
 import com.gmi.gwaswebapp.client.dto.Readers.DatasetWriter;
 import com.gmi.gwaswebapp.client.dto.Readers.GWASResultReader;
 import com.gmi.gwaswebapp.client.dto.Readers.PhenotypeReader;
 import com.gmi.gwaswebapp.client.dto.Readers.ProgressResultReader;
 import com.gmi.gwaswebapp.client.dto.Readers.ResultReader;
-import com.gmi.gwaswebapp.client.dto.Readers.DatasetReader;
 import com.gmi.gwaswebapp.client.dto.Readers.TransformationReader;
 import com.gmi.gwaswebapp.client.dto.Readers.TransformationWriter;
 import com.gmi.gwaswebapp.client.dto.Readers.UserDataReader;
+import com.gmi.gwaswebapp.client.mvp.accession.AccessionPresenter;
+import com.gmi.gwaswebapp.client.mvp.accession.AccessionView;
 import com.gmi.gwaswebapp.client.mvp.analysis.AnalysisPresenter;
 import com.gmi.gwaswebapp.client.mvp.analysis.AnalysisView;
+import com.gmi.gwaswebapp.client.mvp.dataset.detail.DatasetDetailPresenter;
+import com.gmi.gwaswebapp.client.mvp.dataset.detail.DatasetDetailView;
+import com.gmi.gwaswebapp.client.mvp.dataset.list.DatasetListPresenter;
+import com.gmi.gwaswebapp.client.mvp.dataset.list.DatasetListView;
+import com.gmi.gwaswebapp.client.mvp.help.HelpPresenter;
+import com.gmi.gwaswebapp.client.mvp.help.HelpView;
+import com.gmi.gwaswebapp.client.mvp.help.sections.HelpSectionFactory;
 import com.gmi.gwaswebapp.client.mvp.home.HomePresenter;
 import com.gmi.gwaswebapp.client.mvp.home.HomeView;
 import com.gmi.gwaswebapp.client.mvp.main.MainPagePresenter;
@@ -30,6 +46,8 @@ import com.gmi.gwaswebapp.client.mvp.phenotype.details.PhenotypeDetailPresenter;
 import com.gmi.gwaswebapp.client.mvp.phenotype.details.PhenotypeDetailView;
 import com.gmi.gwaswebapp.client.mvp.phenotype.list.PhenotypeListPresenter;
 import com.gmi.gwaswebapp.client.mvp.phenotype.list.PhenotypeListView;
+import com.gmi.gwaswebapp.client.mvp.progress.ProgressPresenter;
+import com.gmi.gwaswebapp.client.mvp.progress.ProgressView;
 import com.gmi.gwaswebapp.client.mvp.result.details.ResultDetailPresenter;
 import com.gmi.gwaswebapp.client.mvp.result.details.ResultDetailView;
 import com.gmi.gwaswebapp.client.mvp.result.list.ResultListPresenter;
@@ -40,8 +58,10 @@ import com.gmi.gwaswebapp.client.mvp.transformation.list.TransformationListPrese
 import com.gmi.gwaswebapp.client.mvp.transformation.list.TransformationListView;
 import com.gmi.gwaswebapp.client.mvp.upload.PhenotypeUploadPresenter;
 import com.gmi.gwaswebapp.client.mvp.upload.PhenotypeUploadView;
-import com.google.gwt.dom.client.Style;
-import com.google.inject.Inject;
+import com.gmi.gwaswebapp.client.resources.CellTableResources;
+import com.gmi.gwaswebapp.client.resources.MyResources;
+import com.google.gwt.storage.client.Storage;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.gwtplatform.dispatch.client.actionhandler.caching.Cache;
@@ -50,21 +70,6 @@ import com.gwtplatform.mvp.client.annotations.GaAccount;
 import com.gwtplatform.mvp.client.gin.AbstractPresenterModule;
 import com.gwtplatform.mvp.client.gin.DefaultModule;
 import com.gwtplatform.mvp.client.googleanalytics.GoogleAnalyticsNavigationTracker;
-import com.gmi.gwaswebapp.client.mvp.progress.ProgressPresenter;
-import com.gmi.gwaswebapp.client.mvp.progress.ProgressView;
-import com.gmi.gwaswebapp.client.mvp.accession.AccessionCellTableColumns.SearchCell;
-import com.gmi.gwaswebapp.client.mvp.accession.AccessionPresenter;
-import com.gmi.gwaswebapp.client.mvp.accession.AccessionView;
-import com.gmi.gwaswebapp.client.resources.CellTableResources;
-import com.gmi.gwaswebapp.client.resources.MyResources;
-import com.gmi.gwaswebapp.client.resources.MyResources.MainStyle;
-import com.gmi.gwaswebapp.client.mvp.dataset.list.DatasetListPresenter;
-import com.gmi.gwaswebapp.client.mvp.dataset.list.DatasetListView;
-import com.gmi.gwaswebapp.client.mvp.dataset.detail.DatasetDetailPresenter;
-import com.gmi.gwaswebapp.client.mvp.dataset.detail.DatasetDetailView;
-import com.gmi.gwaswebapp.client.mvp.help.HelpPresenter;
-import com.gmi.gwaswebapp.client.mvp.help.HelpView;
-import com.gmi.gwaswebapp.client.mvp.help.sections.HelpSectionFactory;
 
 
 public class ClientModule extends AbstractPresenterModule {
@@ -81,6 +86,7 @@ public class ClientModule extends AbstractPresenterModule {
 	    
 	    bindConstant().annotatedWith(GaAccount.class).to("UA-26150757-1");
 	    bind(GoogleAnalyticsNavigationTracker.class).asEagerSingleton();
+	    bind(DataSource.class).toProvider(JBrowseDataSourceProvider.class).in(Singleton.class);
 	    
 	    bindConstant().annotatedWith(UserIDCookie.class).to(NameTokens.useridCookie);
 	    
@@ -142,5 +148,26 @@ public class ClientModule extends AbstractPresenterModule {
 				HelpView.class, HelpPresenter.MyProxy.class);
 	}
 	
-
+	static class JBrowseDataSourceProvider implements Provider<DataSource> {
+	    public DataSource get() {
+	    	at.gmi.nordborglab.widgets.geneviewer.client.datasource.Cache cache = null;
+			if (Storage.isSupported()) {
+				try {
+					cache = new LocalStorageImpl(TYPE.SESSION);
+				}
+				catch (Exception e) {}
+			}
+			else {
+				cache = new at.gmi.nordborglab.widgets.geneviewer.client.datasource.DefaultCacheImpl();
+			}
+	      return new JBrowseCacheDataSourceImpl("/gwas/",cache);
+	    }
+	  }
+	
+	@Provides
+	@Singleton
+	LDDataSource provideLDDataSource() {
+		 return new JSOLDDataSource("/gwas/showLD");
+	}
+		
 }
