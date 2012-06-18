@@ -612,11 +612,16 @@ class GWASService:
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def showLD(self, phenotype, dataset, transformation, analysis, result_name, chr, start, end):
+    def showLD(self, phenotype, dataset, transformation, analysis, result_name, chr, start=None, end=None, position=None, exact=None):
         path = self._getUserPath()
         gwa_record = gwa_records.GWASRecord(path)
         gwa_record.open("r+")
-        retval = gwa_record.get_ld_for_region(phenotype, dataset, transformation, analysis, result_name, chr, start, end)
+        if position == None:
+            retval = gwa_record.get_ld_for_region(phenotype, dataset, transformation, analysis, result_name, chr, start, end)
+        elif exact is None:
+            retval = gwa_record.get_ld_for_snp(phenotype, dataset, transformation, analysis, result_name, chr, position)
+        else:
+            retval = gwa_record.get_exact_ld(phenotype, dataset, transformation, analysis, result_name, chr, position)
         return retval
     
     @cherrypy.expose
@@ -632,15 +637,6 @@ class GWASService:
             retval = {"status":"ERROR", "statustext":"%s" % str(err)}
         return retval
     
-    
-    @cherrypy.expose
-    @cherrypy.tools.json_out()
-    def getLDForSNP(self, phenotype, dataset, transformation, analysis, result_name, chromosome, position):
-        path = self._getUserPath()
-        gwa_record = gwa_records.GWASRecord(path)
-        gwa_record.open("r+")
-        retval = gwa_record.get_ld_for_snp(phenotype, dataset, transformation, analysis, result_name, chromosome, position)
-        return retval
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
