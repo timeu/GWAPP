@@ -28,7 +28,8 @@ public class SNPPopup extends PopupPanel {
 	@UiField MyStyle style;
 	@UiField Anchor run_step_wise_link;
 	@UiField Anchor local_ld_link;
-	//@UiField Anchor global_ld_link;
+	@UiField Anchor global_ld_link;
+	@UiField Anchor local_exact_ld_link;
 	@UiField LIElement run_step_wise_link_item;
 	protected Integer chromosome;
 	protected Integer position;
@@ -60,8 +61,12 @@ public class SNPPopup extends PopupPanel {
 	}
 	
 
-	/*public HasClickHandlers getGlobalLDLink() {
-		//return global_ld_link;
-	}*/
+	public HasClickHandlers getGlobalLDLink() {
+		return global_ld_link;
+	}
+	
+	public HasClickHandlers getLocalExactLDLink() {
+		return local_exact_ld_link;
+	}
 
 }

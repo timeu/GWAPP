@@ -47,10 +47,12 @@
 			<li>
 				<g:Anchor ui:field="local_ld_link" text="Show LD in this region" addStyleNames="{style.actionLink}"></g:Anchor>
 			</li>
-			<!-- <li>
+			<li>
+				<g:Anchor ui:field="local_exact_ld_link" text="Calculate exact LD in this region" addStyleNames="{style.actionLink}"></g:Anchor>
+			</li>
+			<li>
 				<g:Anchor ui:field="global_ld_link" text="Highlight SNPs in LD for this SNP" addStyleNames="{style.actionLink}"></g:Anchor>
 			</li>
-			 -->
 		</ul>
 	</g:HTMLPanel>
 </ui:UiBinder> 

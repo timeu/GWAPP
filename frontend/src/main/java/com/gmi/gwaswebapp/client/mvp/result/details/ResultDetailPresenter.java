@@ -2,11 +2,11 @@ package com.gmi.gwaswebapp.client.mvp.result.details;
 
 import java.util.List;
 
-import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.JBrowseDataSourceImpl;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.FetchExactLDCallback;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.FetchLDCallback;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.FetchLDForSNPCallback;
 import at.gmi.nordborglab.widgets.ldviewer.client.datasource.LDDataSource;
-import at.gmi.nordborglab.widgets.ldviewer.client.datasource.LDDataSourceCallback;
-
-
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.impl.LDDataForSNP;
 
 import com.gmi.gwaswebapp.client.command.CheckGWASAction;
 import com.gmi.gwaswebapp.client.command.CheckGWASActionResult;
@@ -26,21 +26,15 @@ import com.gmi.gwaswebapp.client.events.DisplayNotificationEvent;
 import com.gmi.gwaswebapp.client.events.LoadingIndicatorEvent;
 import com.gmi.gwaswebapp.client.events.ProgressBarEvent;
 import com.gmi.gwaswebapp.client.events.RunGWASFinishedEvent;
-import com.gmi.gwaswebapp.client.mvp.transformation.list.TransformationListPresenter;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayInteger;
 import com.google.gwt.core.client.JsArrayNumber;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.event.dom.client.HasClickHandlers;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.view.client.HasData;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.visualization.client.AbstractDataTable;
+import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.gwt.visualization.client.DataTable;
 import com.google.gwt.visualization.client.DataView;
-import com.google.gwt.visualization.client.AbstractDataTable.ColumnType;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
 import com.gwtplatform.dispatch.shared.DispatchAsync;
@@ -71,6 +65,8 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 
 		void showLDPlot(JsArrayInteger snps, JsArray<JsArrayNumber> r2Values,
 				int chr, int startSNP, int stopSNP);
+
+		void highlightLD(int position,LDDataForSNP data);
 	}
 	
 	private Analysis analysis;
@@ -230,7 +226,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 		final int stopSNP = data.getValueInt((maximumSNPStoDisplay/2 + indexOfPos > data.getNumberOfRows() ? data.getNumberOfRows()-2 : indexOfPos + maximumSNPStoDisplay/2), 0);
 		String url = "phenotype="+analysis.getPhenotype()+"&dataset="+analysis.getDataset()+"&transformation="+analysis.getTransformation()+"&analysis="+analysis.getType().toString().toLowerCase()+"&result_name="+analysis.getResultName();
 		LoadingIndicatorEvent.fire(this, true);
-		ldDataSource.fetchLDValues(url,chromosome.toString(), startSNP, stopSNP, new LDDataSourceCallback() {
+		ldDataSource.fetchLDValues(url,chromosome.toString(), startSNP, stopSNP, new FetchLDCallback() {
 			
 			@Override
 			public void onFetchLDValues(JsArrayInteger snps,
@@ -239,15 +235,36 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 				getView().showLDPlot(snps,r2Values,chromosome,startSNP,stopSNP);
 			}
 		});
-		
 	}
 
 
 	@Override
-	public void runGlobalLD(Integer chromosome, Integer position) {
-		// 
-		
+	public void runGlobalLD(Integer chromosome, final Integer position) {
+		String url = "phenotype="+analysis.getPhenotype()+"&dataset="+analysis.getDataset()+"&transformation="+analysis.getTransformation()+"&analysis="+analysis.getType().toString().toLowerCase()+"&result_name="+analysis.getResultName();
+		LoadingIndicatorEvent.fire(this, true);
+		ldDataSource.fetchLDValuesForSNP(url,chromosome.toString(), position, new FetchLDForSNPCallback() {
+			
+			@Override
+			public void onFetchLDForSNP(LDDataForSNP data) {
+				LoadingIndicatorEvent.fire(ResultDetailPresenter.this, false);
+				getView().highlightLD(position,data);
+			}
+		});
 	}
 
-	
+
+	@Override
+	public void calculateLocalExactLD(final Integer chromosome, Integer position) {
+		String url = "phenotype="+analysis.getPhenotype()+"&dataset="+analysis.getDataset()+"&transformation="+analysis.getTransformation()+"&analysis="+analysis.getType().toString().toLowerCase()+"&result_name="+analysis.getResultName()+"&exact=1";
+		LoadingIndicatorEvent.fire(this, true);
+		ldDataSource.fetchExactLDValues(url,chromosome.toString(), position, new FetchExactLDCallback() {
+			
+			@Override
+			public void onFetchExactLDValues(JsArrayInteger snps,
+					JsArray<JsArrayNumber> r2Values, int start, int end) {
+				LoadingIndicatorEvent.fire(ResultDetailPresenter.this, false);
+				getView().showLDPlot(snps,r2Values,chromosome,start,end);
+			}
+		});
+	}
 }

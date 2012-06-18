@@ -11,6 +11,8 @@ import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.GeneSuggesti
 import at.gmi.nordborglab.widgets.geneviewer.client.datasource.impl.ServerSuggestOracle;
 import at.gmi.nordborglab.widgets.gwasgeneviewer.client.GWASGeneViewer;
 import at.gmi.nordborglab.widgets.ldviewer.client.datasource.LDDataSource;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.impl.LDDataForChr;
+import at.gmi.nordborglab.widgets.ldviewer.client.datasource.impl.LDDataForSNP;
 
 import com.gmi.gwaswebapp.client.dto.Cofactor;
 import com.gmi.gwaswebapp.client.mvp.result.details.ResultDetailPresenter.MyView;
@@ -221,14 +223,23 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 			}
 		});
 		
-		/*snpPopup.getGlobalLDLink().addClickHandler(new ClickHandler() {
+		snpPopup.getGlobalLDLink().addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				getUiHandlers().runGlobalLD(snpPopup.chromosome,snpPopup.position);
 				snpPopup.hide();
 			}
-		});*/
+		});
+		
+		snpPopup.getLocalExactLDLink().addClickHandler(new ClickHandler() {
+			
+			@Override
+			public void onClick(ClickEvent event) {
+				getUiHandlers().calculateLocalExactLD(snpPopup.chromosome,snpPopup.position);
+				snpPopup.hide();
+			}
+		});
 		
 		gwas_tabpanel.addSelectionHandler(new SelectionHandler<Integer>() {
 
@@ -440,9 +451,25 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	@Override
 	public void showLDPlot(JsArrayInteger snps,
 			JsArray<JsArrayNumber> r2Values, int chr,int startSNP, int stopSNP) {
-		GWASGeneViewer chart = gwasGeneViewers.get(chr-1); 
-		chart.setZoom(startSNP-100, stopSNP+100);
-		chart.loadLDPlot(snps, r2Values, startSNP, stopSNP);
+		for (int i =0;i<gwasGeneViewers.size();i++) {
+			GWASGeneViewer chart = gwasGeneViewers.get(i);
+			if (i == (chr-1)) {
+				chart.loadLDPlot(snps, r2Values, startSNP, stopSNP);
+			}
+			else {
+				chart.hideColoredLDValues();
+			}
+		}
+	}
+
+	@Override
+	public void highlightLD(int position,LDDataForSNP data) {
+		for (int i = 0;i<data.getData().length();i++) {
+			LDDataForChr dataForChr = data.getData().get(i);
+			GWASGeneViewer viewer = gwasGeneViewers.get(i);
+			viewer.showColoredLDValues(position,dataForChr.getSNPs(),dataForChr.getR2Values());
+			viewer.refresh();
+		}
 	}
 
 }

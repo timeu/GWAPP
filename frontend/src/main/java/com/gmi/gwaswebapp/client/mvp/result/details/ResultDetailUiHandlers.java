@@ -1,6 +1,5 @@
 package com.gmi.gwaswebapp.client.mvp.result.details;
 
-import com.google.gwt.user.client.Event;
 import com.gwtplatform.mvp.client.UiHandlers;
 
 public interface ResultDetailUiHandlers extends UiHandlers{
@@ -14,5 +13,7 @@ public interface ResultDetailUiHandlers extends UiHandlers{
 	void showLocalLD(Integer chromosome, Integer position);
 
 	void runGlobalLD(Integer chromosome, Integer position);
+
+	void calculateLocalExactLD(Integer chromosome, Integer position);
 
 }
