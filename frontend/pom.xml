@@ -17,7 +17,7 @@
 
 	<properties>
 		<!-- Convenience property to set the GWT version -->
-		<gwtVersion>2.4.0</gwtVersion>
+		<gwtVersion>2.5.0-rc2</gwtVersion>
 		<!-- GWT needs at least java 1.5 -->
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -39,14 +39,14 @@
 			<name>Piriti Repository</name>
 			<url>http://piriti.googlecode.com/svn/repository</url>
 		</repository>
-		 <repository>
-      <id>nordborglab-snapshots</id>
-      <url>https://github.com/timeu/maven-repos/raw/master/snapshots/</url>
-    </repository>
-     <repository>
-      <id>nordborglab</id>
-      <url>https://github.com/timeu/maven-repos/raw/master/releases/</url>
-    </repository>
+		<repository>
+			<id>nordborglab-snapshots</id>
+			<url>https://github.com/timeu/maven-repos/raw/master/snapshots/</url>
+		</repository>
+		<repository>
+			<id>nordborglab</id>
+			<url>https://github.com/timeu/maven-repos/raw/master/releases/</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -62,7 +62,7 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>name.pehl.piriti</groupId>
 			<artifactId>piriti-core</artifactId>
@@ -70,52 +70,52 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-    <groupId>name.pehl</groupId>
-    <artifactId>totoe</artifactId>
-    <version>0.2.4</version>
-    <scope>provided</scope>
-</dependency>
-		 <dependency>
-     <groupId>com.gwtplatform</groupId>
-     <artifactId>gwtp-mvp-client</artifactId>
-     <version>${gwtp.version}</version>
-     <scope>provided</scope>
-   </dependency>
-  <!-- Dispatch component -->
-   <dependency>
-     <groupId>com.gwtplatform</groupId>
-     <artifactId>gwtp-dispatch-client</artifactId>
-     <version>${gwtp.version}</version>
-     <scope>provided</scope> <!-- Remove for GWTP 0.5.1 and earlier -->
-   </dependency>
- <!-- Tester component -->
-   <dependency>
-     <groupId>com.gwtplatform</groupId>
-     <artifactId>gwtp-tester</artifactId>
-     <version>${gwtp.version}</version>
-     <scope>test</scope>
-   </dependency>
-		 <dependency>
-    	<groupId>at.gmi.nordborglab.widgets</groupId>
-    	<artifactId>gwasgeneviewer</artifactId>
-    	<version>0.4.9</version>
-    </dependency>
-		 <dependency>
-		 	<groupId>com.google.gwt.inject</groupId>
-		 	<artifactId>gin</artifactId>
-		 	<version>1.5.0</version>
-		 </dependency>
-		 <dependency>
-		 	<groupId>at.gmi.nordborglab.widgets</groupId>
-		 	<artifactId>gwt-maps</artifactId>
-		 	<version>1.1.1</version>
-		 </dependency>
-		 <dependency>
-		 	<groupId>org.jukito</groupId>
-		 	<artifactId>jukito</artifactId>
-		 	<version>1.1</version>
-		 	<scope>test</scope>
-		 </dependency>
+			<groupId>name.pehl</groupId>
+			<artifactId>totoe</artifactId>
+			<version>0.2.4</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-mvp-client</artifactId>
+			<version>${gwtp.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Dispatch component -->
+		<dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-dispatch-client</artifactId>
+			<version>${gwtp.version}</version>
+			<scope>provided</scope> <!-- Remove for GWTP 0.5.1 and earlier -->
+		</dependency>
+		<!-- Tester component -->
+		<dependency>
+			<groupId>com.gwtplatform</groupId>
+			<artifactId>gwtp-tester</artifactId>
+			<version>${gwtp.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>at.gmi.nordborglab.widgets</groupId>
+			<artifactId>gwasgeneviewer</artifactId>
+			<version>0.4.10</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>1.5.0</version>
+		</dependency>
+		<dependency>
+			<groupId>at.gmi.nordborglab.widgets</groupId>
+			<artifactId>gwt-maps</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jukito</groupId>
+			<artifactId>jukito</artifactId>
+			<version>1.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -128,9 +128,30 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.4.0</version>
+				<version>2.5.0-rc1</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${gwtVersion}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-dev</artifactId>
+						<version>${gwtVersion}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-codeserver</artifactId>
+						<version>${gwtVersion}</version>
+					</dependency>
+				</dependencies>
 				<executions>
 					<execution>
+						<configuration>
+							<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+							<enableClosureCompiler>true</enableClosureCompiler>
+						</configuration>
 						<goals>
 							<goal>compile</goal>
 							<goal>test</goal>
@@ -164,55 +185,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.codehaus.mojo</groupId>
-										<artifactId>gwt-maven-plugin</artifactId>
-										<versionRange>[2.4.0,)</versionRange>
-										<goals>
-											<goal>resources</goal>
-											<goal>compile</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute>
-											<runOnIncremental>false</runOnIncremental>
-										</execute>
-									</action>
-								</pluginExecution>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.apache.maven.plugins</groupId>
-										<artifactId>maven-war-plugin</artifactId>
-										<versionRange>[2.1.1,)</versionRange>
-										<goals>
-											<goal>exploded</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<execute>
-											<runOnIncremental>false</runOnIncremental>
-										</execute>
-									</action>
-								</pluginExecution>
-
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-
 	</build>
 
 </project>
