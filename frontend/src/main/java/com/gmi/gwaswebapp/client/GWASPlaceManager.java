@@ -1,7 +1,11 @@
 package com.gmi.gwaswebapp.client;
 
+import at.gmi.nordborglab.widgets.geneviewer.client.datasource.GenomeStat;
+
 import com.gmi.gwaswebapp.client.gin.DefaultPlace;
 import com.google.gwt.visualization.client.VisualizationUtils;
+import com.google.gwt.visualization.client.visualizations.GeoMap;
+import com.google.gwt.visualization.client.visualizations.MotionChart;
 import com.google.gwt.visualization.client.visualizations.corechart.CoreChart;
 import com.google.inject.Inject;
 import com.google.web.bindery.event.shared.EventBus;
@@ -37,26 +41,22 @@ public class GWASPlaceManager extends PlaceManagerImpl {
 	
 	@Override
 	public void revealCurrentPlace() {
-		
-		if (currentUser.isLoaded())
-			super.revealCurrentPlace();
-		else {
-			currentUser.load(new Runnable() {
-
-				@Override
-				public void run() {
-					GWASPlaceManager.super.revealCurrentPlace();
-				}
-			});
-		}
 		VisualizationUtils.loadVisualizationApi(new Runnable() {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				
+				if (currentUser.isLoaded())
+					GWASPlaceManager.super.revealCurrentPlace();
+				else {
+					currentUser.load(new Runnable() {
+
+						@Override
+						public void run() {
+							GWASPlaceManager.super.revealCurrentPlace();
+						}
+					});
+				}
 			}
-		}, CoreChart.PACKAGE, CoreChart.PACKAGE);	
+		}, CoreChart.PACKAGE, MotionChart.PACKAGE,GeoMap.PACKAGE);	
 	}
-	
 }
