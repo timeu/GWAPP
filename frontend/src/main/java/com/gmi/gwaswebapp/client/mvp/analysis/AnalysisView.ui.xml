@@ -26,12 +26,14 @@
 	</ui:style>
 	<g:DockLayoutPanel height="100%" width="100%">
 		<g:west size="160.0">
-			<g:HTMLPanel addStyleNames="{mainRes.style.tree_container}">
-				<div class="{mainRes.style.tree_header}"><span>Navigation</span>
-				</div>
-				<g:Tree ui:field="tree" animationEnabled="true" />
-				<!-- <p1:CellTree ui:field="resultsTree"/> -->
-			</g:HTMLPanel>
+			<g:ScrollPanel height="100%" width="100">
+				<g:HTMLPanel addStyleNames="{mainRes.style.tree_container}">
+					<div class="{mainRes.style.tree_header}"><span>Navigation</span>
+					</div>
+					<g:Tree ui:field="tree" animationEnabled="true" />
+					<!-- <p1:CellTree ui:field="resultsTree"/> -->
+				</g:HTMLPanel>
+			</g:ScrollPanel>
 		</g:west>
 		<g:center>
 			<gui:SlidingPanel ui:field="contentContainer" addStyleNames="{mainRes.style.content_container}" >
