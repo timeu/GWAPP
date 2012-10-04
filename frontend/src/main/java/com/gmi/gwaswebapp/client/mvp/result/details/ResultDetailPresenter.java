@@ -50,7 +50,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 
 		void drawAssociationCharts(List<DataTable> dataTables,List<Cofactor> cofactors,
 				List<Integer> chrLengths, double maxScore,
-				double bonferroniThreshold);
+				double pvalThreshold);
 		void clearAssociationCharts();
 		void drawStatisticPlots(DataView view);
 		void showSNPPopup(int chromosome, int position, int x, int y,boolean showStepWiseLink);
@@ -104,7 +104,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 				ResultData info = result.getResultData();
 				dataTables = info.getAssociationTables();
 				dataProvider.setList(analysis.getCofactors());
-				v.drawAssociationCharts(dataTables,analysis.getCofactors(),info.getChrLengths(),info.getMaxScore(),info.getBonferroniThreshold());
+				v.drawAssociationCharts(dataTables,analysis.getCofactors(),info.getChrLengths(),info.getMaxScore(),info.getPvalThreshold());
 			}
 		});
 	}

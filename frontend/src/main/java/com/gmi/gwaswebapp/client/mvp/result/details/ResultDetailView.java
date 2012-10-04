@@ -322,7 +322,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	@Override
 	public void drawAssociationCharts(List<DataTable> dataTables,List<Cofactor> cofactors,
 			List<Integer> chrLengths, double maxScore,
-			double bonferroniThreshold) {
+			double pvalThreshold) {
 		clearAssociationCharts();
 		requireResize = true;
 		if (gwas_tabpanel.getSelectedIndex() == 0) 
@@ -380,7 +380,8 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 					cofactors.remove(i);
 				}
 			}
-			chart.draw(dataTable,maxScore,0,chrLengths.get(i-1),bonferroniThreshold);
+			
+			chart.draw(dataTable,maxScore,0,chrLengths.get(i-1),pvalThreshold);
 			i++;
 		}
 	}

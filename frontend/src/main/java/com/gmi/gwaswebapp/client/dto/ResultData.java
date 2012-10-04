@@ -9,14 +9,14 @@ public class ResultData {
 	protected List<DataTable> associationTables;
 	protected List<Integer> chr_lengths;
 	protected double max_score;
-	protected double bonferroniThreshold;
+	protected double pvalThreshold;
 	
-	public ResultData (List<DataTable> associationTables,List<Integer> chr_lengths,double max_score,double bonferroniThreshold)
+	public ResultData (List<DataTable> associationTables,List<Integer> chr_lengths,double max_score,double pvalThreshold)
 	{
 		this.associationTables = associationTables;
 		this.max_score = max_score;
 		this.chr_lengths = chr_lengths;
-		this.bonferroniThreshold = bonferroniThreshold;
+		this.pvalThreshold = pvalThreshold;
 	}
 	
 	public List<DataTable> getAssociationTables()
@@ -34,8 +34,8 @@ public class ResultData {
 		return chr_lengths;
 	}
 
-	public double getBonferroniThreshold() {
-		return bonferroniThreshold;
+	public double getPvalThreshold() {
+		return pvalThreshold;
 	}
 	
 }
