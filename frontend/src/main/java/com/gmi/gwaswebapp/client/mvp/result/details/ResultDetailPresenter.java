@@ -67,6 +67,8 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 				int chr, int startSNP, int stopSNP);
 
 		void highlightLD(int position,LDDataForSNP data);
+
+		void setUploadGenomeStatsFormUrl(String url,String urlParameters);
 	}
 	
 	private Analysis analysis;
@@ -94,6 +96,7 @@ public class ResultDetailPresenter extends PresenterWidget<ResultDetailPresenter
 	public void loadData(final Analysis analysis)  {
 		this.analysis = analysis;
 		this.initStatistics();
+		getView().setUploadGenomeStatsFormUrl("/gwas/uploadGenomeStatsData","phenotype="+analysis.getPhenotype()+"&dataset=" +analysis.getDataset());
 		String download_url = "/gwas/downloadAssociationData?phenotype="+analysis.getPhenotype()+"&dataset="+analysis.getDataset()+"&transformation="+analysis.getTransformation()+"&analysis="+analysis.getType().toString().toLowerCase()+"&result_name="+analysis.getResultName();
 		getView().setDownloadURL(download_url);
 		dispatch.execute(new GetAssociationDataAction(analysis.getPhenotype(),analysis.getDataset(),analysis.getTransformation(),analysis.getType().toString(),analysis.getResultName()), new GWASCallback<GetAssociationDataActionResult>(getEventBus()) {

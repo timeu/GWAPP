@@ -86,6 +86,8 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	private String[] colors = {"blue", "green", "red", "cyan", "purple"};
 	private String[] gene_mark_colors = {"red", "red", "blue", "red", "green"};
 	private boolean requireResize = true;
+	private String uploadGenomeStatsFormUrl=null;
+	private String uploadGenomeStatsParameters = null;
 
 	@Inject
 	public ResultDetailView(final CellTableResources cellTableResources,DataSource geneDataSource,LDDataSource ldDataSource) {
@@ -380,6 +382,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 					cofactors.remove(i);
 				}
 			}
+			chart.setUploadGenomeStatsFormUrl(uploadGenomeStatsFormUrl,uploadGenomeStatsParameters);
 			
 			chart.draw(dataTable,maxScore,0,chrLengths.get(i-1),pvalThreshold);
 			i++;
@@ -471,6 +474,12 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 			viewer.showColoredLDValues(position,dataForChr.getSNPs(),dataForChr.getR2Values());
 			viewer.refresh();
 		}
+	}
+	
+	@Override
+	public void setUploadGenomeStatsFormUrl(String url,String urlParameters) {
+		this.uploadGenomeStatsFormUrl = url;
+		this.uploadGenomeStatsParameters = urlParameters;
 	}
 
 }
