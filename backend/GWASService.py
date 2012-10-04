@@ -21,73 +21,9 @@ from gviz_api import *
 import datetime
 from gwa_records import ProgressFileWriter
 import cPickle
+import numpy as np
 
-@staticmethod
-def SingleValueToJSPerf(value, value_type, escape_func=None):
-    if escape_func is None:
-        escape_func = gviz_api.DataTable._EscapeValue
-    if isinstance(value, tuple):
-        # In case of a tuple, we run the same function on the value itself and
-        # add the formatted value.
-        if (len(value) not in [2, 3] or
-          (len(value) == 3 and not isinstance(value[2], dict))):
-            raise DataTableException("Wrong format for value and formatting - %s." % 
-                                 str(value))
-        if not isinstance(value[1], types.StringTypes + (types.NoneType,)):
-            raise DataTableException("Formatted value is not string, given %s." % 
-                                 type(value[1]))
-        js_value = DataTable.SingleValueToJS(value[0], value_type)
-        if value[1] is None:
-            return (js_value, None)
-        return (js_value, escape_func(value[1]))
 
-    # The standard case - no formatting.
-    t_value = type(value)
-    if value is None:
-        return "null"
-    if value_type == "boolean":
-        if value:
-            return "true"
-        return "false"
-    elif value_type == "number":
-        if isinstance(value, (int, long, float)):
-            if isinstance(value, float):
-                return "%.2f" % value
-            else:
-                return str(value)
-        raise DataTableException("Wrong type %s when expected number" % t_value)
-
-    elif value_type == "string":
-        if isinstance(value, tuple):
-            raise DataTableException("Tuple is not allowed as string value.")
-        return escape_func(value)
-
-    elif value_type == "date":
-        if not isinstance(value, (datetime.date, datetime.datetime)):
-            raise DataTableException("Wrong type %s when expected date" % t_value)
-        # We need to shift the month by 1 to match JS Date format
-        return "new Date(%d,%d,%d)" % (value.year, value.month - 1, value.day)
-
-    elif value_type == "timeofday":
-        if not isinstance(value, (datetime.time, datetime.datetime)):
-            raise DataTableException("Wrong type %s when expected time" % t_value)
-        return "[%d,%d,%d]" % (value.hour, value.minute, value.second)
-
-    elif value_type == "datetime":
-        if not isinstance(value, datetime.datetime):
-            raise DataTableException("Wrong type %s when expected datetime" % 
-                                 t_value)
-        return "new Date(%d,%d,%d,%d,%d,%d)" % (value.year,
-                                              value.month - 1, # To match JS
-                                              value.day,
-                                              value.hour,
-                                              value.minute,
-                                              value.second)
-    # If we got here, it means the given value_type was not one of the
-    # supported types.
-    raise DataTableException("Unsupported type %s" % value_type)
-
-gviz_api.DataTable.SingleValueToJS = SingleValueToJSPerf
  
 
 class GWASService:
@@ -154,10 +90,10 @@ class GWASService:
         data = []
         for i, ecotype in enumerate(phen_vals['ecotype']):
             for accession in table.where('(accession_id == %r)' % ecotype):
-                value = phen_vals['mean_value'][i]
+                value = float(round(phen_vals['mean_value'][i],2))
                 label = '%s ID:%s Phenotype:%s.' % (accession['name'], ecotype, value)
                 data.append({'label':label, 'date':datetime.date(2009, 2, 3), 'accession_id':ecotype, \
-                             'lon':None if math.isnan(accession['longitude']) else accession['longitude'], 'lat':None if math.isnan(accession['latitude']) else accession['latitude'], \
+                             'lon':None if math.isnan(accession['longitude']) else float(round(accession['longitude'],5)), 'lat':None if math.isnan(accession['latitude']) else float(round(accession['latitude'],5)), \
                              'phenotype':value, 'name':accession['name'], 'country':accession['country']})
         data_table = gviz_api.DataTable(dict(column_name_type_ls))
         data_table.LoadData(data)
@@ -342,10 +278,11 @@ class GWASService:
             result['chr2data'] = chr2data
             result['chr2length'] = association_result['chromosome_ends']
             result['max_value'] = association_result['max_score']
-            if 'no_of_tests' in association_result:
-                result['bonferroniThreshold'] = -math.log10(1.0 / (association_result['no_of_tests'] * 20.0))
-            else:
-                result['bonferroniThreshold'] = -math.log10(1.0 / (214000.0 * 20.0))
+            result['pval_threshold'] = association_result['pval_threshold']
+            #if 'no_of_tests' in association_result:
+            #   result['bonferroniThreshold'] = -math.log10(1.0 / (association_result['no_of_tests'] * 20.0))
+            #else:
+            #   result['bonferroniThreshold'] = -math.log10(1.0 / (214000.0 * 20.0))
         except Exception, err:
             result = {"status":"ERROR", "statustext":"%s" % str(err)}
         return result
@@ -403,6 +340,20 @@ class GWASService:
             gwa_record = gwa_records.GWASRecord(path)
             gwa_record.open("r+")
             gwa_record.delete_phenotype(phenotype)
+            result = {"status":"OK", "statustext":""}
+        except Exception, err:
+            result = {"status":"ERROR", "statustext":"%s" % str(err)}
+        return result
+    
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def deleteCustomGenomeStats(self, phenotype, dataset, stat):
+        try:
+            result = {}
+            path = self._getUserPath()
+            gwa_record = gwa_records.GWASRecord(path)
+            gwa_record.open("r+")
+            gwa_record.delete_custom_genomestat(phenotype, dataset, stat)
             result = {"status":"OK", "statustext":""}
         except Exception, err:
             result = {"status":"ERROR", "statustext":"%s" % str(err)}
@@ -745,6 +696,63 @@ class GWASService:
     
     @cherrypy.expose
     @cherrypy.tools.json_out()
+    def getCustomGenomeStatsList(self, phenotype, dataset):
+        try:
+            path = self._getUserPath()
+            gwa_record = gwa_records.GWASRecord(path)
+            gwa_record.open("r+")
+            retval = gwa_record.get_genomestats_list(phenotype, dataset)
+        except Exception, err:
+            retval = {"status":"ERROR", "statustext":"%s" % str(err)}
+        return retval
+    
+    @cherrypy.expose
+    def uploadGenomeStatsData(self, phenotype, dataset, genomestats_name, genomestats_file):
+        import tempfile
+        try:
+            path = self._getUserPath()
+            gwa_record = gwa_records.GWASRecord(path)
+            gwa_record.open("r+")
+            temp_file = tempfile.NamedTemporaryFile(delete=False)
+            if genomestats_file.file is not None:
+                temp_file.file.write(genomestats_file.file.read())
+            temp_file.close()
+            retval = gwa_record.add_genome_stats(phenotype, dataset, genomestats_name, temp_file.name)
+            os.unlink(temp_file.name)
+        except Exception, err:
+            retval = {"status":"ERROR", "statustext":"%s" % str(err)}
+        return simplejson.dumps(retval)
+    
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
+    def getCustomGenomeStatsData(self, phenotype, dataset, stats, chr):
+        try:
+            if chr == "null":
+                chr = "Chr1"
+            description = [('position', "number", "Position")]
+            stats = stats.split(',')
+            path = self._getUserPath()
+            gwa_record = gwa_records.GWASRecord(path)
+            gwa_record.open("r+")
+            positions = None
+            stats_data = []
+            for stat in stats:
+                data = gwa_record.get_genomestats_data(phenotype, dataset, stat, chr)
+                if positions is None:
+                    positions = data['position'].tolist()
+                data['value'] = np.around(data['value'],decimals=4)
+                stats_data.append(data['value'].tolist())
+                description.append((stat,'number',stat))
+            gviz_data = zip(positions, *(stats_data))
+            data_table = gviz_api.DataTable(description)
+            data_table.LoadData(gviz_data)
+            retval = {'status': 'OK', 'data':data_table.ToJSon()}
+        except Exception, err:
+            retval = {"status":"ERROR", "statustext":"%s" % str(err)}
+        return retval
+    
+    @cherrypy.expose
+    @cherrypy.tools.json_out()
     def getGenomeStatsData(self, stats, chr):
         try:
             if chr == "null":
@@ -780,7 +788,7 @@ class GWASService:
                         stat_label = stat_data['label']
                     description.append((stat, "number", stat_label))
                 stats_values_trans = stats_values.transpose().tolist()
-                stats_values_trans_filtered = [map(lambda value: None if  math.isnan(value) else value, values) for values in stats_values_trans]
+                stats_values_trans_filtered = [map(lambda value: None if  math.isnan(value) else round(value,4), values) for values in stats_values_trans]
                 data = zip(positions.tolist(), *(stats_values_trans_filtered))
             data_table = gviz_api.DataTable(description)
             data_table.LoadData(data)
