@@ -60,9 +60,11 @@ public class ProgressView extends ViewImpl implements ProgressPresenter.MyView {
 
 	@Override
 	public void showBrowserNotification(String contentUrl) {
+		//createHTMLNotification depricated from Chrome
+		/*
 		if (Notification.isSupported() && Notification.isNotificationAllowed()) {
 			notification = Notification.createIfSupported(contentUrl);
 			notification.show();
-		}
+		}*/
 	}
 }
