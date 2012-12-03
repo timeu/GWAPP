@@ -114,7 +114,7 @@ public class HelpView extends ViewImpl implements HelpPresenter.MyView {
 		tree.addItem(analysis_item);
 		
 		//Tutorial
-		TreeItem tutorial_item = new TreeItem(new Hyperlink("Tutorial",placeManager.buildHistoryToken(rootPlace.with(section_key, "tutorial"))));
+		/*TreeItem tutorial_item = new TreeItem(new Hyperlink("Tutorial",placeManager.buildHistoryToken(rootPlace.with(section_key, "tutorial"))));
 		tutorial_item.setUserObject("tutorial");
 		tutorial_item.addItem(new Hyperlink("1.) Uploading Phenotypes",placeManager.buildHistoryToken(rootPlace.with(section_key, "tutorial").with(subsection_key, "uploading")))).setUserObject("tutorial_uploading");
 		tutorial_item.addItem(new Hyperlink("2.) Creating subset",placeManager.buildHistoryToken(rootPlace.with(section_key, "tutorial").with(subsection_key, "subset")))).setUserObject("tutorial_subset");
@@ -122,7 +122,7 @@ public class HelpView extends ViewImpl implements HelpPresenter.MyView {
 		tutorial_item.addItem(new Hyperlink("4.) Running GWAS",placeManager.buildHistoryToken(rootPlace.with(section_key, "tutorial").with(subsection_key, "gwas")))).setUserObject("tutorial_gwas");
 		tutorial_item.addItem(new Hyperlink("5.) Viewing Results",placeManager.buildHistoryToken(rootPlace.with(section_key, "tutorial").with(subsection_key, "results")))).setUserObject("tutorial_results");
 		tutorial_item.addItem(new Hyperlink("6.) Running Step-Wise GWAS",placeManager.buildHistoryToken(rootPlace.with(section_key, "tutorial").with(subsection_key, "gwas_step")))).setUserObject("tutorial_gwas_step");
-		tree.addItem(tutorial_item);
+		tree.addItem(tutorial_item);*/
 		Iterator<TreeItem> iterator = tree.treeItemIterator();
 		while (iterator.hasNext()) {
 			iterator.next().setState(true,false);

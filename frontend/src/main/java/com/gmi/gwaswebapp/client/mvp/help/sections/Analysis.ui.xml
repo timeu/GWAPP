@@ -164,7 +164,8 @@
 			<p>
 			For each chromosome a scatterplot will be displayed showing the <b>top 10.0000 SNPs</b>.<br/>
 			The x-axis measures the positions along the genome/chromosome and the y-axis displays the p-Value scale.<br/>
-			Furthermore a <b>dashed</b> horizontal line visualizes the <b><a href="http://en.wikipedia.org/wiki/Bonferroni_correction" target="_blank">bonferroni threshold</a></b>.<br/>
+			The <b><a href="http://en.wikipedia.org/wiki/False_discovery_rate#Benjamini.E2.80.93Hochberg.E2.80.93Yekutieli_procedure" target="_blank">Benjamini–Hochberg–Yekutieli</a></b> multiple testing procedure (Benjamini and Yekutieli, 2001) was used to control the false discovery rate.  
+			Assuming arbitrary dependence between SNPs, the 5% FDR threshold is plotted as a dashed horizontal line.<br />
 			In the top left corner there is a autofilled textbox which allows to search for a specific Arabidopsis Thaliana gene.<br/>
 			If the user selects a gene it will be highlighted as a colored band in the corresponding scatterplot.<br/>
 			By moving the mouse over a SNP the pValue and the position of the SNP will be displayed in the upper right corner of the scatterplot.<br/>
@@ -219,8 +220,68 @@
 			</div>
 			<div class="{mainRes.style.clearfix}"></div>
 			<p>
-			In cae of a step-wise GWAS result the scatterplots will also indicated which SNPs where used as co-factors in the model by drawing a vertical line to the corresponding SNP. 
+			In case GWAS result the scatterplots will also indicated which SNPs where used as co-factors in the model by drawing a vertical line to the corresponding SNP. 
 			</p>
+			<p>
+			Below the <b>GeneViewer</b> genome wide statistics are displayed as a histogram (see figure below). By default the binned gene count is displayed. 
+			By clicking on the gear symbol a popup opens and users can display various genome wide statistics (i.e. Fst, CLR, etc). 
+			The statistics panel is zoomable in both axis and a yellow band shows the region in the chromosome that corresponds to the zoom level of the Manhatten chart/GeneViewer. 
+			Users can also upload their own statistics by providing a simple CSV (format. chr, pos, float). 
+			<div id="results_genomewide_stats" class="{mainRes.style.help_image_container}">
+			<div>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
+			<a href="#results_genomewide_stats">
+				<img src="/public/resources/screens/results_genomewide_stats.png" class="{mainRes.style.help_image}"></img>
+			</a>
+			<i>Figure: Genomewide statistics in the GWAS plot (click figure for fullscreen)</i>
+			</div>
+			</div>
+			<div class="{mainRes.style.clearfix}"></div>
+			</p>
+			<h2><a name="LD-Viewer">LD-Viewer</a></h2>
+			<p>
+			Users can also visualize the linkage disequilibrium (LD) structure. 
+			This can be done by clicking on any SNP and choosing from three different methods:
+			<ul>
+			<li>Show LD in this region</li>
+			<li>Calculate exact LD in this region</li>
+			<li>Highlight SNPs in LD for this SNP</li>
+			</ul> 
+            The first two options ( “Show LD in this region” and “Calculate exact LD in this region”) display 
+            a LD triangle plot below the gene annotation panel and color code the SNPs in the Manhattan plot (see figure below).
+            </p>
+            <div id="results_view_ld_triangle" class="{mainRes.style.help_image_container}">
+			<div>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
+			<a href="#results_view_ld_triangle">
+				<img src="/public/resources/screens/results_ld_triangle.png" class="{mainRes.style.help_image}"></img>
+			</a>
+			<i>Figure: LD-triangle plot dispalying pariwise r² values for 500 SNPs (click figure for fullscreen)</i>
+			</div>
+			</div>
+			<div class="{mainRes.style.clearfix}"></div>
+			<p> 
+            The difference between the first two options are that the former only displays r² values for the visible SNPs 
+            and the latter will calculate and show the r² values of all SNPs regardless if they are displayed or not.
+            Both options display pair-wise r² values of at most 500 SNPs (due to limitations regarding visualization and computational complexity). 
+            For the sake of visual clarity, only r² value above a certain threshold (0.3) are color coded.  
+            Furthermore, selecting a SNP in the Manhattan plot will color code all neighboring SNPs according to 
+            their r² value. At the same time all pair-wise r² values in the triangle plot will be highlighted. 
+            Similarly, when a specific r² value in the triangle plot is selected the corresponding pair of SNPs in the 
+            Manhattan plot are highlighted with the corresponding color coding and the r² value is displayed on the scale in the triangle plot.  
+            Lastly, the third option (“Highlight SNPs in LD for this SNP”) will calculate genome-wide r² values 
+            between the selected SNP and all other displayed SNPs and color code them in the Manhattan plot (see figure below).
+            </p>
+            <div id="results_view_ld_genomewide" class="{mainRes.style.help_image_container}">
+			<div>
+			<a href="#!helpPage;section=analysis" class="{mainRes.style.help_image_close_link}"><img src="{mainRes.close_button.getSafeUri.asString}" /></a>
+			<a href="#results_view_ld_genomewide">
+				<img src="/public/resources/screens/results_ld_genomewide.png" class="{mainRes.style.help_image}"></img>
+			</a>
+			<i>Figure: Genome Wide LD between selected SNP and all other SNPs (click figure for fullscreen)</i>
+			</div>
+			</div>
+			<div class="{mainRes.style.clearfix}"></div>   
 			<h2><a name="statistics">Statistics</a></h2>
 			<p>
 			The second view in the Results-View's tab-panel shows statisctics about the GWAS-results.<br/>

@@ -4,5 +4,16 @@
 	
 		<div class="{mainRes.style.help_section}" >
 				<h1>Introduction</h1>
+				<p>
+				GWAPP is an interactive web-based application for conducting <a href="http://en.wikipedia.org/wiki/Genome-wide_association_study" target="_blank">Genome Wide Assocation Studies (GWAS)</a> 
+				in <a href="http://en.wikipedia.org/wiki/Arabidopsis_thaliana" target="_blank">Arabidopsis thaliana</a>. 
+				<br />
+				The only requirement for using GWAPP is a modern browser (supports HTML5). 
+				Users can upload phenotypes measured for a subset of 1386 publicly available accessions (see <a href="http://gwas.gmi.oeaw.ac.at/index.html#accessionPage">accession list</a> for details).
+				The uploaded phenotypes are private to the user and are uniquely identified by a dataset key.<br />
+				GWAPP features an extensive, interactive, and a user-friendly interface that includes interactive  manhattan plots 
+				and interactive local and genome-wide LD plots.  
+				It facilitates exploratory data analysis by implementing features such as the inclusion of candidate SNPs in the model as cofactors.  
+				</p>
 		</div>
 </ui:UiBinder>
