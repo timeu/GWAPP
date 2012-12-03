@@ -17,7 +17,7 @@
 
 	<properties>
 		<!-- Convenience property to set the GWT version -->
-		<gwtVersion>2.5.0-rc2</gwtVersion>
+		<gwtVersion>2.5.0</gwtVersion>
 		<!-- GWT needs at least java 1.5 -->
 		<webappDirectory>${project.build.directory}/${project.build.finalName}</webappDirectory>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -64,17 +64,24 @@
 		</dependency>
 
 		<dependency>
-			<groupId>name.pehl.piriti</groupId>
-			<artifactId>piriti-core</artifactId>
-			<version>0.7b2</version>
+			<groupId>name.pehl</groupId>
+			<artifactId>piriti-user</artifactId>
+			<version>0.8</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>name.pehl</groupId>
-			<artifactId>totoe</artifactId>
-			<version>0.2.4</version>
+			<artifactId>piriti-dev</artifactId>
+			<version>0.8</version>
 			<scope>provided</scope>
 		</dependency>
+		<!-- <dependency>
+			<groupId>name.pehl</groupId>
+			<artifactId>totoe</artifactId>
+			<version>0.3</version>
+			<scope>provided</scope>
+		</dependency>
+		 -->
 		<dependency>
 			<groupId>com.gwtplatform</groupId>
 			<artifactId>gwtp-mvp-client</artifactId>
@@ -128,24 +135,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.5.0-rc1</version>
-				<dependencies>
-					<dependency>
-						<groupId>com.google.gwt</groupId>
-						<artifactId>gwt-user</artifactId>
-						<version>${gwtVersion}</version>
-					</dependency>
-					<dependency>
-						<groupId>com.google.gwt</groupId>
-						<artifactId>gwt-dev</artifactId>
-						<version>${gwtVersion}</version>
-					</dependency>
-					<dependency>
-						<groupId>com.google.gwt</groupId>
-						<artifactId>gwt-codeserver</artifactId>
-						<version>${gwtVersion}</version>
-					</dependency>
-				</dependencies>
+				<version>2.5.0</version>
 				<executions>
 					<execution>
 						<configuration>
