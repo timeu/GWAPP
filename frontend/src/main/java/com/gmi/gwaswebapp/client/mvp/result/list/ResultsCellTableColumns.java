@@ -50,6 +50,39 @@ public interface ResultsCellTableColumns {
 		
 	}
 	
+	public static class MedPvalColumn extends TextColumn<Analysis> {
+
+		@Override
+		public String getValue(Analysis object) {
+			String retval = null;
+			if (object.getMedPval() != null)
+				retval = object.getMedPval().toString();
+			return retval;
+		}
+	}
+	
+	public static class KsStatColumn extends TextColumn<Analysis> {
+
+		@Override
+		public String getValue(Analysis object) {
+			String retval = null;
+			if (object.getKsStat() != null)
+				retval = object.getKsStat().toString();
+			return retval;
+		}
+	}
+	
+	public static class KsPvalColumn extends TextColumn<Analysis> {
+
+		@Override
+		public String getValue(Analysis object) {
+			String retval = null;
+			if (object.getKsPval() != null)
+				retval = object.getKsPval().toString();
+			return retval;
+		}
+	}
+	
 	public static class SNPColumn extends Column<Analysis,List<Cofactor>>
 	{
 

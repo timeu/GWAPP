@@ -279,6 +279,9 @@ class GWASService:
             result['chr2length'] = association_result['chromosome_ends']
             result['max_value'] = association_result['max_score']
             result['pval_threshold'] = association_result['pval_threshold']
+            result['med_pval'] = association_result['med_pval']
+            result['ks_stat'] = association_result['ks_stat']
+            result['ks_pval'] = association_result['ks_pval']
             #if 'no_of_tests' in association_result:
             #   result['bonferroniThreshold'] = -math.log10(1.0 / (association_result['no_of_tests'] * 20.0))
             #else:

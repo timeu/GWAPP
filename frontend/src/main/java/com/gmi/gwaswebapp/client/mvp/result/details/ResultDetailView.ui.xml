@@ -39,6 +39,14 @@
 		.download_link {
 			float:right;
 		}
+		.stats_container {
+			margin-left:150px;
+			float:left;
+			line-height:27px;
+		}
+		.gene_search_container {
+			float:left;
+		}
 	</ui:style>
 	<g:TabLayoutPanel ui:field="gwas_tabpanel" barHeight="2" barUnit="EM">
 	  <g:tab>
@@ -46,7 +54,13 @@
 	  	<g:DockLayoutPanel>
 			<g:north size="32.0">
 				<g:HTMLPanel>
-					Genes: <g:SuggestBox ui:field="searchGene"></g:SuggestBox>
+				   	<div class="{style.gene_search_container}">
+						Genes: <g:SuggestBox ui:field="searchGene"></g:SuggestBox>
+					</div>
+					<div class="{style.stats_container}"> 
+					   Median pVal:  <g:InlineLabel ui:field="med_pval_label" />
+					</div>
+					
 		         	<a ui:field="download_link" target="_blank" class="{style.download_link}">Download Results</a>
 				</g:HTMLPanel>
 			</g:north>

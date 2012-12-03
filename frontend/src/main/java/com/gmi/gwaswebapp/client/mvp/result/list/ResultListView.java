@@ -74,6 +74,9 @@ public class ResultListView extends ViewWithUiHandlers<ResultListUiHandlers> imp
 	private void initCellTable() {
 		resultsTable.addColumn(new ResultsCellTableColumns.NameColumn(),"Name");
 		resultsTable.addColumn(new ResultsCellTableColumns.TypeColumn(),"Type");
+		resultsTable.addColumn(new ResultsCellTableColumns.MedPvalColumn(),"Median Pval");
+		resultsTable.addColumn(new ResultsCellTableColumns.KsStatColumn(),"Kol.-Smir. Stats");
+		resultsTable.addColumn(new ResultsCellTableColumns.KsPvalColumn(),"Kol.-Smir. pval (-log10)");
 		resultsTable.addColumn(new ResultsCellTableColumns.SNPColumn(),"SNPs");
 		resultsTable.addColumn(new ResultsCellTableColumns.CommentColumn(),"Comments");
 		

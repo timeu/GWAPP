@@ -17,7 +17,9 @@ public class Analysis extends BaseModel{
 	String comment;
 	TYPE type;
 	List<Cofactor> cofactors;
-	
+	Double med_pval;
+	Double ks_stat;
+	Double ks_pval;
 	
 	
 	public String getName() {
@@ -55,5 +57,15 @@ public class Analysis extends BaseModel{
 
 	public String getResultName() {
 		return resultName;
+	}
+	
+	public Double getMedPval() {
+		return med_pval;
+	}
+	public Double getKsStat() {
+		return ks_stat;
+	}
+	public Double getKsPval() {
+		return ks_pval;
 	}
 }

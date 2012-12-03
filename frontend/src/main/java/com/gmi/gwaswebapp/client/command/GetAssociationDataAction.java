@@ -41,6 +41,9 @@ public class GetAssociationDataAction extends RequestBuilderActionImpl<GetAssoci
 		JSONArray chr2length = serverData.get("chr2length").isArray();
 		double max_value = serverData.get("max_value").isNumber().doubleValue();
 		double pvalThreshold = serverData.get("pval_threshold").isNumber().doubleValue();
+		double med_pval = serverData.get("med_pval").isNumber().doubleValue();
+		double ks_stat = serverData.get("ks_stat").isNumber().doubleValue();
+		double ks_pval = serverData.get("ks_pval").isNumber().doubleValue();
 		List<DataTable> dataTables  =  new ArrayList<DataTable>();
 		List<Integer> chr_lengths = new ArrayList<Integer>();
 		Set<String> keys = chr2data.keySet();
@@ -56,7 +59,7 @@ public class GetAssociationDataAction extends RequestBuilderActionImpl<GetAssoci
 			dataTable.setValue(index, 0, chrLength);
 			dataTables.add(dataTable);
 		}
-		return new GetAssociationDataActionResult(new ResultData(dataTables,chr_lengths,max_value,pvalThreshold));
+		return new GetAssociationDataActionResult(new ResultData(dataTables,chr_lengths,max_value,pvalThreshold,med_pval,ks_stat,ks_pval));
 	}
 	
 	public static String _getUrl(String Phenotype,String Dataset,String Transformation, String Analysis,String ResultName)  {

@@ -10,13 +10,20 @@ public class ResultData {
 	protected List<Integer> chr_lengths;
 	protected double max_score;
 	protected double pvalThreshold;
+	protected double med_pval;
+	protected double ks_stat;
+	protected double ks_pval;
 	
-	public ResultData (List<DataTable> associationTables,List<Integer> chr_lengths,double max_score,double pvalThreshold)
+	public ResultData (List<DataTable> associationTables,List<Integer> chr_lengths,
+			double max_score,double pvalThreshold, double med_pval,double ks_stat, double ks_pval)
 	{
 		this.associationTables = associationTables;
 		this.max_score = max_score;
 		this.chr_lengths = chr_lengths;
 		this.pvalThreshold = pvalThreshold;
+		this.ks_stat = ks_stat;
+		this.ks_pval = ks_pval;
+		this.med_pval = med_pval;
 	}
 	
 	public List<DataTable> getAssociationTables()
@@ -36,6 +43,17 @@ public class ResultData {
 
 	public double getPvalThreshold() {
 		return pvalThreshold;
+	}
+	
+	public double getMedPval() {
+		return med_pval;
+	}
+	
+	public double getKsStat() {
+		return ks_stat;
+	}
+	public double getKsPval() {
+		return ks_pval;
 	}
 	
 }

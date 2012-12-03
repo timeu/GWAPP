@@ -37,6 +37,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.SuggestBox;
@@ -82,6 +83,9 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	@UiField AnchorElement download_link;
 	@UiField HTMLPanel statistic_container;
 	@UiField HTMLPanel area_chart_container;
+	@UiField InlineLabel med_pval_label;
+	//@UiField InlineLabel ks_stat_label;
+	//@UiField InlineLabel ks_pval_label;
 	protected List<GWASGeneViewer> gwasGeneViewers = new ArrayList<GWASGeneViewer>();
 	private String[] colors = {"blue", "green", "red", "cyan", "purple"};
 	private String[] gene_mark_colors = {"red", "red", "blue", "red", "green"};
@@ -324,7 +328,7 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	@Override
 	public void drawAssociationCharts(List<DataTable> dataTables,List<Cofactor> cofactors,
 			List<Integer> chrLengths, double maxScore,
-			double pvalThreshold) {
+			double pvalThreshold,Double med_pval,Double ks_stat,Double ks_pval) {
 		clearAssociationCharts();
 		requireResize = true;
 		if (gwas_tabpanel.getSelectedIndex() == 0) 
@@ -337,6 +341,10 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 			width = Window.getClientWidth() - 160 - 49;
 		if (width < minWidth)
 			width = minWidth;
+		
+		med_pval_label.setText(med_pval.toString());
+		//ks_stat_label.setText(ks_stat.toString());
+		//ks_pval_label.setText(ks_pval.toString());
 		
 		while(iterator.hasNext())
 		{
