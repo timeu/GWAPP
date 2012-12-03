@@ -15,6 +15,7 @@ import com.gwtplatform.mvp.client.View;
 import com.gwtplatform.mvp.client.annotations.NameToken;
 import com.gwtplatform.mvp.client.annotations.ProxyStandard;
 import com.gwtplatform.mvp.client.proxy.PlaceManager;
+import com.gwtplatform.mvp.client.proxy.PlaceRequest;
 import com.gwtplatform.mvp.client.proxy.ProxyPlace;
 import com.gwtplatform.mvp.client.proxy.RevealContentEvent;
 
@@ -59,7 +60,8 @@ public class HomePresenter extends Presenter<HomePresenter.MyView,HomePresenter.
 					
 					@Override
 					public void run() {
-						placeManager.revealCurrentPlace();
+						PlaceRequest request = new PlaceRequest(NameTokens.analysisPage);
+						placeManager.revealPlace(request);
 					}
 				});
 				
