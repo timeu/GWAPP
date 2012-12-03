@@ -21,7 +21,7 @@
 		is-multi-valued="false" />
 	<set-configuration-property name="gin.ginjector"
 		value="com.gmi.gwaswebapp.client.gin.ClientGinjector" />
-	<!-- <script src="http://www.google.com/jsapi?key=ABQIAAAAHExtiY5_qKaTj9xWKMjl4xTtEpWa7kqih2tSZ3rpmArayZxetBS7MKdCA3ZN4ypVkrPZAbUr8J2cZw"/> -->
+	<script src="http://www.google.com/jsapi?key=ABQIAAAAHExtiY5_qKaTj9xWKMjl4xTtEpWa7kqih2tSZ3rpmArayZxetBS7MKdCA3ZN4ypVkrPZAbUr8J2cZw"/>
 	<entry-point class="com.gmi.gwaswebapp.client.GWASWebApp"></entry-point>
 	
 	 <!-- Disable the firebug handler as an example -->
@@ -34,7 +34,7 @@
      <set-property name="gwt.logging.popupHandler" value="DISABLED" />
      <set-property name="gwt.logging.systemHandler" value="DISABLED" />
      
-     <add-linker name="xsiframe"/>
+     <!-- <add-linker name="xsiframe"/> -->
 	 <!-- <set-configuration-property name="devModeRedirectEnabled" value="true"/> -->
 	
 </module>
