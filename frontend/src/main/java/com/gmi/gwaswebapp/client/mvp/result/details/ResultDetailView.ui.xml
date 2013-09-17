@@ -38,6 +38,7 @@
 		
 		.download_link {
 			float:right;
+            margin-right:20px;
 		}
 		.stats_container {
 			margin-left:150px;
@@ -60,7 +61,8 @@
 					<div class="{style.stats_container}"> 
 					   Median pVal:  <g:InlineLabel ui:field="med_pval_label" />
 					</div>
-					
+                    <a ui:field="downloadPlotsLinkAll" target="_blank" class="{style.download_link}">Download Plot [all]</a>
+                    <a ui:field="downloadPlotsLink" target="_blank" class="{style.download_link}">Download Plot [mac > 15]</a>
 		         	<a ui:field="download_link" target="_blank" class="{style.download_link}">Download Results</a>
 				</g:HTMLPanel>
 			</g:north>

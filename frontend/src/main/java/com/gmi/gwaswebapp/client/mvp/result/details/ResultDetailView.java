@@ -84,7 +84,11 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	@UiField HTMLPanel statistic_container;
 	@UiField HTMLPanel area_chart_container;
 	@UiField InlineLabel med_pval_label;
-	//@UiField InlineLabel ks_stat_label;
+    @UiField
+    AnchorElement downloadPlotsLink;
+    @UiField
+    AnchorElement downloadPlotsLinkAll;
+    //@UiField InlineLabel ks_stat_label;
 	//@UiField InlineLabel ks_pval_label;
 	protected List<GWASGeneViewer> gwasGeneViewers = new ArrayList<GWASGeneViewer>();
 	private String[] colors = {"blue", "green", "red", "cyan", "purple"};
@@ -429,6 +433,12 @@ public class ResultDetailView extends ViewWithUiHandlers<ResultDetailUiHandlers>
 	public void setDownloadURL(String url) {
 		download_link.setHref(url);
 	}
+
+    @Override
+    public void setDownloadPlotsURL(String url) {
+        downloadPlotsLink.setHref(url);
+        downloadPlotsLinkAll.setHref(url + "&mac=0");
+    }
 
 	@Override
 	public void drawVarStatisticChart(AbstractDataTable data) {

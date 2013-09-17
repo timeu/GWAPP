@@ -682,7 +682,18 @@ class GWASService:
         content = tempfile.getvalue()
         tempfile.close()
         return content;
-    
+
+
+    @cherrypy.expose
+    def downloadAssociationPlot(self, phenotype, dataset, transformation, analysis, result_name,mac=15):
+        import StringIO, csv,os
+        import plotter
+        path = self._getUserPath()
+        result = '%s/%s/%s/%s/%s' % (phenotype,dataset,transformation,analysis,result_name)
+        filename = plotter._plot_gwas_result(path,"/tmp/",result,png=True,mode='r+',mac=float(mac))
+        return serve_file(filename, "image/png", "attachment", os.path.basename(filename))
+
+
     @cherrypy.expose
     def downloadHDF5File(self):
         path = self._getUserPath()
