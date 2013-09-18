@@ -28,7 +28,13 @@ class Root:
     _cp_config = {'request.error_response': handle_error}
     
     @cherrypy.expose
-    def index(self):
+    def index(self,datasetkey=None):
+        if datasetkey is not None:
+            cookie = cherrypy.response.cookie
+            cookie['GWAS_USER_ID'] = datasetkey
+            cookie['GWAS_USER_ID']['path'] = '/'
+            cookie['GWAS_USER_ID']['max-age'] = 3600*60*24
+            cookie['GWAS_USER_ID']['version'] = 1
         raise cherrypy.HTTPRedirect("/index.html")
 
 
