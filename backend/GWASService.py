@@ -41,7 +41,7 @@ class GWASService:
     gene_annot_file = base_path + "genome_annotation.pickled"
     
     def __init__(self):
-        self.data_file = tables.openFile(self.hdf5_filename, "r")
+        self.data_file = tables.open_file(self.hdf5_filename, "r")
         self.accession_ids = None
         gene_annot_file = open(self.gene_annot_file, 'rb')
         self.gene_annotation = cPickle.load(gene_annot_file)
@@ -69,7 +69,7 @@ class GWASService:
         return str(UserID)
     
     def _getGeneCountHistogramData(self, chr):
-        if self.__datasource == None:
+        if self.__datasource is None:
             self.__datasource = JBrowseDataSource(self.base_jbrowse_path, self.track_folder)
         bpPerBin, histogramData = self.__datasource.getGeneHistogram(chr)
         binCount = len(histogramData)
@@ -84,7 +84,7 @@ class GWASService:
                                ("lon", ("number", "Longitude")), ("lat", ("number", "Latitude")), \
                                ("phenotype", ("number", "Phenotype")), ("name", ("string", "Native Name")), \
                                ("country", ("string", "Country")) ]
-        if phen_vals == None:
+        if phen_vals is None:
             phen_vals = self._getPhenotypeValues(phenotype, transformation)
         table = self.data_file.root.accessions.infos
         data = []
@@ -106,7 +106,7 @@ class GWASService:
         table = self.data_file.root.accessions.infos
         ids = table.read(field='accession_id')
         indices = [bisect.bisect(ids, val) - 1 for val in accession_ids]
-        accessions = table.readCoordinates(indices)
+        accessions = table.read_coordinates(indices)
         return accessions
     
          
@@ -114,7 +114,7 @@ class GWASService:
     def _getLocationDistributionFromIds(self, accession_ids=[]):
         import bisect, itertools
         from operator import itemgetter
-        if accession_ids == None:
+        if accession_ids is None:
             accessions = self.data_file.root.accessions.infos[:]
         else:
             accessions = self._getAccessionsFromIds(accession_ids).tolist()
@@ -259,7 +259,7 @@ class GWASService:
     def getAssociationData(self, phenotype, dataset, transformation, analysis, result_name=None, userID=None):
         try:
             import math
-            if result_name == None:
+            if result_name is None:
                 result_name = analysis
             result = {}
             path = self._getUserPath()
@@ -510,7 +510,7 @@ class GWASService:
     @cherrypy.tools.json_out()
     def getGenes(self, chromosome, start, end, isFeatures=''):
         try:
-            if self.__datasource == None:
+            if self.__datasource is None:
                 self.__datasource = JBrowseDataSource(self.base_jbrowse_path, self.track_folder)
             genes = []
             genes = self.__datasource.getGenes(chromosome, int(start), int(end), bool(isFeatures))
@@ -523,7 +523,7 @@ class GWASService:
     @cherrypy.tools.json_out()
     def getGeneFromName(self, query):
         try:
-            if self.__datasource == None:
+            if self.__datasource is None:
                 self.__datasource = JBrowseDataSource(self.base_jbrowse_path, self.track_folder)
             genes = []
             gene = self.__datasource.getGeneFromName(query)
@@ -536,7 +536,7 @@ class GWASService:
     @cherrypy.tools.json_out()
     def getGenesFromQuery(self, query):
         try:
-            if self.__datasource == None:
+            if self.__datasource is None:
                 self.__datasource = JBrowseDataSource(self.base_jbrowse_path, self.track_folder)
             genes = []
             genes = self.__datasource.getGenesFromQuery(query)
@@ -570,7 +570,7 @@ class GWASService:
         path = self._getUserPath()
         gwa_record = gwa_records.GWASRecord(path)
         gwa_record.open("r+")
-        if position == None:
+        if position is None:
             retval = gwa_record.get_ld_for_region(phenotype, dataset, transformation, analysis, result_name, chr, start, end)
         elif exact is None:
             retval = gwa_record.get_ld_for_snp(phenotype, dataset, transformation, analysis, result_name, chr, position)
@@ -616,7 +616,7 @@ class GWASService:
                             ("Count", ("number", "Count"))]
         column_ls = [row[0] for row in column_name_type_ls]
 
-        if phenotype == None and dataset == None:
+        if phenotype is None and dataset is None:
             accession_ids_ls = {'All':None}
         else:
             accession_ids_ls = gwa_record.get_dataset_accession_ids(phenotype, dataset)

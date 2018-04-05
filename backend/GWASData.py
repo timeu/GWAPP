@@ -27,7 +27,7 @@ def importAccessions(hdf5_file,csv_file,delimiter='\t'):
     try:
         pdb.set_trace()
         accessions =[]
-        hdf5_f = tables.openFile(hdf5_file,"r+")
+        hdf5_f = tables.open_file(hdf5_file,"r+")
         if 'accessions' not in hdf5_f.root:
             group = hdf5_f.createGroup('/','accessions')
         else:
